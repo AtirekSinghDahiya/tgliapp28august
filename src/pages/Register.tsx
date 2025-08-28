@@ -83,8 +83,9 @@ const Register: React.FC = () => {
     try {
       await register(formData.email, formData.password, `${formData.firstName} ${formData.lastName}`);
       navigate('/');
-    } catch (error: any) {
-      setErrors({ general: error.message || 'Registration failed. Please try again.' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Registration failed. Please try again.';
+      setErrors({ general: message });
     } finally {
       setIsLoading(false);
     }

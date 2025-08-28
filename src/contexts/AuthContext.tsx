@@ -103,8 +103,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           created_at: data.user.created_at
         });
       }
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to sign in');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to sign in';
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -128,8 +129,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           created_at: data.user.created_at
         });
       }
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to create account');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to create account';
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -141,8 +143,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { error } = await supabaseSignOut();
       if (error) throw error;
       setUser(null);
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to sign out');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to sign out';
+      throw new Error(message);
     } finally {
       setLoading(false);
     }
@@ -155,8 +158,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const updatedUser = { ...user, ...updates };
       setUser(updatedUser);
       // In a real app, this would update the backend
-    } catch (error: any) {
-      throw new Error(error.message || 'Failed to update profile');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to update profile';
+      throw new Error(message);
     }
   };
 

@@ -5,8 +5,6 @@ import {
   CreditCard, 
   DollarSign, 
   Calendar,
-  CheckCircle,
-  ArrowRight,
   Gift,
   Star,
   Users,
@@ -69,7 +67,7 @@ const Donate: React.FC = () => {
     }));
   };
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: keyof DonationForm, value: string | DonationForm['paymentMethod'] | DonationForm['frequency']) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (submitError) setSubmitError('');
   };
@@ -107,9 +105,10 @@ const Donate: React.FC = () => {
       });
       
       setIsComplete(true);
-    } catch (error: any) {
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Donation failed. Please try again.';
       console.error('Donation failed:', error);
-      setSubmitError(error.message || 'Donation failed. Please try again.');
+      setSubmitError(message);
     } finally {
       setIsSubmitting(false);
     }

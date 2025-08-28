@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Phone, 
@@ -9,7 +9,6 @@ import {
   User, 
   MessageSquare, 
   Building,
-  Globe,
   Facebook,
   Twitter,
   Linkedin,
@@ -42,7 +41,7 @@ const Contact: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<ContactForm>>({});
   const [submitError, setSubmitError] = useState('');
-  const [isVisible, setIsVisible] = useState(false);
+  // Removed unused isVisible state
 
   const departments = [
     { value: 'general', label: 'General Inquiry' },
@@ -111,9 +110,7 @@ const Contact: React.FC = () => {
     { icon: Instagram, name: 'Instagram', url: 'https://instagram.com/tgli', color: '#e4405f' }
   ];
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  // No-op effect removed
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ContactForm> = {};
@@ -190,9 +187,10 @@ const Contact: React.FC = () => {
         message: '',
         department: 'general'
       });
-    } catch (error: any) {
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to send message. Please try again or contact us directly.';
       console.error('Error submitting form:', error);
-      setSubmitError('Failed to send message. Please try again or contact us directly.');
+      setSubmitError(message);
     } finally {
       setIsSubmitting(false);
     }

@@ -57,8 +57,9 @@ const Login: React.FC = () => {
     try {
       await login(formData.email, formData.password);
       navigate('/');
-    } catch (error: any) {
-      setErrors({ general: error.message || 'Invalid email or password. Please try again.' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Invalid email or password. Please try again.';
+      setErrors({ general: message });
     } finally {
       setIsLoading(false);
     }

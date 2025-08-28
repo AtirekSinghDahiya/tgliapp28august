@@ -9,7 +9,6 @@ import {
   FileText, 
   Calendar,
   CheckCircle,
-  ArrowRight,
   AlertCircle,
   Send,
   ArrowLeft
@@ -115,9 +114,10 @@ const ProgramApplication: React.FC = () => {
       });
       
       setIsSubmitted(true);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error submitting application:', error);
-      setSubmitError(error.message || 'Failed to submit application. Please try again.');
+      const message = error instanceof Error ? error.message : 'Failed to submit application. Please try again.';
+      setSubmitError(message);
     } finally {
       setIsSubmitting(false);
     }

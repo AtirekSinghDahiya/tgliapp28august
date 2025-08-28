@@ -14,7 +14,7 @@ const Header: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const { unreadCount } = useNotifications();
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const Header: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOut();
+      await logout();
       setShowMenu(false);
       navigate('/');
     } catch (error) {
@@ -168,9 +168,6 @@ const Header: React.FC = () => {
                 </Link>
                 <Link to="/contact" onClick={() => setShowMenu(false)}>
                   Contact
-                </Link>
-                <Link to="/profile" onClick={() => setShowMenu(false)}>
-                  Profile
                 </Link>
                 
                 {user ? (

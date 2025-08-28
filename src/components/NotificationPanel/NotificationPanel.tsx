@@ -21,7 +21,10 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, onClose }
   } = useNotifications();
   const navigate = useNavigate();
 
-  const handleNotificationClick = (notification: any) => {
+  const handleNotificationClick = (notification: {
+    id: string;
+    action?: { url: string };
+  }) => {
     markAsRead(notification.id);
     if (notification.action?.url) {
       navigate(notification.action.url);
