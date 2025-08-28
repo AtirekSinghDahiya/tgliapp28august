@@ -1,0 +1,140 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageCircle, X, Send } from 'lucide-react';
+import { sendChatMessage } from '../../lib/supabase';
+import './AIChat.css';
+
+interface Message {
+  id: string;
+  text: string;
+  isBot: boolean;
+  timestamp: Date;
+}
+
+const AIChat: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: 'Hello! I\'m here to help you learn about TGLI\'s programs and services. How can I assist you today?',
+      isBot: true,
+      timestamp: new Date()
+    }
+  ]);
+  const [inputValue, setInputValue] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleSendMessage = async () => {
+    if (!inputValue.trim()) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: inputValue,
+      isBot: false,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputValue('');
+    setIsTyping(true);
+
+    try {
+      const response = await sendChatMessage(inputValue);
+      
+      setTimeout(() => {
+        const botMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: response,
+          isBot: true,
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, botMessage]);
+        setIsTyping(false);
+      }, 1000);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setIsTyping(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSendMessage();
+    }
+  };
+
+  return (
+    <div className="chatbot-container">
+      <motion.button
+        className="chatbot-button"
+        onClick={() => setIsOpen(!isOpen)}
+        whileTap={{ scale: 0.9 }}
+        animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
+      >
+        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+      </motion.button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="chatbot-modal"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            <div className="chatbot-header">
+              <h3>TGLI Assistant</h3>
+              <button className="chatbot-close" onClick={() => setIsOpen(false)}>
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="chatbot-messages">
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  className={`chatbot-message ${message.isBot ? 'bot' : 'user'}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {message.text}
+                </motion.div>
+              ))}
+              {isTyping && (
+                <motion.div
+                  className="chatbot-message bot"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            <div className="chatbot-input">
+              <input
+                type="text"
+                placeholder="Ask about programs, services..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <button className="chatbot-send" onClick={handleSendMessage}>
+                <Send size={16} />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default AIChat;

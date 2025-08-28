@@ -1,0 +1,121 @@
+.pwa-install-prompt {
+  position: fixed;
+  bottom: 90px;
+  left: var(--space-4);
+  right: var(--space-4);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--gray-200);
+  z-index: var(--z-toast);
+  overflow: hidden;
+}
+
+.prompt-content {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4);
+  gap: var(--space-3);
+}
+
+.prompt-icon {
+  flex-shrink: 0;
+}
+
+.app-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.prompt-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.prompt-text h3 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: var(--space-1);
+}
+
+.prompt-text p {
+  font-size: var(--text-sm);
+  color: var(--gray-600);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.install-button {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-4);
+  min-height: 36px;
+}
+
+.dismiss-button {
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.dismiss-button:hover {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+  .pwa-install-prompt {
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: 80px;
+  }
+  
+  .prompt-content {
+    padding: var(--space-3);
+    gap: var(--space-2);
+  }
+  
+  .app-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .prompt-text h3 {
+    font-size: var(--text-sm);
+  }
+  
+  .prompt-text p {
+    font-size: var(--text-xs);
+  }
+  
+  .install-button {
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+}
+
+/* Safe area support */
+@supports (padding: max(0px)) {
+  .pwa-install-prompt {
+    bottom: max(90px, calc(80px + env(safe-area-inset-bottom)));
+  }
+}
