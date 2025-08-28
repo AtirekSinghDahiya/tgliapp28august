@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -15,12 +15,14 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
+import SegmentedControl from '../components/SegmentedControl/SegmentedControl';
 import './Home.css';
 
 const Home: React.FC = () => {
   const { user } = useAuth();
   const { requestPermission } = useNotifications();
   const navigate = useNavigate();
+  const [tab, setTab] = useState<'Discover' | 'Programs' | 'Actions'>('Discover');
 
   useEffect(() => {
     // Request notification permission on first visit
@@ -123,45 +125,54 @@ const Home: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Stats Section (collapsible on mobile) */}
-      <section className="stats-section" aria-label="Impact stats">
-        <div className="container">
-          <div className="stats-grid">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={index}
-                  className="stat-card"
-                  style={{ '--stat-color': stat.color } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="stat-icon">
-                    <Icon size={24} />
-                  </div>
-                  <div className="stat-content">
-                    <motion.h3 
-                      className="stat-value"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
-                    >
-                      {stat.value}
-                    </motion.h3>
-                    <p className="stat-label">{stat.label}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <div className="container">
+        <SegmentedControl
+          tabs={["Discover", "Programs", "Actions"]}
+          value={tab}
+          onChange={(v) => setTab(v as typeof tab)}
+        />
+      </div>
 
-      {/* Featured Programs (card-first, concise) */}
+      {tab === 'Discover' && (
+        <section className="stats-section" aria-label="Impact stats">
+          <div className="container">
+            <div className="stats-grid">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    className="stat-card"
+                    style={{ '--stat-color': stat.color } as React.CSSProperties}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="stat-icon">
+                      <Icon size={24} />
+                    </div>
+                    <div className="stat-content">
+                      <motion.h3 
+                        className="stat-value"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
+                      >
+                        {stat.value}
+                      </motion.h3>
+                      <p className="stat-label">{stat.label}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {tab === 'Programs' && (
       <section className="featured-section" aria-label="Featured programs">
         <div className="container">
           <motion.div 
@@ -211,8 +222,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
-      {/* Quick Actions */}
+      {tab === 'Actions' && (
       <section className="quick-actions-section" aria-label="Quick actions">
         <div className="container">
           <motion.h2 
@@ -254,6 +266,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Welcome Message for Logged In Users */}
       {user && (
