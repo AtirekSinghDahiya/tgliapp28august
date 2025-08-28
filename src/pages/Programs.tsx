@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Filter, Users, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { Search, Clock, MapPin, ArrowRight } from 'lucide-react';
 import './Programs.css';
 
 interface Program {

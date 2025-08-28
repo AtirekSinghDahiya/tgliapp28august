@@ -23,7 +23,7 @@ const BottomNavigation: React.FC = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="nav-container">
-        {navItems.map((item, index) => {
+        {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
           

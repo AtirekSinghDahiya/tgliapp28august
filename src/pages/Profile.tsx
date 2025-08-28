@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   User, 
-  Mail, 
-  Phone, 
   MapPin, 
   Calendar, 
   Bell, 
@@ -16,9 +14,7 @@ import {
   X,
   Camera,
   Shield,
-  Download,
-  Eye,
-  EyeOff
+  Download
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotifications } from '../contexts/NotificationContext';
@@ -51,7 +47,6 @@ const Profile: React.FC = () => {
   const { notifications, clearNotifications } = useNotifications();
   const [activeTab, setActiveTab] = useState('profile');
   const [isEditing, setIsEditing] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   const [profile, setProfile] = useState<UserProfile>({
@@ -126,18 +121,21 @@ const Profile: React.FC = () => {
     setIsVisible(true);
   }, []);
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (
+    field: string,
+    value: string | boolean
+  ) => {
     if (field.includes('.')) {
       const [parent, child] = field.split('.');
       setEditedProfile(prev => ({
         ...prev,
         [parent]: {
           ...prev[parent as keyof UserProfile],
-          [child]: value
+          [child]: value as never
         }
       }));
     } else {
-      setEditedProfile(prev => ({ ...prev, [field]: value }));
+      setEditedProfile(prev => ({ ...prev, [field]: value as never }));
     }
   };
 
@@ -165,8 +163,8 @@ const Profile: React.FC = () => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = typeof e.target?.result === 'string' ? e.target.result : '';
         setEditedProfile(prev => ({ ...prev, avatar: result }));
       };
       reader.readAsDataURL(file);

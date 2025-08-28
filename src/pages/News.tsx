@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Share2, Bookmark, Clock, User, Eye, ArrowRight } from 'lucide-react';
+import { Search, Share2, Bookmark, Clock, User } from 'lucide-react';
 import { getNewsArticles } from '../lib/supabase';
 
 interface NewsArticle {

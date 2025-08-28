@@ -27,13 +27,13 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
     'Volunteer Opportunities'
   ];
 
-  const searchResults = [
+  const searchResults = React.useMemo(() => ([
     { title: 'Community Engagement Program', type: 'Program', url: '/programs' },
     { title: 'Leadership Workshop', type: 'Event', url: '/programs' },
     { title: 'Employment Services', type: 'Program', url: '/programs' },
     { title: 'Contact Us', type: 'Page', url: '/contact' },
     { title: 'About TGLI', type: 'Page', url: '/about' },
-  ];
+  ]), []);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -60,7 +60,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
     } else {
       setSuggestions([]);
     }
-  }, [query]);
+  }, [query, searchResults]);
 
   const handleSearch = (searchQuery: string) => {
     if (!searchQuery.trim()) return;

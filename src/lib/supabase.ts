@@ -332,7 +332,7 @@ export const sendChatMessage = async (message: string): Promise<string> => {
     return responses.programs
   } else if (input.includes('contact') || input.includes('phone') || input.includes('address')) {
     return responses.contact
-  } else if (input.includes('employment') || input.includes('job') || input.includes('career')) {
+  } else if (input.includes('employment') || input.includes('job')) {
     return responses.employment
   } else if (input.includes('youth') || input.includes('young')) {
     return responses.youth
@@ -348,7 +348,7 @@ export const sendChatMessage = async (message: string): Promise<string> => {
     return responses.donate
   } else if (input.includes('apply') || input.includes('application')) {
     return responses.apply
-  } else if (input.includes('career') || input.includes('job')) {
+  } else if (input.includes('career')) {
     return responses.careers
   } else if (input.includes('news') || input.includes('article')) {
     return responses.news

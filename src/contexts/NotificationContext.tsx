@@ -79,8 +79,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     const savedNotifications = localStorage.getItem('tgli_notifications');
     if (savedNotifications) {
       try {
-        const parsed = JSON.parse(savedNotifications);
-        setNotifications(parsed.map((n: any) => ({
+        const parsed = JSON.parse(savedNotifications) as Array<Omit<Notification, 'timestamp'> & { timestamp: string }>;
+        setNotifications(parsed.map((n) => ({
           ...n,
           timestamp: new Date(n.timestamp)
         })));

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -6,7 +6,6 @@ import {
   Users, 
   Calendar, 
   BookOpen, 
-  Award,
   Heart,
   Globe,
   Target,
@@ -19,14 +18,11 @@ import { useNotifications } from '../contexts/NotificationContext';
 import './Home.css';
 
 const Home: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const { user } = useAuth();
-  const { addNotification, requestPermission } = useNotifications();
+  const { requestPermission } = useNotifications();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsVisible(true);
-    
     // Request notification permission on first visit
     if (!user) {
       setTimeout(() => {
@@ -72,13 +68,7 @@ const Home: React.FC = () => {
     { icon: Phone, title: 'Get Support', description: 'Contact our team', link: '/contact', color: '#d97706' },
   ];
 
-  const handleNotificationTest = () => {
-    addNotification({
-      title: 'Welcome!',
-      message: 'Thanks for exploring TGLI mobile app',
-      type: 'success'
-    });
-  };
+  // Removed unused handleNotificationTest
 
   const handleGetInvolved = () => {
     navigate('/programs');
@@ -133,8 +123,8 @@ const Home: React.FC = () => {
         </div>
       </motion.section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
+      {/* Stats Section (collapsible on mobile) */}
+      <section className="stats-section" aria-label="Impact stats">
         <div className="container">
           <div className="stats-grid">
             {stats.map((stat, index) => {
@@ -171,8 +161,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured Programs */}
-      <section className="featured-section">
+      {/* Featured Programs (card-first, concise) */}
+      <section className="featured-section" aria-label="Featured programs">
         <div className="container">
           <motion.div 
             className="section-header"
@@ -223,7 +213,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Quick Actions */}
-      <section className="quick-actions-section">
+      <section className="quick-actions-section" aria-label="Quick actions">
         <div className="container">
           <motion.h2 
             className="section-title text-center"

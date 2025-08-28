@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Users, 
   Target, 
   Heart, 
-  Award,
   Globe,
   TrendingUp,
   Shield,
@@ -13,11 +12,7 @@ import {
 import './About.css';
 
 const About: React.FC = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  // Removed unused isVisible state to simplify
 
   const values = [
     {

@@ -8,7 +8,7 @@
 /* Hero Section */
 .hero-section {
   position: relative;
-  min-height: 60vh;
+  min-height: 48vh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -435,11 +435,16 @@
 /* Mobile optimizations */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
   
   .hero-description {
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-6);
+  }
+  .hero-actions .btn {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
   }
   
   .stats-grid {
