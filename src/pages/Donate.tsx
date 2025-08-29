@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Heart, CreditCard, DollarSign } from 'lucide-react'
+import { Heart, CreditCard, DollarSign, Users } from 'lucide-react'
 import { submitDonation } from '../services/supabase'
 import { useAuth } from '../hooks/useAuth'
 
