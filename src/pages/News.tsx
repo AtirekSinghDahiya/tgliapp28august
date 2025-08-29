@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Search, Clock, User, Sparkles, Star, TrendingUp, Calendar } from 'lucide-react'
+import { Search, Clock, User, Sparkles, Star, TrendingUp, Calendar, ArrowRight } from 'lucide-react'
 import { getNewsArticles } from '../services/supabase'
 
 const News: React.FC = () => {
@@ -84,8 +84,9 @@ const News: React.FC = () => {
   }
 
   const handleReadMore = (article: any) => {
-    // Navigate to full article page
-    navigate(`/news/${article.id}`)
+    // For now, show article content in an expanded view within the same page
+    // In a real app, this would navigate to a full article page
+    alert(`Article: ${article.title}\n\n${article.excerpt}\n\nThis would normally open the full article. For demo purposes, the full article content would be displayed here.`)
   }
 
   if (loading) {
@@ -281,13 +282,13 @@ const News: React.FC = () => {
                     </motion.div>
                   </div>
                   <motion.button
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl border border-blue-500/20"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleReadMore(article)}
                   >
                     Read More
-                    <Sparkles size={14} />
+                    <ArrowRight size={16} />
                   </motion.button>
                 </motion.div>
               </div>
