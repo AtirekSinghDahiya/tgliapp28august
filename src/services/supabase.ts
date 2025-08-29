@@ -245,7 +245,7 @@ export const submitContactForm = async (formData: {
 // Program application
 export const submitProgramApplication = async (application: {
   user_id?: string
-  service_id: string
+  program_id: string
   full_name: string
   email: string
   phone: string

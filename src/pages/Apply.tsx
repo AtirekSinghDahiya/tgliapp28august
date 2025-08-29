@@ -34,7 +34,7 @@ const Apply: React.FC = () => {
     try {
       await submitProgramApplication({
         user_id: user?.id,
-        service_id: serviceId || '',
+        program_id: serviceId || '',
         full_name: formData.fullName,
         email: formData.email,
         phone: formData.phone,
