@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Bell, Menu, X, User } from 'lucide-react';
+import { Search, Bell, Menu, X, User, Sparkles } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotifications } from '../../contexts/NotificationContext';
@@ -41,74 +41,95 @@ const Header: React.FC = () => {
   return (
     <>
       <motion.header 
-        className={`header ${scrolled ? 'scrolled' : ''}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? 'bg-white/95 backdrop-blur-xl shadow-xl border-b border-gray-200/50' 
+            : 'bg-white/90 backdrop-blur-lg border-b border-gray-200/30'
+        }`}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
+        transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
       >
-        <div className="header-content">
-          <div className="header-left">
+        <div className="flex items-center justify-between p-4 max-w-7xl mx-auto">
+          <div className="flex items-center gap-3">
             <motion.button
-              className="menu-button ripple"
+              className="p-2 rounded-xl bg-gray-100/80 backdrop-blur-sm hover:bg-red-100 transition-all duration-300"
               onClick={() => setShowMenu(true)}
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               whileHover={{ 
-                scale: 1.05,
-                backgroundColor: "rgba(225, 29, 72, 0.1)",
-                transition: { duration: 0.2 }
+                scale: 1.08,
+                rotate: 5,
+                boxShadow: "0 4px 12px rgba(220, 38, 38, 0.2)",
+                transition: { duration: 0.3 }
               }}
             >
-              <Menu size={24} />
+              <Menu size={20} className="text-gray-700" />
             </motion.button>
             
-            <Link to="/" className="logo-link">
+            <Link to="/" className="flex items-center gap-2">
               <motion.img 
                 src="https://tgli.org/TGLI_Logo.png" 
                 alt="TGLI" 
-                className="header-logo"
+                className="h-8 w-8 rounded-full shadow-md"
                 whileHover={{ 
-                  scale: 1.1, 
-                  rotate: 5,
-                  filter: "brightness(1.1)",
+                  scale: 1.15, 
+                  rotate: 10,
+                  boxShadow: "0 8px 20px rgba(220, 38, 38, 0.3)",
                   transition: { duration: 0.3 }
                 }}
                 whileTap={{ scale: 0.95 }}
               />
+              <motion.div 
+                className="hidden sm:block"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                <span className="font-bold text-gray-900 text-sm">TGLI</span>
+              </motion.div>
             </Link>
           </div>
 
-          <div className="header-right">
+          <div className="flex items-center gap-2">
             <motion.button
-              className="icon-button ripple"
+              className="p-2 rounded-xl bg-gray-100/80 backdrop-blur-sm hover:bg-blue-100 transition-all duration-300"
               onClick={() => setShowSearch(true)}
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               whileHover={{ 
-                scale: 1.05,
-                backgroundColor: "rgba(225, 29, 72, 0.1)",
-                transition: { duration: 0.2 }
+                scale: 1.08,
+                boxShadow: "0 4px 12px rgba(59, 130, 246, 0.2)",
+                transition: { duration: 0.3 }
               }}
             >
-              <Search size={20} />
+              <Search size={18} className="text-gray-700" />
             </motion.button>
 
             <motion.button
-              className="icon-button notification-button ripple"
+              className="p-2 rounded-xl bg-gray-100/80 backdrop-blur-sm hover:bg-yellow-100 transition-all duration-300 relative"
               onClick={() => setShowNotifications(true)}
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               whileHover={{ 
-                scale: 1.05,
-                backgroundColor: "rgba(225, 29, 72, 0.1)",
-                transition: { duration: 0.2 }
+                scale: 1.08,
+                boxShadow: "0 4px 12px rgba(245, 158, 11, 0.2)",
+                transition: { duration: 0.3 }
               }}
             >
-              <Bell size={20} />
+              <Bell size={18} className="text-gray-700" />
               {unreadCount > 0 && (
                 <motion.span 
-                  className="notification-badge"
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] h-[18px] flex items-center justify-center shadow-lg"
+                  initial={{ scale: 0, rotate: -180, opacity: 0 }}
+                  animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
+                  whileHover={{ scale: 1.15 }}
+                  animate={{
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
                 >
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </motion.span>
@@ -116,30 +137,41 @@ const Header: React.FC = () => {
             </motion.button>
 
             {user ? (
-              <Link to="/profile" className="profile-link">
+              <Link to="/profile" className="relative">
                 <motion.div 
-                  className="profile-avatar"
-                  whileTap={{ scale: 0.9 }}
+                  className="w-9 h-9 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg overflow-hidden"
+                  whileTap={{ scale: 0.95 }}
                   whileHover={{ 
-                    scale: 1.1,
-                    boxShadow: "0 0 20px rgba(225, 29, 72, 0.3)",
+                    scale: 1.15,
+                    boxShadow: "0 8px 25px rgba(220, 38, 38, 0.4)",
+                    rotate: 5,
                     transition: { duration: 0.3 }
                   }}
                 >
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.name} />
+                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
                   ) : (
-                    <User size={20} />
+                    user.name.charAt(0).toUpperCase()
                   )}
                 </motion.div>
+                <motion.div
+                  className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-sm"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 15 }}
+                />
               </Link>
             ) : (
               <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.08, y: -2 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Link to="/signin" className="login-button">
-                Sign In
+                <Link 
+                  to="/signin" 
+                  className="flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <Sparkles size={14} />
+                  Sign In
                 </Link>
               </motion.div>
             )}
@@ -152,100 +184,226 @@ const Header: React.FC = () => {
         {showMenu && (
           <>
             <motion.div
-              className="menu-overlay"
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setShowMenu(false)}
             />
             <motion.div
-              className="side-menu"
-              initial={{ x: -300, opacity: 0 }}
+              className="fixed top-0 left-0 h-full w-80 bg-white/95 backdrop-blur-xl shadow-2xl z-50 overflow-y-auto"
+              initial={{ x: -320, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -300, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              exit={{ x: -320, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              <div className="menu-header">
+              <div className="flex items-center justify-between p-6 border-b border-gray-200/50 bg-gradient-to-r from-red-500 to-red-600 text-white">
                 <motion.img 
                   src="https://tgli.org/TGLI_Logo.png" 
                   alt="TGLI" 
-                  className="menu-logo"
-                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  className="h-10 w-10 rounded-full shadow-lg"
+                  whileHover={{ scale: 1.1, rotate: 10 }}
                 />
+                <div className="flex-1 ml-3">
+                  <h3 className="font-bold text-lg">TGLI</h3>
+                  <p className="text-red-100 text-sm">Leadership Institute</p>
+                </div>
                 <motion.button
-                  className="close-button"
+                  className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-colors"
                   onClick={() => setShowMenu(false)}
                   whileHover={{ 
-                    scale: 1.1, 
-                    backgroundColor: "rgba(225, 29, 72, 0.1)",
+                    scale: 1.15, 
                     rotate: 90
                   }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <X size={24} />
+                  <X size={20} />
                 </motion.button>
               </div>
 
-              <nav className="menu-nav">
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/" onClick={() => setShowMenu(false)}>
-                  Home
+              <nav className="p-4 space-y-2">
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-300 text-gray-700 hover:text-red-600"
+                  >
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    Home
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/about" onClick={() => setShowMenu(false)}>
-                  About
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/about" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-300 text-gray-700 hover:text-blue-600"
+                  >
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    About
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/programs" onClick={() => setShowMenu(false)}>
-                  Programs
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/programs" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 transition-all duration-300 text-gray-700 hover:text-green-600"
+                  >
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    Programs
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/news" onClick={() => setShowMenu(false)}>
-                  News
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/news" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 transition-all duration-300 text-gray-700 hover:text-purple-600"
+                  >
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    News
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/careers" onClick={() => setShowMenu(false)}>
-                  Careers
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/careers" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100 transition-all duration-300 text-gray-700 hover:text-orange-600"
+                  >
+                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    Careers
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/donate" onClick={() => setShowMenu(false)}>
-                  Donate
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/donate" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-pink-50 hover:to-pink-100 transition-all duration-300 text-gray-700 hover:text-pink-600"
+                  >
+                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    Donate
                   </Link>
                 </motion.div>
-                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                  <Link to="/contact" onClick={() => setShowMenu(false)}>
-                  Contact
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7, duration: 0.5 }}
+                >
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-teal-50 hover:to-teal-100 transition-all duration-300 text-gray-700 hover:text-teal-600"
+                  >
+                    <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+                    Contact
                   </Link>
                 </motion.div>
                 
+                <div className="border-t border-gray-200 my-4"></div>
+                
                 {user ? (
                   <>
-                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                      <Link to="/profile" onClick={() => setShowMenu(false)}>
-                      Profile
+                    <motion.div 
+                      whileHover={{ x: 8, scale: 1.02 }} 
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      <Link 
+                        to="/profile" 
+                        onClick={() => setShowMenu(false)}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-indigo-50 hover:to-indigo-100 transition-all duration-300 text-gray-700 hover:text-indigo-600"
+                      >
+                        <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                        Profile
                       </Link>
                     </motion.div>
-                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                      <button onClick={handleSignOut} className="sign-out-button">
-                      Sign Out
+                    <motion.div 
+                      whileHover={{ x: 8, scale: 1.02 }} 
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                    >
+                      <button 
+                        onClick={handleSignOut} 
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-red-50 hover:to-red-100 transition-all duration-300 text-red-600 hover:text-red-700 w-full text-left"
+                      >
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        Sign Out
                       </button>
                     </motion.div>
                   </>
                 ) : (
                   <>
-                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                      <Link to="/signin" onClick={() => setShowMenu(false)}>
-                      Sign In
+                    <motion.div 
+                      whileHover={{ x: 8, scale: 1.02 }} 
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      <Link 
+                        to="/signin" 
+                        onClick={() => setShowMenu(false)}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-green-50 hover:to-green-100 transition-all duration-300 text-gray-700 hover:text-green-600"
+                      >
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        Sign In
                       </Link>
                     </motion.div>
-                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
-                      <Link to="/signup" onClick={() => setShowMenu(false)}>
-                      Sign Up
+                    <motion.div 
+                      whileHover={{ x: 8, scale: 1.02 }} 
+                      whileTap={{ scale: 0.98 }}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.9, duration: 0.5 }}
+                    >
+                      <Link 
+                        to="/signup" 
+                        onClick={() => setShowMenu(false)}
+                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 transition-all duration-300 text-gray-700 hover:text-blue-600"
+                      >
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        Sign Up
                       </Link>
                     </motion.div>
                   </>
@@ -254,25 +412,35 @@ const Header: React.FC = () => {
 
               {user && (
                 <motion.div 
-                  className="menu-user-info"
-                  initial={{ y: 50, opacity: 0 }}
+                  className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200/50 bg-gradient-to-r from-gray-50 to-gray-100"
+                  initial={{ y: 100, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
+                  transition={{ delay: 1, duration: 0.6 }}
                 >
                   <motion.div 
-                    className="user-avatar"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="flex items-center gap-3"
+                    whileHover={{ scale: 1.02 }}
                   >
-                    {user.avatar ? (
-                      <img src={user.avatar} alt={user.name} />
-                    ) : (
-                      <User size={24} />
-                    )}
+                    <motion.div 
+                      className="w-12 h-12 bg-gradient-to-r from-red-500 to-red-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg"
+                      whileHover={{ scale: 1.1, rotate: 10 }}
+                    >
+                      {user.avatar ? (
+                        <img src={user.avatar} alt={user.name} className="w-full h-full object-cover rounded-full" />
+                      ) : (
+                        user.name.charAt(0).toUpperCase()
+                      )}
+                    </motion.div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 truncate">{user.name}</p>
+                      <p className="text-gray-600 text-sm truncate">{user.email}</p>
+                    </div>
+                    <motion.div
+                      className="w-3 h-3 bg-green-400 rounded-full shadow-sm"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
                   </motion.div>
-                  <div className="user-details">
-                    <p className="user-name">{user.name}</p>
-                    <p className="user-email">{user.email}</p>
-                  </div>
                 </motion.div>
               )}
             </motion.div>

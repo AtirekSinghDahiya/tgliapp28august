@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Mail, Lock, User, Eye, EyeOff, ArrowLeft } from 'lucide-react'
+import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Sparkles, Shield, CheckCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { signUp } from '../services/supabase'
 
 const SignUp: React.FC = () => {
@@ -42,129 +43,274 @@ const SignUp: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-4 pt-12">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/')} className="p-2 hover:bg-gray-100 rounded-lg">
-            <ArrowLeft size={20} />
-          </button>
-          <img src="https://tgli.org/TGLI_Logo.png" alt="TGLI" className="h-8" />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-green-200/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [-30, 30, -30],
+              opacity: [0.1, 0.4, 0.1],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 5 + Math.random() * 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 3,
+            }}
+          />
+        ))}
       </div>
+      
+      {/* Header */}
+      <motion.div 
+        className="bg-white/80 backdrop-blur-xl border-b border-gray-200/50 p-4 pt-12 relative z-10"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+      >
+        <div className="flex items-center gap-4">
+          <motion.button 
+            onClick={() => navigate('/')} 
+            className="p-2 hover:bg-green-100 rounded-xl transition-all duration-300"
+            whileHover={{ scale: 1.1, x: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ArrowLeft size={20} />
+          </motion.button>
+          <motion.img 
+            src="https://tgli.org/TGLI_Logo.png" 
+            alt="TGLI" 
+            className="h-8 w-8 rounded-full shadow-md"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+          />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            <span className="font-bold text-gray-900">TGLI</span>
+          </motion.div>
+        </div>
+      </motion.div>
 
-      <div className="p-6">
+      <div className="p-6 relative z-10">
         <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Create Account</h1>
-            <p className="text-gray-600">Join the TGLI community</p>
-          </div>
+          <motion.div 
+            className="text-center mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            <motion.div 
+              className="flex items-center justify-center gap-2 mb-4"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+            >
+              <Sparkles className="w-6 h-6 text-green-500" />
+              <CheckCircle className="w-5 h-5 text-blue-500" />
+            </motion.div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Join TGLI</h1>
+            <p className="text-gray-600">Create your account and start your leadership journey</p>
+          </motion.div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4">
+            <motion.div 
+              className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 shadow-sm"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
+          <motion.div
+            className="bg-white/80 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/50"
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1, duration: 0.6 }}
+              >
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <User size={16} className="inline mr-2 text-green-500" />
                 Full Name
               </label>
               <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <motion.div
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  whileHover={{ scale: 1.1, color: "#10b981" }}
+                >
+                  <User size={16} />
+                </motion.div>
                 <input
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none"
+                  className="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none bg-white/50 backdrop-blur-sm transition-all duration-300 hover:border-gray-300"
                   placeholder="Enter your full name"
                   required
                 />
               </div>
-            </div>
+              </motion.div>
 
-            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+              >
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Mail size={16} className="inline mr-2 text-blue-500" />
                 Gmail Address
               </label>
               <div className="relative">
-                <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <motion.div
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  whileHover={{ scale: 1.1, color: "#3b82f6" }}
+                >
+                  <Mail size={16} />
+                </motion.div>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none"
+                  className="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none bg-white/50 backdrop-blur-sm transition-all duration-300 hover:border-gray-300"
                   placeholder="your.email@gmail.com"
                   required
                 />
               </div>
-            </div>
+              </motion.div>
 
-            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.4, duration: 0.6 }}
+              >
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Lock size={16} className="inline mr-2 text-purple-500" />
                 Password
               </label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <motion.div
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  whileHover={{ scale: 1.1, color: "#8b5cf6" }}
+                >
+                  <Lock size={16} />
+                </motion.div>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="w-full pl-10 pr-12 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none"
+                  className="w-full pl-10 pr-12 py-4 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none bg-white/50 backdrop-blur-sm transition-all duration-300 hover:border-gray-300"
                   placeholder="Create a password"
                   required
                 />
-                <button
+                <motion.button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-purple-500 transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+                </motion.button>
               </div>
-            </div>
+              </motion.div>
 
-            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.6, duration: 0.6 }}
+              >
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <Shield size={16} className="inline mr-2 text-red-500" />
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <motion.div
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                  whileHover={{ scale: 1.1, color: "#ef4444" }}
+                >
+                  <Lock size={16} />
+                </motion.div>
                 <input
                   type="password"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none"
+                  className="w-full pl-10 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white/50 backdrop-blur-sm transition-all duration-300 hover:border-gray-300"
                   placeholder="Confirm your password"
                   required
                 />
               </div>
-            </div>
+              </motion.div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600 disabled:opacity-50"
-            >
-              {loading ? 'Creating Account...' : 'Create Account'}
-            </button>
+              <motion.button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 disabled:opacity-50 shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.8, duration: 0.6 }}
+              >
+                {loading ? (
+                  <>
+                    <motion.div
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                    Creating Account...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle size={18} />
+                    Create Account
+                  </>
+                )}
+              </motion.button>
           </form>
+          </motion.div>
 
-          <div className="text-center mt-6">
+          <motion.div 
+            className="text-center mt-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2, duration: 0.6 }}
+          >
             <p className="text-gray-600">
               Already have an account?{' '}
-              <Link to="/signin" className="text-red-500 font-semibold">
+              <Link to="/signin" className="text-green-500 font-semibold hover:text-green-600 transition-colors">
                 Sign In
               </Link>
             </p>
-          </div>
+          </motion.div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4">
+          <motion.div 
+            className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 mt-6 shadow-sm"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 2.2, duration: 0.6 }}
+          >
             <p className="text-blue-700 text-sm text-center">
-              <strong>Note:</strong> Only Gmail addresses (@gmail.com) are accepted.
+              <Shield size={16} className="inline mr-2" />
+              <strong>Secure Registration:</strong> Only Gmail addresses (@gmail.com) are accepted for enhanced security.
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
