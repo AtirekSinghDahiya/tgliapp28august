@@ -166,7 +166,8 @@ const Programs: React.FC = () => {
     if (user) {
       navigate(`/apply/${program.id}`);
     } else {
-      // Redirect to login if not authenticated
+      // Store the intended destination and redirect to login
+      sessionStorage.setItem('redirectAfterLogin', `/apply/${program.id}`);
       navigate('/signin');
     }
   };

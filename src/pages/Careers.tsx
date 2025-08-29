@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { MapPin, Clock, DollarSign, Briefcase, Mail } from 'lucide-react'
 import { getJobPostings } from '../services/supabase'
+import { useAuth } from '../hooks/useAuth'
 
 const Careers: React.FC = () => {
+  const navigate = useNavigate()
+  const { user } = useAuth()
   const [jobs, setJobs] = useState([])
   const [loading, setLoading] = useState(true)
 

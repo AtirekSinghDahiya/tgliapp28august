@@ -21,7 +21,14 @@ const SignIn: React.FC = () => {
 
     try {
       await signIn(formData.email, formData.password)
-      navigate('/')
+      // Check for redirect destination
+      const redirectTo = sessionStorage.getItem('redirectAfterLogin')
+      if (redirectTo) {
+        sessionStorage.removeItem('redirectAfterLogin')
+        navigate(redirectTo)
+      } else {
+        navigate('/')
+      }
     } catch (err: any) {
       if (err.message === 'Invalid login credentials') {
         setError('Invalid email or password. Please check your credentials or confirm your email address if you haven\'t already.')

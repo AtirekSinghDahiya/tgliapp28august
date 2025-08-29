@@ -34,7 +34,14 @@ const SignUp: React.FC = () => {
 
     try {
       await signUp(formData.email, formData.password, formData.fullName)
-      navigate('/')
+      // Check for redirect destination
+      const redirectTo = sessionStorage.getItem('redirectAfterLogin')
+      if (redirectTo) {
+        sessionStorage.removeItem('redirectAfterLogin')
+        navigate(redirectTo)
+      } else {
+        navigate('/')
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to create account')
     } finally {
