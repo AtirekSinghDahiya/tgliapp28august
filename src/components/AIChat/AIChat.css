@@ -1,8 +1,99 @@
 /* Enhanced AI Chat Styles */
+.chatbot-modal {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  width: 20rem;
+  height: 24rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+  background: rgba(249, 250, 251, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.chat-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.chat-input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.chat-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.chat-send-button {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  border-radius: 0.75rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.chat-send-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
+}
+
+.chat-send-button:active {
+  transform: scale(0.95);
+}
+
 @media (max-width: 640px) {
   .chatbot-modal {
-    width: calc(100vw - 1rem);
-    right: -0.5rem;
-    height: 350px;
+    width: calc(100vw - 2rem) !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    height: 22rem !important;
+    bottom: 6rem !important;
+  }
+  
+  .chat-input-container {
+    padding: 0.75rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .chat-input {
+    padding: 0.75rem !important;
+    font-size: 16px !important;
+    border-radius: 0.75rem !important;
+  }
+  
+  .chat-send-button {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    min-width: 2.5rem !important;
+    flex-shrink: 0 !important;
   }
 }

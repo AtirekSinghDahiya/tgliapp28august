@@ -136,13 +136,14 @@ const AIChat: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="absolute bottom-20 right-0 w-80 h-96 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden"
+            className="chatbot-modal"
             initial={{ opacity: 0, scale: 0.8, y: 20, rotateY: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0, rotateY: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20, rotateY: -10 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
           >
-            <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-4 flex items-center justify-between">
+            {/* Chat Header */}
+            <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-3 flex items-center justify-between">
               <motion.div 
                 className="flex items-center gap-2"
                 initial={{ opacity: 0, x: -20 }}
@@ -155,10 +156,10 @@ const AIChat: React.FC = () => {
                 >
                   <Sparkles size={18} className="text-yellow-300" />
                 </motion.div>
-                <h3 className="font-semibold">TGLI AI Assistant</h3>
+                <h3 className="font-semibold text-sm">TGLI AI Assistant</h3>
               </motion.div>
               <motion.button 
-                className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors" 
+                className="p-1.5 rounded-lg bg-white/20 hover:bg-white/30 transition-colors min-w-[32px] min-h-[32px] flex items-center justify-center" 
                 onClick={() => setIsOpen(false)}
                 whileHover={{ scale: 1.15, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
@@ -167,14 +168,15 @@ const AIChat: React.FC = () => {
               </motion.button>
             </div>
 
-            <div className="flex-1 p-4 overflow-y-auto space-y-3 max-h-64">
+            {/* Chat Messages */}
+            <div className="flex-1 p-3 overflow-y-auto space-y-2 h-64" style={{ maxHeight: '16rem' }}>
               {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
-                  className={`max-w-[85%] p-3 rounded-2xl text-sm ${
+                  className={`max-w-[85%] p-2.5 rounded-xl text-sm leading-relaxed ${
                     message.isBot 
-                      ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 self-start border border-gray-300/50' 
-                      : 'bg-gradient-to-r from-red-500 to-red-600 text-white self-end ml-auto shadow-lg'
+                      ? 'bg-gray-100 text-gray-800 border border-gray-200' 
+                      : 'bg-gradient-to-r from-red-500 to-red-600 text-white ml-auto shadow-md'
                   }`}
                   initial={{ opacity: 0, y: 15, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -185,14 +187,14 @@ const AIChat: React.FC = () => {
                     stiffness: 250,
                     damping: 20
                   }}
-                  whileHover={{ scale: 1.03, y: -1 }}
+                  whileHover={{ scale: 1.02 }}
                 >
                   {message.text}
                 </motion.div>
               ))}
               {isTyping && (
                 <motion.div
-                  className="max-w-[85%] p-3 rounded-2xl bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 border border-gray-300/50"
+                  className="max-w-[85%] p-2.5 rounded-xl bg-gray-100 text-gray-800 border border-gray-200"
                   initial={{ opacity: 0, y: 15, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ type: "spring", stiffness: 250, damping: 20 }}
@@ -218,8 +220,8 @@ const AIChat: React.FC = () => {
               )}
             </div>
 
-            <div className="p-4 border-t border-gray-200/50 bg-gray-50/50 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
+            {/* Chat Input */}
+            <div className="chat-input-container">
                 <input
                   type="text"
                   placeholder="Type your message..."
@@ -227,15 +229,14 @@ const AIChat: React.FC = () => {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   disabled={isTyping}
-                  className="flex-1 p-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white/80 backdrop-blur-sm text-sm placeholder-gray-500"
+                  className="chat-input"
                 />
                 <motion.button 
-                  className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl flex items-center justify-center shadow-lg" 
+                  className="chat-send-button" 
                   onClick={handleSendMessage}
                   whileHover={{ 
-                    scale: 1.15, 
-                    boxShadow: "0 8px 20px rgba(220, 38, 38, 0.4)",
-                    rotate: 10
+                    scale: 1.1, 
+                    boxShadow: "0 6px 16px rgba(220, 38, 38, 0.4)"
                   }}
                   whileTap={{ scale: 0.95 }}
                   disabled={isTyping}
@@ -247,7 +248,6 @@ const AIChat: React.FC = () => {
                     {isTyping ? <Zap size={16} /> : <Send size={16} />}
                   </motion.div>
                 </motion.button>
-              </div>
             </div>
           </motion.div>
         )}

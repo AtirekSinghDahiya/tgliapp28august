@@ -532,35 +532,75 @@ p {
 
 /* Responsive Design */
 @media (max-width: 640px) {
+  /* Critical mobile fixes */
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
   h1 { font-size: 1.875rem; }
   h2 { font-size: 1.5rem; }
   h3 { font-size: 1.25rem; }
   
   .btn {
-    padding: var(--space-2-5) var(--space-5);
+    padding: 0.75rem 1.25rem;
     font-size: 0.875rem;
-    min-height: 2.5rem;
+    min-height: 44px;
+    touch-action: manipulation;
   }
   
   .card {
-    border-radius: var(--radius-xl);
+    border-radius: 1rem;
+    margin: 0.5rem;
+    max-width: calc(100vw - 1rem);
   }
   
-  /* Reduce animations on mobile for better performance */
+  /* Mobile performance optimizations */
   * {
-    animation-duration: 0.2s !important;
-    transition-duration: 0.2s !important;
+    animation-duration: 0.15s !important;
+    transition-duration: 0.15s !important;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, textarea, select {
+    font-size: 16px !important;
+    max-width: 100%;
+  }
+  
+  /* Fix mobile layout issues */
+  .fixed {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Optimize mobile scrolling */
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
   }
 }
 
 @media (max-width: 480px) {
+  /* Extra small mobile devices */
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.25rem; }
   
   .btn {
-    padding: var(--space-2) var(--space-4);
+    padding: 0.5rem 1rem;
     font-size: 0.8125rem;
-    min-height: 2.25rem;
+    min-height: 44px;
+  }
+  
+  /* Ensure full width on very small screens */
+  .container, .max-w-md, .max-w-lg, .max-w-xl {
+    max-width: calc(100vw - 1rem) !important;
+    margin: 0 0.5rem;
   }
 }
 
