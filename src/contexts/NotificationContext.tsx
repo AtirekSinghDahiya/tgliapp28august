@@ -21,14 +21,19 @@ interface NotificationProviderProps {
 }
 
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({ children }) => {
-  const [unreadCount, setUnreadCount] = useState(2); // Mock unread count
+  const [unreadCount, setUnreadCount] = useState(2); // Initial unread count
+  const [readNotifications, setReadNotifications] = useState<Set<string>>(new Set());
 
   const addNotification = (notification: any) => {
     setUnreadCount(prev => prev + 1);
   };
 
   const markAsRead = (id: string) => {
-    setUnreadCount(prev => Math.max(0, prev - 1));
+    // Only decrease count if this notification hasn't been marked as read before
+    if (!readNotifications.has(id)) {
+      setReadNotifications(prev => new Set([...prev, id]));
+      setUnreadCount(prev => Math.max(0, prev - 1));
+    }
   };
 
   return (

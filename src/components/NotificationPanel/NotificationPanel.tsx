@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, X, Check, Trash2, Settings } from 'lucide-react';
+import { useNotifications } from '../../contexts/NotificationContext';
 import './NotificationPanel.css';
 
 interface NotificationPanelProps {
@@ -18,6 +19,7 @@ interface Notification {
 }
 
 const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, onClose }) => {
+  const { markAsRead: updateGlobalCount } = useNotifications();
   const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: '1',
@@ -59,12 +61,17 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, onClose }
         notif.id === id ? { ...notif, read: true } : notif
       )
     );
+    // Update global notification count
+    updateGlobalCount(id);
   };
 
   const markAllAsRead = () => {
     setNotifications(prev =>
       prev.map(notif => ({ ...notif, read: true }))
     );
+    // Update global notification count for all unread notifications
+    const unreadNotifications = notifications.filter(n => !n.read);
+    unreadNotifications.forEach(notif => updateGlobalCount(notif.id));
   };
 
   const deleteNotification = (id: string) => {
