@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Search, Clock, User, Sparkles, Star, TrendingUp, Calendar } from 'lucide-react'
 import { getNewsArticles } from '../services/supabase'
 
 const News: React.FC = () => {
+  const navigate = useNavigate()
   const [articles, setArticles] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
