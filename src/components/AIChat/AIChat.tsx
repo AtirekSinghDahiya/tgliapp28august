@@ -69,8 +69,14 @@ const AIChat: React.FC = () => {
       <motion.button
         className="chatbot-button"
         onClick={() => setIsOpen(!isOpen)}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.85 }}
+        whileHover={{ 
+          scale: 1.1, 
+          boxShadow: "0 15px 35px rgba(225, 29, 72, 0.4)",
+          y: -3
+        }}
         animate={isOpen ? { rotate: 180 } : { rotate: 0 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
         {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </motion.button>
@@ -79,26 +85,38 @@ const AIChat: React.FC = () => {
         {isOpen && (
           <motion.div
             className="chatbot-modal"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            initial={{ opacity: 0, scale: 0.7, y: 50, rotateX: -15 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 50, rotateX: -15 }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             <div className="chatbot-header">
-              <h3>TGLI Assistant</h3>
-              <button className="chatbot-close" onClick={() => setIsOpen(false)}>
+              <h3>🤖 TGLI Assistant</h3>
+              <motion.button 
+                className="chatbot-close" 
+                onClick={() => setIsOpen(false)}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <X size={16} />
-              </button>
+              </motion.button>
             </div>
 
             <div className="chatbot-messages">
-              {messages.map((message) => (
+              {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
                   className={`chatbot-message ${message.isBot ? 'bot' : 'user'}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    duration: 0.4,
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 20
+                  }}
+                  whileHover={{ scale: 1.02, y: -2 }}
                 >
                   {message.text}
                 </motion.div>
@@ -106,8 +124,9 @@ const AIChat: React.FC = () => {
               {isTyping && (
                 <motion.div
                   className="chatbot-message bot"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 >
                   <div className="typing-indicator">
                     <span></span>
@@ -127,9 +146,19 @@ const AIChat: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 disabled={isTyping}
               />
-              <button className="chatbot-send" onClick={handleSendMessage}>
+              <motion.button 
+                className="chatbot-send" 
+                onClick={handleSendMessage}
+                whileHover={{ 
+                  scale: 1.1, 
+                  boxShadow: "0 8px 25px rgba(225, 29, 72, 0.4)",
+                  rotate: 5
+                }}
+                whileTap={{ scale: 0.9 }}
+                disabled={isTyping}
+              >
                 <Send size={16} />
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         )}

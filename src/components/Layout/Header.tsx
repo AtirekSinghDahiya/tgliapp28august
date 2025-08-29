@@ -42,16 +42,21 @@ const Header: React.FC = () => {
     <>
       <motion.header 
         className={`header ${scrolled ? 'scrolled' : ''}`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.3 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.33, 1, 0.68, 1] }}
       >
         <div className="header-content">
           <div className="header-left">
             <motion.button
               className="menu-button ripple"
               onClick={() => setShowMenu(true)}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ 
+                scale: 1.05,
+                backgroundColor: "rgba(225, 29, 72, 0.1)",
+                transition: { duration: 0.2 }
+              }}
             >
               <Menu size={24} />
             </motion.button>
@@ -61,7 +66,12 @@ const Header: React.FC = () => {
                 src="https://tgli.org/TGLI_Logo.png" 
                 alt="TGLI" 
                 className="header-logo"
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ 
+                  scale: 1.1, 
+                  rotate: 5,
+                  filter: "brightness(1.1)",
+                  transition: { duration: 0.3 }
+                }}
                 whileTap={{ scale: 0.95 }}
               />
             </Link>
@@ -71,7 +81,12 @@ const Header: React.FC = () => {
             <motion.button
               className="icon-button ripple"
               onClick={() => setShowSearch(true)}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ 
+                scale: 1.05,
+                backgroundColor: "rgba(225, 29, 72, 0.1)",
+                transition: { duration: 0.2 }
+              }}
             >
               <Search size={20} />
             </motion.button>
@@ -79,15 +94,21 @@ const Header: React.FC = () => {
             <motion.button
               className="icon-button notification-button ripple"
               onClick={() => setShowNotifications(true)}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ 
+                scale: 1.05,
+                backgroundColor: "rgba(225, 29, 72, 0.1)",
+                transition: { duration: 0.2 }
+              }}
             >
               <Bell size={20} />
               {unreadCount > 0 && (
                 <motion.span 
                   className="notification-badge"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                  whileHover={{ scale: 1.1 }}
                 >
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </motion.span>
@@ -98,7 +119,12 @@ const Header: React.FC = () => {
               <Link to="/profile" className="profile-link">
                 <motion.div 
                   className="profile-avatar"
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.9 }}
+                  whileHover={{ 
+                    scale: 1.1,
+                    boxShadow: "0 0 20px rgba(225, 29, 72, 0.3)",
+                    transition: { duration: 0.3 }
+                  }}
                 >
                   {user.avatar ? (
                     <img src={user.avatar} alt={user.name} />
@@ -108,9 +134,14 @@ const Header: React.FC = () => {
                 </motion.div>
               </Link>
             ) : (
-              <Link to="/login" className="login-button">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link to="/signin" className="login-button">
                 Sign In
-              </Link>
+                </Link>
+              </motion.div>
             )}
           </div>
         </div>
@@ -129,83 +160,120 @@ const Header: React.FC = () => {
             />
             <motion.div
               className="side-menu"
-              initial={{ x: -300 }}
-              animate={{ x: 0 }}
-              exit={{ x: -300 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ x: -300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
             >
               <div className="menu-header">
-                <img 
+                <motion.img 
                   src="https://tgli.org/TGLI_Logo.png" 
                   alt="TGLI" 
                   className="menu-logo"
+                  whileHover={{ scale: 1.05, rotate: 5 }}
                 />
-                <button
+                <motion.button
                   className="close-button"
                   onClick={() => setShowMenu(false)}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    backgroundColor: "rgba(225, 29, 72, 0.1)",
+                    rotate: 90
+                  }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   <X size={24} />
-                </button>
+                </motion.button>
               </div>
 
               <nav className="menu-nav">
-                <Link to="/" onClick={() => setShowMenu(false)}>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/" onClick={() => setShowMenu(false)}>
                   Home
-                </Link>
-                <Link to="/about" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/about" onClick={() => setShowMenu(false)}>
                   About
-                </Link>
-                <Link to="/programs" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/programs" onClick={() => setShowMenu(false)}>
                   Programs
-                </Link>
-                <Link to="/news" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/news" onClick={() => setShowMenu(false)}>
                   News
-                </Link>
-                <Link to="/careers" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/careers" onClick={() => setShowMenu(false)}>
                   Careers
-                </Link>
-                <Link to="/donate" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/donate" onClick={() => setShowMenu(false)}>
                   Donate
-                </Link>
-                <Link to="/contact" onClick={() => setShowMenu(false)}>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                  <Link to="/contact" onClick={() => setShowMenu(false)}>
                   Contact
-                </Link>
+                  </Link>
+                </motion.div>
                 
                 {user ? (
                   <>
-                    <Link to="/profile" onClick={() => setShowMenu(false)}>
+                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                      <Link to="/profile" onClick={() => setShowMenu(false)}>
                       Profile
-                    </Link>
-                    <button onClick={handleSignOut} className="sign-out-button">
+                      </Link>
+                    </motion.div>
+                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                      <button onClick={handleSignOut} className="sign-out-button">
                       Sign Out
-                    </button>
+                      </button>
+                    </motion.div>
                   </>
                 ) : (
                   <>
-                    <Link to="/login" onClick={() => setShowMenu(false)}>
+                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                      <Link to="/signin" onClick={() => setShowMenu(false)}>
                       Sign In
-                    </Link>
-                    <Link to="/register" onClick={() => setShowMenu(false)}>
+                      </Link>
+                    </motion.div>
+                    <motion.div whileHover={{ x: 10 }} whileTap={{ scale: 0.98 }}>
+                      <Link to="/signup" onClick={() => setShowMenu(false)}>
                       Sign Up
-                    </Link>
+                      </Link>
+                    </motion.div>
                   </>
                 )}
               </nav>
 
               {user && (
-                <div className="menu-user-info">
-                  <div className="user-avatar">
+                <motion.div 
+                  className="menu-user-info"
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                >
+                  <motion.div 
+                    className="user-avatar"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
                     {user.avatar ? (
                       <img src={user.avatar} alt={user.name} />
                     ) : (
                       <User size={24} />
                     )}
-                  </div>
+                  </motion.div>
                   <div className="user-details">
                     <p className="user-name">{user.name}</p>
                     <p className="user-email">{user.email}</p>
                   </div>
-                </div>
+                </motion.div>
               )}
             </motion.div>
           </>
