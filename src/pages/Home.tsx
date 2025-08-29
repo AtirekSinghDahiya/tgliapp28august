@@ -96,17 +96,17 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white hero-section">
-        <div className="p-4 sm:p-6 pt-6 sm:pt-8">
+      <div className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white">
+        <div className="hero-section p-3 sm:p-4 md:p-6 pt-4 sm:pt-6 md:pt-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 leading-tight text-center sm:text-left">
               {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to TGLI'}
             </h1>
-            <p className="text-red-100 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
+            <p className="text-red-100 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base leading-relaxed text-center sm:text-left px-2 sm:px-0">
               {user 
                 ? 'Here\'s your personalized dashboard with recent activity and quick actions.'
                 : 'Empowering communities and building leaders across the Greater Toronto Area.'
@@ -114,22 +114,22 @@ const Home: React.FC = () => {
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 stats-grid">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 stats-grid">
               {stats.slice(0, 2).map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4"
+                  className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                 >
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <div className="bg-white/20 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
-                      <stat.icon size={16} className="text-white sm:w-5 sm:h-5" />
+                  <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+                    <div className="bg-white/20 p-1 sm:p-1.5 md:p-2 rounded-md sm:rounded-lg flex-shrink-0">
+                      <stat.icon size={14} className="text-white sm:w-4 sm:h-4 md:w-5 md:h-5" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-lg sm:text-2xl font-bold leading-tight">{stat.value}</p>
-                      <p className="text-red-100 text-xs sm:text-sm leading-tight">{stat.label}</p>
+                      <p className="text-base sm:text-lg md:text-2xl font-bold leading-tight">{stat.value}</p>
+                      <p className="text-red-100 text-xs sm:text-sm leading-tight truncate">{stat.label}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -139,26 +139,26 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-3 sm:p-4 space-y-4 sm:space-y-6 -mt-3 sm:-mt-4">
+      <div className="p-2 sm:p-3 md:p-4 space-y-3 sm:space-y-4 md:space-y-6 -mt-2 sm:-mt-3 md:-mt-4">
         {/* Quick Actions */}
         <motion.div
-          className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg"
+          className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Quick Actions</h2>
+          <div className="flex items-center justify-between mb-3 sm:mb-4">
+            <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Quick Actions</h2>
             <motion.button
-              className="p-2 bg-gray-100 rounded-lg"
+              className="p-1.5 sm:p-2 bg-gray-100 rounded-md sm:rounded-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Plus size={14} className="text-gray-600 sm:w-4 sm:h-4" />
+              <Plus size={12} className="text-gray-600 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
             </motion.button>
           </div>
           
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 quick-actions-grid">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 quick-actions-grid">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -168,16 +168,16 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={action.link}
-                  className="block p-3 sm:p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group quick-action-item"
+                  className="block p-2 sm:p-3 md:p-4 bg-gray-50 rounded-lg sm:rounded-xl hover:bg-gray-100 transition-all duration-200 group quick-action-item"
                 >
-                  <div className="flex items-center gap-3 transition-all duration-200 group">
-                    <div className={`${action.color} p-2.5 sm:p-3 rounded-xl group-hover:scale-110 transition-transform flex-shrink-0`}>
-                      <action.icon size={16} className="text-white sm:w-5 sm:h-5" />
+                  <div className="flex items-center gap-2 sm:gap-3 transition-all duration-200 group">
+                    <div className={`${action.color} p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl group-hover:scale-110 transition-transform flex-shrink-0`}>
+                      <action.icon size={14} className="text-white sm:w-4 sm:h-4 md:w-5 md:h-5" />
                     </div>
                     <div className="flex-1 min-w-0 flex items-center">
-                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base leading-tight truncate">{action.title}</h3>
+                      <h3 className="font-semibold text-gray-900 text-xs sm:text-sm md:text-base leading-tight truncate">{action.title}</h3>
                     </div>
-                    <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 sm:w-4 sm:h-4" />
+                    <ArrowRight size={12} className="text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
                   </div>
                 </Link>
               </motion.div>

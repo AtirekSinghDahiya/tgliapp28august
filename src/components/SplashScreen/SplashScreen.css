@@ -35,6 +35,10 @@
   font-weight: 800;
   margin-bottom: 0.5rem;
   line-height: 1.2;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .splash-text p {
@@ -42,6 +46,9 @@
   opacity: 0.9;
   margin-bottom: 3rem;
   font-weight: 500;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .loading-section {
@@ -83,7 +90,47 @@
   border-radius: 50%;
 }
 
-/* Mobile Responsive */
+/* Comprehensive Mobile & Tablet Responsive */
+
+/* Galaxy S24 Ultra (412px) */
+@media (max-width: 412px) {
+  .splash-content {
+    padding: 1rem 0.75rem;
+  }
+  
+  .splash-logo {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .splash-text h1 {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    padding: 0 0.5rem;
+  }
+  
+  .splash-text p {
+    font-size: 0.85rem;
+    margin-bottom: 2.5rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* iPhone 16 Pro Max (430px) */
+@media (max-width: 430px) and (min-width: 413px) {
+  .splash-text h1 {
+    font-size: 1.5rem;
+    padding: 0 1rem;
+  }
+  
+  .splash-text p {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+}
+
+/* Small phones (360px and below) */
 @media (max-width: 768px) {
   .splash-content {
     padding: 1rem;
@@ -100,5 +147,85 @@
   
   .splash-text p {
     font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .splash-content {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .splash-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .splash-text h1 {
+    font-size: 1.2rem;
+    line-height: 1.4;
+    padding: 0 0.25rem;
+  }
+  
+  .splash-text p {
+    font-size: 0.8rem;
+    padding: 0 0.25rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Tablet Portrait (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .splash-content {
+    padding: 3rem 2rem;
+    max-width: 500px;
+  }
+  
+  .splash-logo {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .splash-text h1 {
+    font-size: 2.25rem;
+  }
+  
+  .splash-text p {
+    font-size: 1.125rem;
+  }
+}
+
+/* Tablet Landscape & Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .splash-content {
+    padding: 4rem 3rem;
+    max-width: 600px;
+  }
+  
+  .splash-logo {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .splash-text h1 {
+    font-size: 2.5rem;
+  }
+  
+  .splash-text p {
+    font-size: 1.25rem;
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1440px) {
+  .splash-content {
+    max-width: 700px;
+  }
+  
+  .splash-text h1 {
+    font-size: 3rem;
+  }
+  
+  .splash-text p {
+    font-size: 1.375rem;
   }
 }

@@ -501,7 +501,38 @@ p {
   .p-6 { padding: var(--space-4); }
 }
 
-/* iPhone 16 Pro Max (430px width) */
+/* Comprehensive Device Support */
+
+/* Galaxy S24 Ultra & Similar (412px) */
+@media (max-width: 412px) and (min-height: 915px) {
+  :root {
+    --text-2xl: 1.125rem;
+    --text-xl: 1rem;
+    --text-lg: 0.9rem;
+  }
+  
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  .hero-section {
+    padding: 1.25rem 0.75rem;
+  }
+  
+  .quick-actions-grid {
+    gap: 0.5rem;
+  }
+  
+  .quick-action-item {
+    padding: 0.75rem;
+  }
+  
+  .stats-grid {
+    gap: 0.5rem;
+  }
+}
+
+/* iPhone 16 Pro Max (430px) */
 @media (max-width: 430px) and (min-height: 932px) {
   .quick-actions-grid {
     gap: 0.75rem;
@@ -509,6 +540,10 @@ p {
   
   .quick-action-item {
     padding: 1rem;
+  }
+  
+  .hero-section {
+    padding: 1.5rem 1rem;
   }
 }
 
@@ -526,6 +561,10 @@ p {
   .quick-actions-grid {
     gap: 0.5rem;
   }
+  
+  .hero-section {
+    padding: 1.25rem 0.75rem;
+  }
 }
 
 /* Pixel 9 (412px width) */
@@ -535,6 +574,10 @@ p {
   }
   
   .stats-grid {
+    gap: 0.75rem;
+  }
+  
+  .quick-actions-grid {
     gap: 0.75rem;
   }
 }
@@ -555,6 +598,95 @@ p {
   .quick-actions-grid {
     grid-template-columns: 1fr;
     gap: 0.5rem;
+  }
+  
+  .hero-section {
+    padding: 1rem 0.5rem;
+  }
+  
+  .stats-grid {
+    gap: 0.5rem;
+  }
+}
+
+/* Very small phones (320px and below) */
+@media (max-width: 320px) {
+  :root {
+    --text-2xl: 0.9rem;
+    --text-xl: 0.8rem;
+    --text-lg: 0.8rem;
+    --text-base: 0.85rem;
+  }
+  
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.75rem;
+    min-height: 40px;
+  }
+  
+  .hero-section {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+/* Tablet Portrait (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    --text-4xl: 2.5rem;
+    --text-3xl: 2rem;
+    --text-2xl: 1.75rem;
+  }
+  
+  .container {
+    padding: 0 2rem;
+    max-width: 768px;
+  }
+  
+  .hero-section {
+    padding: 3rem 2rem;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Tablet Landscape & Small Desktop (1024px - 1440px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .container {
+    max-width: 1024px;
+    padding: 0 3rem;
+  }
+  
+  .hero-section {
+    padding: 4rem 3rem;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
+    padding: 0 4rem;
+  }
+  
+  .hero-section {
+    padding: 5rem 4rem;
   }
 }
 
