@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { User, Mail, Phone, Edit3, Save, X } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
-import { getProfile, updateProfile } from '../services/supabase'
+import { getProfile, updateProfile, getUserDonations } from '../services/supabase'
 
 const Profile: React.FC = () => {
   const { user } = useAuth()
