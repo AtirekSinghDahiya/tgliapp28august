@@ -32,7 +32,7 @@ const Programs: React.FC = () => {
       location: 'Toronto, ON',
       category: 'Leadership',
       image: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=600',
-      applicationDeadline: '2024-03-15',
+      applicationDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days from now
       contactEmail: 'community@tgli.org',
       requirements: ['High school diploma', 'Letter of motivation', 'Two references']
     },
@@ -46,7 +46,7 @@ const Programs: React.FC = () => {
       location: 'Multiple locations',
       category: 'Career',
       image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600',
-      applicationDeadline: '2024-02-28',
+      applicationDeadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 21 days from now
       contactEmail: 'employment@tgli.org',
       requirements: ['Resume', 'Cover letter', 'Career assessment']
     },
@@ -60,7 +60,7 @@ const Programs: React.FC = () => {
       location: 'Toronto, ON',
       category: 'Business',
       image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600',
-      applicationDeadline: '2024-04-01',
+      applicationDeadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 45 days from now
       contactEmail: 'business@tgli.org',
       requirements: ['Business plan', 'Financial projections', 'Market research']
     },
