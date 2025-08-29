@@ -131,7 +131,7 @@ const Home: React.FC = () => {
             transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
           >
             <motion.div 
-              className="flex items-center justify-center sm:justify-start gap-2 mb-2"
+              className="flex items-center justify-center sm:justify-start gap-2 mb-3 sm:mb-2"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
               <Zap className="w-5 h-5 text-yellow-300" />
             </motion.div>
             <motion.h1 
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 leading-tight text-center sm:text-left"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-2 leading-tight text-center sm:text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
@@ -148,7 +148,7 @@ const Home: React.FC = () => {
               {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to TGLI'}
             </motion.h1>
             <motion.p 
-              className="text-red-100 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base leading-relaxed text-center sm:text-left px-2 sm:px-0"
+              className="text-red-100 mb-5 sm:mb-6 text-sm sm:text-base md:text-lg leading-relaxed text-center sm:text-left px-3 sm:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.8 }}
@@ -160,11 +160,11 @@ const Home: React.FC = () => {
             </motion.p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 stats-grid">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 stats-grid">
               {stats.slice(0, 2).map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 md:p-4 border border-white/20"
+                  className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 border border-white/20"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ 
@@ -182,24 +182,24 @@ const Home: React.FC = () => {
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                     <motion.div 
-                      className="bg-white/20 p-1 sm:p-1.5 md:p-2 rounded-md sm:rounded-lg flex-shrink-0"
+                      className="bg-white/20 p-1.5 sm:p-2 md:p-2.5 rounded-lg sm:rounded-xl flex-shrink-0"
                       whileHover={{ rotate: 10, scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
-                      <stat.icon size={14} className="text-white sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                      <stat.icon size={16} className="text-white sm:w-5 sm:h-5 md:w-6 md:h-6" />
                     </motion.div>
                     <div className="min-w-0">
                       <motion.p 
-                        className="text-base sm:text-lg md:text-2xl font-bold leading-tight"
+                        className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 1 + index * 0.2, type: "spring", stiffness: 200, damping: 10 }}
                       >
                         {stat.value}
                       </motion.p>
-                      <p className="text-red-100 text-xs sm:text-sm leading-tight truncate">{stat.label}</p>
+                      <p className="text-red-100 text-sm sm:text-base leading-tight truncate">{stat.label}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -212,7 +212,7 @@ const Home: React.FC = () => {
       <div className="p-3 sm:p-4 md:p-6">
         {/* Quick Actions */}
         <motion.div
-          className="bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 shadow-2xl border border-white/30"
+          className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-7 shadow-2xl border border-white/30"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
@@ -222,7 +222,7 @@ const Home: React.FC = () => {
             transition: { duration: 0.3 }
           }}
         >
-          <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center justify-between mb-4 sm:mb-5">
             <motion.div 
               className="flex items-center gap-2"
               initial={{ opacity: 0, x: -20 }}
@@ -230,10 +230,10 @@ const Home: React.FC = () => {
               transition={{ delay: 1.4, duration: 0.6 }}
             >
               <Star className="w-5 h-5 text-yellow-500" />
-              <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-900">Quick Actions</h2>
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">Quick Actions</h2>
             </motion.div>
             <motion.button
-              className="p-1.5 sm:p-2 bg-gradient-to-r from-red-100 to-red-200 rounded-md sm:rounded-lg shadow-sm"
+              className="p-2 sm:p-2.5 bg-gradient-to-r from-red-100 to-red-200 rounded-lg sm:rounded-xl shadow-sm"
               whileHover={{ 
                 scale: 1.15, 
                 rotate: 90,
@@ -242,11 +242,11 @@ const Home: React.FC = () => {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <Plus size={12} className="text-red-600 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+              <Plus size={14} className="text-red-600 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </motion.button>
           </div>
           
-          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -262,14 +262,14 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={action.link}
-                  className="block p-2 sm:p-3 md:p-4 bg-gradient-to-br from-gray-50 to-white rounded-lg sm:rounded-xl hover:from-white hover:to-gray-50 transition-all duration-300 group quick-action-item backdrop-blur-sm border border-gray-200/50 shadow-sm hover:shadow-lg"
+                  className="block p-3 sm:p-4 md:p-5 bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-2xl hover:from-white hover:to-gray-50 transition-all duration-300 group quick-action-item backdrop-blur-sm border border-gray-200/50 shadow-sm hover:shadow-lg"
                 >
                   <motion.div 
-                    className="flex items-center gap-2 sm:gap-3 transition-all duration-300 group"
+                    className="flex items-center gap-3 sm:gap-4 transition-all duration-300 group"
                     whileHover={{ x: 8 }}
                   >
                     <motion.div 
-                      className={`bg-gradient-to-r ${action.color} p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl flex-shrink-0 shadow-lg`}
+                      className={`bg-gradient-to-r ${action.color} p-2.5 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl flex-shrink-0 shadow-lg`}
                       whileHover={{ 
                         scale: 1.2, 
                         rotate: 10,
@@ -277,7 +277,7 @@ const Home: React.FC = () => {
                       }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
-                      <action.icon size={14} className="text-white sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                      <action.icon size={16} className="text-white sm:w-5 sm:h-5 md:w-6 md:h-6" />
                     </motion.div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 text-xs sm:text-sm md:text-base leading-tight truncate">
@@ -288,7 +288,7 @@ const Home: React.FC = () => {
                       whileHover={{ x: 8, scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     >
-                      <ArrowRight size={12} className="text-gray-400 group-hover:text-red-500 transition-colors flex-shrink-0 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" />
+                      <ArrowRight size={14} className="text-gray-400 group-hover:text-red-500 transition-colors flex-shrink-0 sm:w-4 sm:h-4 md:w-5 md:h-5" />
                     </motion.div>
                   </motion.div>
                 </Link>
@@ -301,7 +301,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
             {/* Activity Overview */}
             <motion.div
-              className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
+              className="bg-white/95 backdrop-blur-xl rounded-2xl p-5 sm:p-6 md:p-7 shadow-2xl border border-white/30"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
@@ -311,7 +311,7 @@ const Home: React.FC = () => {
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-5">
                 <motion.div 
                   className="flex items-center gap-2"
                   initial={{ opacity: 0, x: -20 }}
@@ -319,7 +319,7 @@ const Home: React.FC = () => {
                   transition={{ delay: 2.2, duration: 0.6 }}
                 >
                   <Activity className="w-5 h-5 text-blue-500" />
-                  <h2 className="text-lg font-bold text-gray-900">Your Activity</h2>
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">Your Activity</h2>
                 </motion.div>
                 <motion.button
                   className="text-red-500 text-sm font-medium"
@@ -334,9 +334,9 @@ const Home: React.FC = () => {
                 </motion.button>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <motion.div 
-                  className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50 backdrop-blur-sm"
+                  className="flex items-center justify-between p-4 sm:p-5 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50 backdrop-blur-sm"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 2.4, duration: 0.6 }}
@@ -349,18 +349,18 @@ const Home: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <motion.div 
-                      className="bg-gradient-to-r from-blue-500 to-blue-600 p-2 rounded-lg shadow-lg"
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 p-2.5 rounded-lg shadow-lg"
                       whileHover={{ scale: 1.15, rotate: 10 }}
                     >
-                      <Target size={16} className="text-white" />
+                      <Target size={18} className="text-white" />
                     </motion.div>
                     <div>
-                      <p className="font-semibold text-gray-900">Leadership Program</p>
-                      <p className="text-sm text-gray-600">In Progress</p>
+                      <p className="font-semibold text-gray-900 text-sm sm:text-base">Leadership Program</p>
+                      <p className="text-xs sm:text-sm text-gray-600">In Progress</p>
                     </div>
                   </div>
                   <motion.span 
-                    className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium shadow-sm"
+                    className="bg-green-100 text-green-600 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium shadow-sm"
                     whileHover={{ scale: 1.1 }}
                   >
                     Active

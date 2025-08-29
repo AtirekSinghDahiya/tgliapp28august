@@ -281,8 +281,8 @@ const News: React.FC = () => {
                     </motion.div>
                   </div>
                   <motion.button
-                    className="text-purple-500 font-semibold hover:text-purple-600 transition-colors flex items-center gap-1"
-                    whileHover={{ scale: 1.05, x: 5 }}
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg"
+                    whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleReadMore(article)}
                   >

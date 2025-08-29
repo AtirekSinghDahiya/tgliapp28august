@@ -14,12 +14,12 @@ const BottomNavigation: React.FC = () => {
 
   return (
     <motion.nav 
-      className="fixed bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-200/30 z-40 shadow-2xl rounded-2xl"
+      className="fixed bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-white/95 backdrop-blur-xl border border-gray-200/30 z-40 shadow-2xl rounded-2xl"
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
     >
-      <div className="flex justify-around py-4 px-4">
+      <div className="flex justify-around py-3 px-3 sm:py-4 sm:px-4">
         {navItems.map((item, index) => {
           const Icon = item.icon
           return (
@@ -40,7 +40,7 @@ const BottomNavigation: React.FC = () => {
               <NavLink
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex flex-col items-center p-3 min-w-0 flex-1 rounded-xl transition-all duration-300 relative ${
+                  `flex flex-col items-center p-2.5 sm:p-3 min-w-0 flex-1 rounded-xl transition-all duration-300 relative ${
                     isActive 
                       ? 'text-red-500 bg-gradient-to-t from-red-50 to-red-100 shadow-lg' 
                       : 'text-gray-500 hover:text-red-400 hover:bg-gradient-to-t hover:from-gray-50 hover:to-gray-100'
@@ -51,9 +51,9 @@ const BottomNavigation: React.FC = () => {
                   <>
                     {isActive && (
                       <motion.div
-                        className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-red-400 to-red-600 rounded-full"
+                        className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-10 h-1 bg-gradient-to-r from-red-400 to-red-600 rounded-full"
                         initial={{ width: 0, opacity: 0 }}
-                        animate={{ width: 32, opacity: 1 }}
+                        animate={{ width: 40, opacity: 1 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
                       />
                     )}
@@ -75,7 +75,7 @@ const BottomNavigation: React.FC = () => {
                       }}
                       className="relative"
                     >
-                      <Icon size={22} />
+                      <Icon size={24} className="sm:w-6 sm:h-6" />
                       {isActive && (
                         <motion.div
                           className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full"
@@ -88,7 +88,7 @@ const BottomNavigation: React.FC = () => {
                       )}
                     </motion.div>
                     <motion.span 
-                      className="text-xs mt-2 truncate font-medium"
+                      className="text-xs sm:text-sm mt-2 truncate font-medium"
                       animate={isActive ? { 
                         fontWeight: 700,
                         scale: 1.05
