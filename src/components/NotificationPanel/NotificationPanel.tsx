@@ -102,6 +102,11 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, onClose }
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  const handleNotificationSettings = () => {
+    // In a real app, this would open notification settings
+    alert('Notification settings would open here. You can customize:\n\n• Email notifications\n• Push notifications\n• Notification frequency\n• Categories to receive');
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -205,7 +210,10 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ isOpen, onClose }
 
           {/* Footer */}
           <div className="p-4 border-t border-gray-200 bg-gray-50">
-            <button className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 font-medium">
+            <button 
+              onClick={handleNotificationSettings}
+              className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
               <Settings size={14} />
               Notification Settings
             </button>

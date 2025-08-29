@@ -11,6 +11,16 @@
   transform: translateX(-2px);
 }
 
+/* Enhanced notification styling */
+.notification-unread {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-left: 4px solid #3b82f6;
+}
+
+.notification-read {
+  background: white;
+}
+
 /* Hide scrollbars in notification panel */
 .notification-panel-overlay * {
   scrollbar-width: none;

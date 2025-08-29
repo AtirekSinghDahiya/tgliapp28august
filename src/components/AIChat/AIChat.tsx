@@ -121,10 +121,11 @@ const AIChat: React.FC = () => {
             <div className="chatbot-input">
               <input
                 type="text"
-                placeholder="Ask about programs, services..."
+                placeholder="Ask me anything about TGLI..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
+                disabled={isTyping}
               />
               <button className="chatbot-send" onClick={handleSendMessage}>
                 <Send size={16} />
