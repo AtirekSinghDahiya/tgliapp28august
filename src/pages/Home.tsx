@@ -26,7 +26,6 @@ import { getUserDonations } from '../services/supabase'
 const Home: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const navigate = useNavigate()
   const [donations, setDonations] = useState([])
 
   useEffect(() => {
