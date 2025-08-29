@@ -20,6 +20,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Contact from './pages/Contact'
 import Profile from './pages/Profile'
+import Activity from './pages/Activity'
 import './App.css'
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
                     <Route path="/apply-job/:jobId" element={<JobApplication />} />
                     <Route path="/news/:articleId" element={<NewsArticle />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/activity" element={<Activity />} />
                   </Routes>
                 </Layout>
               } />

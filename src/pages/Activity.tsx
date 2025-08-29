@@ -1,0 +1,240 @@
+import React from 'react'
+import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
+
+const ActivityPage: React.FC = () => {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
+  const activities = [
+    {
+      id: '1',
+      title: 'Leadership Program',
+      description: 'Community Leadership Development Course',
+      status: 'Active',
+      progress: 75,
+      startDate: '2024-01-15',
+      icon: Target,
+      color: 'from-blue-500 to-blue-600',
+      statusColor: 'bg-green-100 text-green-600'
+    },
+    {
+      id: '2',
+      title: 'Career Workshop',
+      description: 'Professional Development Workshop Series',
+      status: 'Completed',
+      progress: 100,
+      startDate: '2024-01-10',
+      icon: Briefcase,
+      color: 'from-purple-500 to-purple-600',
+      statusColor: 'bg-blue-100 text-blue-600'
+    },
+    {
+      id: '3',
+      title: 'Community Event',
+      description: 'Monthly Community Networking Event',
+      status: 'Attended',
+      progress: 100,
+      startDate: '2024-01-05',
+      icon: Calendar,
+      color: 'from-green-500 to-green-600',
+      statusColor: 'bg-purple-100 text-purple-600'
+    },
+    {
+      id: '4',
+      title: 'Volunteer Training',
+      description: 'Community Volunteer Orientation Program',
+      status: 'In Progress',
+      progress: 45,
+      startDate: '2024-01-20',
+      icon: Award,
+      color: 'from-orange-500 to-orange-600',
+      statusColor: 'bg-yellow-100 text-yellow-600'
+    },
+    {
+      id: '5',
+      title: 'Skills Assessment',
+      description: 'Professional Skills Evaluation and Planning',
+      status: 'Completed',
+      progress: 100,
+      startDate: '2023-12-28',
+      icon: CheckCircle,
+      color: 'from-teal-500 to-teal-600',
+      statusColor: 'bg-blue-100 text-blue-600'
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 pb-24 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-blue-200/20 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [-20, 20, -20],
+              opacity: [0.1, 0.4, 0.1],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: 4 + Math.random() * 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Header */}
+      <div className="bg-gradient-to-br from-blue-600 to-blue-500 text-white p-6 pt-16 relative z-10">
+        <motion.div 
+          className="flex items-center gap-4 mb-4"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <button 
+            onClick={() => navigate('/')}
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <ArrowLeft size={20} />
+          </button>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-yellow-300" />
+            <h1 className="text-2xl font-bold">Your Activity</h1>
+          </div>
+        </motion.div>
+        <motion.p 
+          className="text-blue-100"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          Track your progress and achievements with TGLI
+        </motion.p>
+      </div>
+
+      <div className="p-4 space-y-6 relative z-10">
+        {/* Activity Summary */}
+        <motion.div 
+          className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          whileHover={{ y: -4, boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
+        >
+          <motion.h2 
+            className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
+            <Activity className="w-5 h-5 text-blue-500" />
+            Activity Overview
+          </motion.h2>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <motion.div 
+              className="text-center p-4 bg-gradient-to-br from-green-50 via-green-100 to-green-50 rounded-xl border border-green-200/50"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7, duration: 0.6 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-2xl font-bold text-green-600 mb-1">5</p>
+              <p className="text-sm text-green-700 font-medium">Total Activities</p>
+            </motion.div>
+            <motion.div 
+              className="text-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.6 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-2xl font-bold text-blue-600 mb-1">3</p>
+              <p className="text-sm text-blue-700 font-medium">Completed</p>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Activities List */}
+        <div className="space-y-4">
+          {activities.map((activity, index) => (
+            <motion.div
+              key={activity.id}
+              className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + index * 0.1, duration: 0.8 }}
+              whileHover={{ y: -4, boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
+            >
+              <div className="flex items-start gap-4">
+                <motion.div 
+                  className={`bg-gradient-to-r ${activity.color} p-3 rounded-xl shadow-lg`}
+                  whileHover={{ scale: 1.15, rotate: 10 }}
+                >
+                  <activity.icon size={24} className="text-white" />
+                </motion.div>
+                
+                <div className="flex-1">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">{activity.title}</h3>
+                      <p className="text-gray-600 text-sm">{activity.description}</p>
+                    </div>
+                    <span className={`${activity.statusColor} px-3 py-1 rounded-full text-xs font-medium`}>
+                      {activity.status}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                    <div className="flex items-center gap-1">
+                      <Clock size={14} />
+                      <span>Started: {new Date(activity.startDate).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">Progress</span>
+                      <span className="text-sm font-bold text-gray-900">{activity.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <motion.div 
+                        className={`bg-gradient-to-r ${activity.color} h-2 rounded-full`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${activity.progress}%` }}
+                        transition={{ delay: 0.7 + index * 0.1, duration: 1, ease: "easeOut" }}
+                      />
+                    </div>
+                  </div>
+
+                  {activity.status === 'Active' && (
+                    <motion.button
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Continue
+                    </motion.button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ActivityPage

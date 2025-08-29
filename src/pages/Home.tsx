@@ -26,6 +26,7 @@ import { getUserDonations } from '../services/supabase'
 const Home: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
+  const navigate = useNavigate()
   const [donations, setDonations] = useState([])
 
   useEffect(() => {
@@ -332,6 +333,7 @@ const Home: React.FC = () => {
                     x: 5
                   }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/activity')}
                 >
                   View All
                 </motion.button>
