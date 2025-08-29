@@ -79,13 +79,8 @@ ${userEmail}`;
     // Create mailto link
     const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
-    // Try to open email client
-    try {
-      window.open(mailtoLink, '_blank');
-    } catch (error) {
-      // Fallback: show alert with email
-      alert(`Please send your application to: careers@tgli.org\n\nSubject: ${subject}`);
-    }
+    // Use window.location.href instead of window.open to avoid redirect issues
+    window.location.href = mailtoLink;
   }
 
   if (loading) {
