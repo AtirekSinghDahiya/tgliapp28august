@@ -37,7 +37,7 @@ const Programs: React.FC = () => {
       requirements: ['High school diploma', 'Letter of motivation', 'Two references']
     },
     {
-      id: 'employment-services',
+      id: 'employment',
       title: 'Employment Services',
       description: 'Find meaningful employment opportunities and advance your career with our comprehensive support.',
       fullDescription: 'Our Employment Services program provides job search assistance, resume writing, interview preparation, and career counseling to help you find meaningful employment.',
@@ -51,7 +51,7 @@ const Programs: React.FC = () => {
       requirements: ['Resume', 'Cover letter', 'Career assessment']
     },
     {
-      id: 'entrepreneurship',
+      id: 'business',
       title: 'Entrepreneurship',
       description: 'Start and grow your business with our comprehensive entrepreneurship support program.',
       fullDescription: 'Our Entrepreneurship program provides aspiring business owners with the tools, knowledge, and network needed to launch successful ventures.',
@@ -65,7 +65,7 @@ const Programs: React.FC = () => {
       requirements: ['Business plan', 'Financial projections', 'Market research']
     },
     {
-      id: 'housing-support',
+      id: 'housing',
       title: 'Housing Support',
       description: 'Access affordable housing options and housing stability support services.',
       fullDescription: 'Our Housing Support program helps individuals and families find stable, affordable housing and provides ongoing support to maintain housing stability.',
@@ -79,7 +79,7 @@ const Programs: React.FC = () => {
       requirements: ['Income verification', 'Housing application', 'References']
     },
     {
-      id: 'youth-programs',
+      id: 'youth',
       title: 'Youth Programs',
       description: 'Empowering young people with leadership skills, mentorship, and career guidance.',
       fullDescription: 'Our Youth Programs provide young people aged 16-24 with leadership development, mentorship, educational support, and career guidance to help them reach their full potential.',
@@ -91,6 +91,48 @@ const Programs: React.FC = () => {
       applicationDeadline: '2024-05-15',
       contactEmail: 'youth@tgli.org',
       requirements: ['Age verification', 'Parent/guardian consent (if under 18)', 'Goal setting session']
+    },
+    {
+      id: 'skills',
+      title: 'Skills Upgrade',
+      description: 'Enhance your professional skills and stay competitive in today\'s job market.',
+      fullDescription: 'Our Skills Upgrade program offers training in digital literacy, technical skills, and professional development to help you advance your career and adapt to changing workplace demands.',
+      eligibility: ['18+ years old', 'Basic literacy', 'Commitment to learning'],
+      duration: '3-6 months',
+      location: 'Training centers',
+      category: 'Career',
+      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600',
+      applicationDeadline: '2024-03-30',
+      contactEmail: 'skills@tgli.org',
+      requirements: ['Skills assessment', 'Learning plan', 'Time commitment']
+    },
+    {
+      id: 'seniors',
+      title: 'Seniors Support',
+      description: 'Comprehensive support services for seniors to maintain independence and quality of life.',
+      fullDescription: 'Our Seniors Support program provides health and wellness services, social activities, technology training, and assistance with daily living to help seniors thrive in their communities.',
+      eligibility: ['55+ years old', 'GTA resident', 'Need for support services'],
+      duration: 'Ongoing',
+      location: 'Senior centers',
+      category: 'Support',
+      image: 'https://images.pexels.com/photos/3768131/pexels-photo-3768131.jpeg?auto=compress&cs=tinysrgb&w=600',
+      applicationDeadline: 'Rolling admissions',
+      contactEmail: 'seniors@tgli.org',
+      requirements: ['Age verification', 'Health assessment', 'Support needs evaluation']
+    },
+    {
+      id: 'settlement',
+      title: 'Settlement Services',
+      description: 'Help newcomers to Canada integrate successfully into their new communities.',
+      fullDescription: 'Our Settlement Services program assists newcomers with language training, credential recognition, cultural orientation, and community connections to facilitate successful integration into Canadian society.',
+      eligibility: ['Newcomer to Canada', 'Permanent resident or citizen', 'Need for settlement support'],
+      duration: '6-12 months',
+      location: 'Settlement offices',
+      category: 'Support',
+      image: 'https://images.pexels.com/photos/3184639/pexels-photo-3184639.jpeg?auto=compress&cs=tinysrgb&w=600',
+      applicationDeadline: 'Rolling admissions',
+      contactEmail: 'settlement@tgli.org',
+      requirements: ['Immigration documents', 'Language assessment', 'Orientation session']
     }
   ]);
 
