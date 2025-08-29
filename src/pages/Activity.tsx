@@ -179,7 +179,8 @@ import { useAuth } from '../contexts/AuthContext'
                   </div>
                 </div>
               </div>
-            </motion.div>
+              </motion.div>
+            )
           ))}
         </div>
       </div>
