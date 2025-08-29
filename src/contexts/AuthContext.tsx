@@ -82,6 +82,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     });
     
     if (error) throw error;
+    
+    // Handle redirect after successful login
+    const redirectTo = sessionStorage.getItem('redirectAfterLogin');
+    if (redirectTo) {
+      sessionStorage.removeItem('redirectAfterLogin');
+      // Use setTimeout to ensure state updates are complete
+      setTimeout(() => {
+        window.location.href = redirectTo;
+      }, 100);
+    }
   };
 
   const register = async (email: string, password: string, name: string) => {
@@ -113,6 +123,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (profileError) {
         console.error('Error creating profile:', profileError);
+      }
+      
+      // Handle redirect after successful registration
+      const redirectTo = sessionStorage.getItem('redirectAfterLogin');
+      if (redirectTo) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        // Use setTimeout to ensure state updates are complete
+        setTimeout(() => {
+          window.location.href = redirectTo;
+        }, 100);
       }
     }
     

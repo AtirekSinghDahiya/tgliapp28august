@@ -53,22 +53,29 @@ const Careers: React.FC = () => {
   }, [])
 
   const handleApply = (job: any) => {
-    const subject = `Application for ${job.title}`
-    const body = `Dear Hiring Manager,\n\nI am interested in applying for the ${job.title} position in the ${job.department} department.\n\nI believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.\n\nBest regards`
-    
-    // Create mailto link
-    const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    // Try to open email client, fallback to copying email to clipboard
-    try {
-      window.location.href = mailtoLink
-    } catch (error) {
-      // Fallback: copy email address to clipboard
-      navigator.clipboard.writeText('careers@tgli.org').then(() => {
-        alert('Email address copied to clipboard: careers@tgli.org')
-      }).catch(() => {
-        alert('Please send your application to: careers@tgli.org')
-      })
+    if (user) {
+      // User is logged in, proceed with application
+      const subject = `Application for ${job.title}`
+      const body = `Dear Hiring Manager,\n\nI am interested in applying for the ${job.title} position in the ${job.department} department.\n\nI believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.\n\nBest regards,\n${user.name}\n${user.email}`
+      
+      // Create mailto link
+      const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      
+      // Try to open email client, fallback to copying email to clipboard
+      try {
+        window.location.href = mailtoLink
+      } catch (error) {
+        // Fallback: copy email address to clipboard
+        navigator.clipboard.writeText('careers@tgli.org').then(() => {
+          alert('Email address copied to clipboard: careers@tgli.org')
+        }).catch(() => {
+          alert('Please send your application to: careers@tgli.org')
+        })
+      }
+    } else {
+      // User not logged in, redirect to sign in
+      sessionStorage.setItem('redirectAfterLogin', `/careers`)
+      navigate('/signin')
     }
   }
 
