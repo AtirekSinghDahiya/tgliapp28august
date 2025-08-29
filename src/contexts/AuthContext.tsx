@@ -95,7 +95,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       options: {
         data: {
           full_name: name,
-        }
+        },
+        emailRedirectTo: `${window.location.origin}/`
       }
     });
     
@@ -113,6 +114,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (profileError) {
         console.error('Error creating profile:', profileError);
       }
+    }
+    
+    // Show success message for email confirmation
+    if (data.user && !data.session) {
+      throw new Error('Please check your email and click the confirmation link to complete your registration.');
     }
   };
 

@@ -19,6 +19,12 @@ export const submitContactForm = async (formData: {
     .insert([formData])
     .select();
   
+  // Send confirmation email (mock implementation)
+  if (!error && data) {
+    console.log('Contact form submitted successfully. Confirmation email would be sent to:', formData.email);
+    // In a real app, you would trigger an email service here
+  }
+  
   return { data, error };
 };
 

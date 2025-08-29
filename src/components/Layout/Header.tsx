@@ -30,6 +30,7 @@ const Header: React.FC = () => {
   const handleSignOut = async () => {
     try {
       await logout();
+      console.log('User signed out successfully');
       setShowMenu(false);
       navigate('/');
     } catch (error) {

@@ -38,6 +38,9 @@ const Donate: React.FC = () => {
       })
       
       setSuccess(true)
+      
+      // Log confirmation for testing
+      console.log('Donation submitted successfully for:', formData.donorEmail);
       setFormData({ amount: '', donorName: '', donorEmail: '', message: '' })
     } catch (err) {
       setError('Failed to process donation. Please try again.')

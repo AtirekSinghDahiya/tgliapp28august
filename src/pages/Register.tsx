@@ -19,6 +19,7 @@ const Register: React.FC = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -82,10 +83,17 @@ const Register: React.FC = () => {
 
     try {
       await register(formData.email, formData.password, `${formData.firstName} ${formData.lastName}`);
+      // If we reach here, registration was successful and user is logged in
       navigate('/');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Registration failed. Please try again.';
-      setErrors({ general: message });
+      
+      // Check if it's an email confirmation message
+      if (message.includes('check your email')) {
+        setShowEmailConfirmation(true);
+      } else {
+        setErrors({ general: message });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -111,6 +119,47 @@ const Register: React.FC = () => {
     if (strength <= 3) return { label: 'Good', color: '#3b82f6' };
     return { label: 'Strong', color: '#10b981' };
   };
+
+  if (showEmailConfirmation) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <motion.div 
+          className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div 
+            className="text-blue-500 mb-6"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          >
+            <Mail size={80} className="mx-auto" />
+          </motion.div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Check Your Email</h1>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            We've sent a confirmation link to <strong>{formData.email}</strong>. 
+            Please check your email and click the link to complete your registration.
+          </p>
+          <div className="space-y-3">
+            <button 
+              className="btn btn-primary w-full"
+              onClick={() => setShowEmailConfirmation(false)}
+            >
+              Try Again
+            </button>
+            <button 
+              className="btn btn-secondary w-full"
+              onClick={() => navigate('/login')}
+            >
+              Go to Sign In
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-page">

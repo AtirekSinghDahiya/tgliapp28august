@@ -179,6 +179,10 @@ const Contact: React.FC = () => {
       }
       
       setIsSubmitted(true);
+      
+      // Log confirmation for testing
+      console.log('Contact form submitted successfully for:', formData.email);
+      
       setFormData({
         name: '',
         email: '',
