@@ -289,6 +289,15 @@ const News: React.FC = () => {
                     Learn More
                     <ArrowRight size={14} />
                   </motion.button>
+                  <motion.button
+                    className="bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full font-medium hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 flex items-center gap-1.5 text-xs shadow-sm hover:shadow-md"
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleLearnMore(article)}
+                  >
+                    Read
+                    <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                  </motion.button>
                 </motion.div>
               </div>
             </motion.div>

@@ -45,10 +45,10 @@
   --shadow-glow-lg: 0 0 40px rgba(220, 38, 38, 0.3);
 
   /* Advanced Typography */
-  --font-family-sans: 'Nunito', 'Poppins', 'Inter', sans-serif;
-  --font-family-heading: 'Poppins', 'Nunito', sans-serif;
-  --font-family-body: 'Inter', 'Nunito', sans-serif;
-  --font-family-display: 'Poppins', sans-serif;
+  --font-family-sans: 'Quicksand', 'Nunito', 'Comfortaa', sans-serif;
+  --font-family-heading: 'Comfortaa', 'Quicksand', 'Nunito', sans-serif;
+  --font-family-body: 'Quicksand', 'Nunito', sans-serif;
+  --font-family-display: 'Comfortaa', 'Quicksand', sans-serif;
 
   /* Spacing Scale */
   --space-px: 1px;
