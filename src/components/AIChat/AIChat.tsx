@@ -220,33 +220,33 @@ const AIChat: React.FC = () => {
 
             <div className="p-4 border-t border-gray-200/50 bg-gray-50/50 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-              <input
-                type="text"
-                placeholder="Type your message..."
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                disabled={isTyping}
-                  className="flex-1 p-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white/80 backdrop-blur-sm text-sm"
-              />
-              <motion.button 
-                className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl flex items-center justify-center shadow-lg" 
-                onClick={handleSendMessage}
-                whileHover={{ 
-                  scale: 1.15, 
-                  boxShadow: "0 8px 20px rgba(220, 38, 38, 0.4)",
-                  rotate: 10
-                }}
-                whileTap={{ scale: 0.95 }}
-                disabled={isTyping}
-              >
-                <motion.div
-                  animate={isTyping ? { rotate: 360 } : { rotate: 0 }}
-                  transition={{ duration: 0.5 }}
+                <input
+                  type="text"
+                  placeholder="Type your message..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  disabled={isTyping}
+                  className="flex-1 p-3 border-2 border-gray-200 rounded-xl focus:border-red-500 focus:outline-none bg-white/80 backdrop-blur-sm text-sm placeholder-gray-500"
+                />
+                <motion.button 
+                  className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl flex items-center justify-center shadow-lg" 
+                  onClick={handleSendMessage}
+                  whileHover={{ 
+                    scale: 1.15, 
+                    boxShadow: "0 8px 20px rgba(220, 38, 38, 0.4)",
+                    rotate: 10
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={isTyping}
                 >
-                  {isTyping ? <Zap size={16} /> : <Send size={16} />}
-                </motion.div>
-              </motion.button>
+                  <motion.div
+                    animate={isTyping ? { rotate: 360 } : { rotate: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {isTyping ? <Zap size={16} /> : <Send size={16} />}
+                  </motion.div>
+                </motion.button>
               </div>
             </div>
           </motion.div>
