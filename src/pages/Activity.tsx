@@ -3,6 +3,10 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star, ArrowRight } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import { useActivity } from '../contexts/ActivityContext'
+
+const ActivityPage = () => {
+  const navigate = useNavigate()
   const { activities } = useActivity()
 
   const getActivityIcon = (type: string) => {
@@ -119,7 +123,7 @@ import { useAuth } from '../contexts/AuthContext'
               whileHover={{ scale: 1.05 }}
             >
               <p className="text-2xl font-bold text-green-600 mb-1">5</p>
-              <p className="text-sm text-green-700 font-medium">{activities.length}</p>
+              <p className="text-sm text-green-700 font-medium">Total Activities</p>
             </motion.div>
             <motion.div 
               className="text-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50"
@@ -128,7 +132,7 @@ import { useAuth } from '../contexts/AuthContext'
               transition={{ delay: 0.9, duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
             >
-              <p className="text-2xl font-bold text-blue-600 mb-1">{activities.filter(a => a.status === 'Completed').length}</p>
+              <p className="text-2xl font-bold text-blue-600 mb-1">3</p>
               <p className="text-sm text-blue-700 font-medium">Completed</p>
             </motion.div>
           </div>
@@ -162,6 +166,7 @@ import { useAuth } from '../contexts/AuthContext'
                     <span className={`${activity.statusColor} px-3 py-1 rounded-full text-xs font-medium`}>
                       {activity.status}
                     </span>
+                  </div>
                   <div className="flex items-center justify-between">
                     <div className="text-sm text-gray-600">
                       Enrolled on {new Date(activity.startDate).toLocaleDateString()}
@@ -179,8 +184,7 @@ import { useAuth } from '../contexts/AuthContext'
                   </div>
                 </div>
               </div>
-              </motion.div>
-            )
+            </motion.div>
           ))}
         </div>
       </div>
