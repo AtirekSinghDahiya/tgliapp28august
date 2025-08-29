@@ -123,7 +123,7 @@ const ActivityPage = () => {
               whileHover={{ scale: 1.05 }}
             >
               <p className="text-2xl font-bold text-green-600 mb-1">5</p>
-              <p className="text-sm text-green-700 font-medium">Total Activities</p>
+              <p className="text-sm text-green-700 font-medium">{activities.length}</p>
             </motion.div>
             <motion.div 
               className="text-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50"
@@ -132,7 +132,7 @@ const ActivityPage = () => {
               transition={{ delay: 0.9, duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
             >
-              <p className="text-2xl font-bold text-blue-600 mb-1">3</p>
+              <p className="text-2xl font-bold text-blue-600 mb-1">{activities.filter(a => a.status === 'Completed').length}</p>
               <p className="text-sm text-blue-700 font-medium">Completed</p>
             </motion.div>
           </div>
