@@ -35,7 +35,7 @@ const Home: React.FC = () => {
 
   const loadDonations = async () => {
     try {
-      const userDonations = await getUserDonations()
+      const userDonations = await getUserDonations(user!.id)
       setDonations(userDonations)
     } catch (error) {
       console.error('Error loading donations:', error)
