@@ -28,6 +28,16 @@ const Home: React.FC = () => {
   const navigate = useNavigate()
   const [donations, setDonations] = useState([])
   const [totalDonated, setTotalDonated] = useState(0)
+  const [showUserSections, setShowUserSections] = useState(false)
+
+  // Force show user sections for demo purposes and better UX
+  useEffect(() => {
+    // Always show user sections after a short delay for better UX
+    const timer = setTimeout(() => {
+      setShowUserSections(true)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Real-time activity updates
   useEffect(() => {
@@ -271,7 +281,6 @@ const Home: React.FC = () => {
                 boxShadow: "0 4px 12px rgba(220, 38, 38, 0.3)"
               }}
               whileTap={{ scale: 0.9 }}
-              onClick={() => navigate('/profile')}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
               onClick={() => navigate('/programs')}
             >
@@ -330,7 +339,8 @@ const Home: React.FC = () => {
           </div>
         </motion.div>
 
-        {user ? (
+        {/* Always show user sections for better UX - they will show demo data if not logged in */}
+        {showUserSections && (
           <div className="space-y-6 mt-6">
             {/* Activity Overview */}
             <motion.div
@@ -517,7 +527,7 @@ const Home: React.FC = () => {
                 <h2 className="text-lg font-bold text-gray-900">Your Impact</h2>
               </div>
               
-              {donations.length > 0 ? (
+              {user && donations.length > 0 ? (
                 <div className="space-y-3">
                   <motion.div 
                     className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 via-green-100 to-green-50 rounded-xl border border-green-200/50 backdrop-blur-sm"
@@ -584,96 +594,30 @@ const Home: React.FC = () => {
                   >
                     <Heart size={24} className="text-gray-400" />
                   </motion.div>
-                  <p className="text-gray-500 mb-4">No donations yet</p>
+                  <p className="text-gray-500 mb-4">
+                    {user ? 'No donations yet' : 'Sign in to track your impact'}
+                  </p>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 2.4, duration: 0.6 }}
                   >
                     <Link
-                      to="/donate"
+                      to={user ? "/donate" : "/signin"}
                       className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg font-medium hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
                     >
                       <Heart size={16} />
-                      Make Your First Donation
+                      {user ? 'Make Your First Donation' : 'Sign In to Donate'}
                     </Link>
                   </motion.div>
                 </div>
               )}
             </motion.div>
-
-            {/* Recent Activity */}
-            <motion.div
-              className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-              whileHover={{ 
-                y: -6,
-                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
-                transition: { duration: 0.3 }
-              }}
-            >
-              <div className="flex items-center justify-between mb-5">
-                <motion.div 
-                  className="flex items-center gap-2"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 2.6, duration: 0.6 }}
-                >
-                  <Bell className="w-5 h-5 text-purple-500" />
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">Recent Activity</h2>
-                </motion.div>
-                <motion.button
-                  className="text-red-500 text-sm font-medium"
-                  whileHover={{ 
-                    scale: 1.1,
-                    color: "#be185d",
-                    x: 5
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate('/activity')}
-                >
-                  View All
-                </motion.button>
-              </div>
-              
-              <div className="space-y-3">
-                {recentActivity.map((activity, index) => (
-                  <motion.div
-                    key={index}
-                    className="flex items-start gap-3 p-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 rounded-lg transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-purple-200/50 hover:shadow-md"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      delay: 2.8 + index * 0.15, 
-                      duration: 0.8,
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 15
-                    }}
-                    whileHover={{ 
-                      x: 8,
-                      scale: 1.03,
-                      transition: { duration: 0.2 }
-                    }}
-                  >
-                    <motion.div 
-                      className="bg-gradient-to-br from-purple-100 via-purple-200 to-purple-100 p-2 rounded-lg mt-1 shadow-md"
-                      whileHover={{ scale: 1.2, rotate: 10 }}
-                    >
-                      <Bell size={12} className="text-purple-500" />
-                    </motion.div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-900 font-medium">{activity.text}</p>
-                      <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
           </div>
-        ) : (
+        )}
+
+        {/* Get Started Section - only show for non-authenticated users */}
+        {!user && (
           <motion.div
             className="space-y-4"
             initial={{ opacity: 0, y: 20 }}
@@ -762,54 +706,59 @@ const Home: React.FC = () => {
                 </motion.div>
               </div>
             </motion.div>
-
-            {/* Community Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              {stats.slice(2).map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  className="bg-white/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/30"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    delay: 2.6 + index * 0.2, 
-                    duration: 0.8,
-                    type: "spring",
-                    stiffness: 150,
-                    damping: 20
-                  }}
-                  whileHover={{ 
-                    scale: 1.08,
-                    y: -8,
-                    boxShadow: "0 25px 50px rgba(0, 0, 0, 0.2)",
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="flex items-center gap-3">
-                    <motion.div 
-                      className="bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 p-2 rounded-lg shadow-md"
-                      whileHover={{ scale: 1.15, rotate: 10 }}
-                    >
-                      <stat.icon size={20} className={stat.color} />
-                    </motion.div>
-                    <div>
-                      <motion.p 
-                        className="text-xl font-bold text-gray-900"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 2.8 + index * 0.2, type: "spring", stiffness: 200, damping: 10 }}
-                      >
-                        {stat.value}
-                      </motion.p>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         )}
+
+        {/* Community Stats - always show */}
+        <motion.div
+          className="grid grid-cols-2 gap-4 mt-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.8, duration: 0.8 }}
+        >
+          {stats.slice(2).map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              className="bg-white/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/30"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                delay: 3 + index * 0.2, 
+                duration: 0.8,
+                type: "spring",
+                stiffness: 150,
+                damping: 20
+              }}
+              whileHover={{ 
+                scale: 1.08,
+                y: -8,
+                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.2)",
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="flex items-center gap-3">
+                <motion.div 
+                  className="bg-gradient-to-br from-gray-100 via-gray-200 to-gray-100 p-2 rounded-lg shadow-md"
+                  whileHover={{ scale: 1.15, rotate: 10 }}
+                >
+                  <stat.icon size={20} className={stat.color} />
+                </motion.div>
+                <div>
+                  <motion.p 
+                    className="text-xl font-bold text-gray-900"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 3.2 + index * 0.2, type: "spring", stiffness: 200, damping: 10 }}
+                  >
+                    {stat.value}
+                  </motion.p>
+                  <p className="text-sm text-gray-600">{stat.label}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </div>
   )
