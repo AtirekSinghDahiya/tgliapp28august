@@ -77,6 +77,74 @@ const NewsArticle: React.FC = () => {
         
         <p>Planning for next year's job fair is already underway, with organizers aiming to expand the event to accommodate even more participants and employers.</p>
       `
+    },
+    '3': {
+      title: 'Youth Leadership Summit Inspires Next Generation',
+      author: 'Jessica Park',
+      category: 'Youth',
+      image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
+      publishDate: '2024-03-08',
+      readTime: '6 min read',
+      content: `
+        <p>The annual Youth Leadership Summit brought together over 200 young leaders from across the Greater Toronto Area for an inspiring day of workshops, networking, and skill-building activities.</p>
+        
+        <p>This year's summit, themed "Leading Change in the Digital Age," focused on equipping young people with the tools and confidence needed to address contemporary challenges facing their communities.</p>
+        
+        <h3>Workshop Highlights</h3>
+        <p>The summit featured interactive workshops covering:</p>
+        <ul>
+          <li><strong>Digital Leadership:</strong> Using technology and social media for positive community impact</li>
+          <li><strong>Public Speaking:</strong> Building confidence in communication and presentation skills</li>
+          <li><strong>Project Management:</strong> Planning and executing community initiatives effectively</li>
+          <li><strong>Collaborative Problem-Solving:</strong> Working together to address complex social issues</li>
+        </ul>
+        
+        <p>"The energy and passion of these young leaders is truly inspiring," said keynote speaker Dr. Amanda Foster, a renowned youth development expert. "They're not just the leaders of tomorrow – they're making a difference today."</p>
+        
+        <h3>Youth Voices</h3>
+        <p>Participants shared their experiences and takeaways from the summit:</p>
+        <p>"I learned that leadership isn't about having all the answers – it's about asking the right questions and bringing people together," reflected 17-year-old participant Marcus Thompson.</p>
+        
+        <p>The summit concluded with participants presenting action plans for community projects they plan to implement in their neighborhoods over the coming months.</p>
+        
+        <p>Registration for next year's Youth Leadership Summit will open in January 2025. For more information about youth programs, visit our programs page.</p>
+      `
+    },
+    '4': {
+      title: 'New Entrepreneurship Program Launches This Fall',
+      author: 'David Rodriguez',
+      category: 'Business',
+      image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800',
+      publishDate: '2024-03-05',
+      readTime: '7 min read',
+      content: `
+        <p>TGLI is excited to announce the launch of our comprehensive Entrepreneurship Program, designed to support aspiring business owners in turning their innovative ideas into successful ventures.</p>
+        
+        <p>The 12-month program combines theoretical knowledge with practical application, providing participants with the tools, mentorship, and network needed to build sustainable businesses that contribute to community economic development.</p>
+        
+        <h3>Program Components</h3>
+        <p>The Entrepreneurship Program includes:</p>
+        <ul>
+          <li><strong>Business Planning Workshops:</strong> Comprehensive training on developing viable business plans</li>
+          <li><strong>Financial Literacy:</strong> Understanding funding options, financial management, and investment strategies</li>
+          <li><strong>Marketing and Sales:</strong> Building brand awareness and customer acquisition strategies</li>
+          <li><strong>Legal and Regulatory Guidance:</strong> Navigating business registration, permits, and compliance</li>
+          <li><strong>Mentorship Network:</strong> One-on-one guidance from successful local entrepreneurs</li>
+          <li><strong>Pitch Competitions:</strong> Opportunities to present business ideas to potential investors</li>
+        </ul>
+        
+        <h3>Success Stories</h3>
+        <p>Our pilot program has already shown promising results. Maria Santos, who participated in our beta cohort, successfully launched her catering business and now employs five community members.</p>
+        
+        <p>"The program gave me not just the knowledge, but the confidence to pursue my dream," Maria shared. "The mentorship and peer support were invaluable in helping me navigate the challenges of starting a business."</p>
+        
+        <h3>Application Information</h3>
+        <p>The program is open to individuals aged 21 and older with a viable business idea and commitment to community impact. Applications are now being accepted for the fall 2024 cohort, with classes beginning in September.</p>
+        
+        <p>Interested entrepreneurs can apply through our programs page. The application process includes submitting a business concept, attending an information session, and participating in a brief interview.</p>
+        
+        <p>For more information about the Entrepreneurship Program, contact us at business@tgli.org or attend one of our upcoming information sessions.</p>
+      `
     }
   }
 
