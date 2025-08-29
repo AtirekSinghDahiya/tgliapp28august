@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 import './Programs.css';
 
 interface Program {
@@ -21,6 +22,7 @@ interface Program {
 
 const Programs: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [programs] = useState<Program[]>([
     {
       id: 'community-engagement',
