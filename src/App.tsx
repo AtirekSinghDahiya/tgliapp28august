@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import { NotificationProvider } from './contexts/NotificationContext'
+import { ActivityProvider } from './contexts/ActivityContext'
 import Layout from './components/Layout/Layout'
 import LoadingScreen from './components/LoadingScreen'
 import Home from './pages/Home'
@@ -43,37 +44,39 @@ function App() {
     <Router>
       <AuthProvider>
         <NotificationProvider>
-          <div className="App">
-            <Routes>
-              {/* Auth routes without layout */}
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              
-              {/* Main app routes with layout */}
-              <Route path="/*" element={
-                <Layout>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/services" element={<Programs />} />
-                    <Route path="/programs" element={<Programs />} />
-                    <Route path="/donate" element={<Donate />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/careers" element={<Careers />} />
-                    <Route path="/events" element={<Events />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/get-involved" element={<GetInvolved />} />
-                    <Route path="/apply/:serviceId" element={<Apply />} />
-                    <Route path="/register-event/:eventId" element={<EventRegistration />} />
-                    <Route path="/apply-job/:jobId" element={<JobApplication />} />
-                    <Route path="/news/:articleId" element={<NewsArticle />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/activity" element={<Activity />} />
-                  </Routes>
-                </Layout>
-              } />
-            </Routes>
-          </div>
+          <ActivityProvider>
+            <div className="App">
+              <Routes>
+                {/* Auth routes without layout */}
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<SignUp />} />
+                
+                {/* Main app routes with layout */}
+                <Route path="/*" element={
+                  <Layout>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/services" element={<Programs />} />
+                      <Route path="/programs" element={<Programs />} />
+                      <Route path="/donate" element={<Donate />} />
+                      <Route path="/news" element={<News />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/careers" element={<Careers />} />
+                      <Route path="/events" element={<Events />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/get-involved" element={<GetInvolved />} />
+                      <Route path="/apply/:serviceId" element={<Apply />} />
+                      <Route path="/register-event/:eventId" element={<EventRegistration />} />
+                      <Route path="/apply-job/:jobId" element={<JobApplication />} />
+                      <Route path="/news/:articleId" element={<NewsArticle />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/activity" element={<Activity />} />
+                    </Routes>
+                  </Layout>
+                } />
+              </Routes>
+            </div>
+          </ActivityProvider>
         </NotificationProvider>
       </AuthProvider>
     </Router>

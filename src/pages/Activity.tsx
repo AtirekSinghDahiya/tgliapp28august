@@ -2,69 +2,38 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star, ArrowRight } from 'lucide-react'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../contexts/AuthContext'
+  const { activities } = useActivity()
 
-const ActivityPage: React.FC = () => {
-  const navigate = useNavigate()
-  const { user } = useAuth()
-
-  const activities = [
-    {
-      id: '1',
-      title: 'Leadership Program',
-      description: 'Community Leadership Development Course',
-      status: 'Active',
-      startDate: '2024-01-15',
-      icon: Target,
-      color: 'from-blue-500 to-blue-600',
-      statusColor: 'bg-green-100 text-green-600',
-      programId: 'community-engagement'
-    },
-    {
-      id: '2',
-      title: 'Career Workshop',
-      description: 'Professional Development Workshop Series',
-      status: 'Completed',
-      startDate: '2024-01-10',
-      icon: Briefcase,
-      color: 'from-purple-500 to-purple-600',
-      statusColor: 'bg-blue-100 text-blue-600',
-      programId: 'employment'
-    },
-    {
-      id: '3',
-      title: 'Community Event',
-      description: 'Monthly Community Networking Event',
-      status: 'Attended',
-      startDate: '2024-01-05',
-      icon: Calendar,
-      color: 'from-green-500 to-green-600',
-      statusColor: 'bg-purple-100 text-purple-600',
-      programId: 'community'
-    },
-    {
-      id: '4',
-      title: 'Volunteer Training',
-      description: 'Community Volunteer Orientation Program',
-      status: 'In Progress',
-      startDate: '2024-01-20',
-      icon: Award,
-      color: 'from-orange-500 to-orange-600',
-      statusColor: 'bg-yellow-100 text-yellow-600',
-      programId: 'volunteer'
-    },
-    {
-      id: '5',
-      title: 'Skills Assessment',
-      description: 'Professional Skills Evaluation and Planning',
-      status: 'Completed',
-      startDate: '2023-12-28',
-      icon: CheckCircle,
-      color: 'from-teal-500 to-teal-600',
-      statusColor: 'bg-blue-100 text-blue-600',
-      programId: 'skills'
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'program': return Target
+      case 'workshop': return Briefcase
+      case 'event': return Calendar
+      default: return Award
     }
-  ]
+  }
+
+  const getActivityColor = (index: number) => {
+    const colors = [
+      'from-blue-500 to-blue-600',
+      'from-purple-500 to-purple-600',
+      'from-green-500 to-green-600',
+      'from-orange-500 to-orange-600',
+      'from-teal-500 to-teal-600'
+    ]
+    return colors[index % colors.length]
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Active': return 'bg-green-100 text-green-600'
+      case 'Completed': return 'bg-blue-100 text-blue-600'
+      case 'In Progress': return 'bg-yellow-100 text-yellow-600'
+      case 'Attended': return 'bg-purple-100 text-purple-600'
+      default: return 'bg-gray-100 text-gray-600'
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 pb-24 relative overflow-hidden">
@@ -150,7 +119,7 @@ const ActivityPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
             >
               <p className="text-2xl font-bold text-green-600 mb-1">5</p>
-              <p className="text-sm text-green-700 font-medium">Total Activities</p>
+              <p className="text-sm text-green-700 font-medium">{activities.length}</p>
             </motion.div>
             <motion.div 
               className="text-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50"
@@ -159,7 +128,7 @@ const ActivityPage: React.FC = () => {
               transition={{ delay: 0.9, duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
             >
-              <p className="text-2xl font-bold text-blue-600 mb-1">3</p>
+              <p className="text-2xl font-bold text-blue-600 mb-1">{activities.filter(a => a.status === 'Completed').length}</p>
               <p className="text-sm text-blue-700 font-medium">Completed</p>
             </motion.div>
           </div>
@@ -193,40 +162,21 @@ const ActivityPage: React.FC = () => {
                     <span className={`${activity.statusColor} px-3 py-1 rounded-full text-xs font-medium`}>
                       {activity.status}
                     </span>
-                  </div>
-                  
-                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                    <div className="flex items-center gap-1">
-                      <Clock size={14} />
-                      <span>Started: {new Date(activity.startDate).toLocaleDateString()}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-gray-600">
+                      Enrolled on {new Date(activity.startDate).toLocaleDateString()}
                     </div>
+                    {activity.status === 'Active' && (
+                      <motion.button
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => navigate(`/programs`)}
+                      >
+                        View Program
+                      </motion.button>
+                    )}
                   </div>
-
-                  {/* Progress Bar */}
-                  <div className="mb-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">Progress</span>
-                      <span className="text-sm font-bold text-gray-900">{activity.progress}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <motion.div 
-                        className={`bg-gradient-to-r ${activity.color} h-2 rounded-full`}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${activity.progress}%` }}
-                        transition={{ delay: 0.7 + index * 0.1, duration: 1, ease: "easeOut" }}
-                      />
-                    </div>
-                  </div>
-
-                  {activity.status === 'Active' && (
-                    <motion.button
-                      className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-600 hover:to-blue-700 transition-all duration-300 text-sm"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Continue
-                    </motion.button>
-                  )}
                 </div>
               </div>
             </motion.div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { Search, Clock, MapPin, ArrowRight, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useActivity } from '../contexts/ActivityContext';
 import './Programs.css';
 
 interface Program {
@@ -23,6 +24,7 @@ interface Program {
 const Programs: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { addActivity } = useActivity();
   const [programs] = useState<Program[]>([
     {
       id: 'community-engagement',
@@ -164,7 +166,23 @@ const Programs: React.FC = () => {
 
   const handleApplyNow = (program: Program) => {
     console.log('Apply button clicked, user:', user);
-    navigate(`/apply/${program.id}`);
+    
+    if (user) {
+      // Add to activity when user applies
+      addActivity({
+        title: program.title,
+        description: program.description,
+        status: 'Active',
+        programId: program.id,
+        type: 'program'
+      });
+      
+      // Show success message
+      alert(`Successfully enrolled in ${program.title}! Check your activity page to track your progress.`);
+    } else {
+      // Redirect to sign in if not logged in
+      navigate('/signin');
+    }
   };
 
   return (
@@ -251,7 +269,7 @@ const Programs: React.FC = () => {
                   className="flex-1 btn btn-primary text-sm py-3"
                   onClick={() => handleApplyNow(program)}
                 >
-                  Apply Now
+                  {user ? 'Enroll Now' : 'Sign In to Apply'}
                   <ArrowRight size={14} />
                 </button>
               </div>
@@ -327,7 +345,7 @@ const Programs: React.FC = () => {
                   className="w-full btn btn-primary text-lg py-4"
                   onClick={() => handleApplyNow(selectedProgram)}
                 >
-                  Apply for this Program
+                  {user ? 'Enroll in this Program' : 'Sign In to Apply'}
                   <ArrowRight size={16} />
                 </button>
               </div>
