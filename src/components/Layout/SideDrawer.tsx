@@ -44,7 +44,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, onClose }) => {
               Home
             </Link>
             <Link to="/services" onClick={onClose} className="block p-3 hover:bg-gray-100 rounded-lg">
-              Services
+              Programs
             </Link>
             <Link to="/donate" onClick={onClose} className="block p-3 hover:bg-gray-100 rounded-lg">
               Donate

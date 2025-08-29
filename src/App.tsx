@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import LoadingScreen from './components/LoadingScreen'
 import Home from './pages/Home'
-import Services from './pages/Services'
+import Programs from './pages/Programs'
 import Donate from './pages/Donate'
 import News from './pages/News'
 import About from './pages/About'
@@ -45,7 +45,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/services" element={<Services />} />
+                <Route path="/services" element={<Programs />} />
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/about" element={<About />} />

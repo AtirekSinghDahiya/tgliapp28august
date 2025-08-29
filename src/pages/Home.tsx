@@ -129,7 +129,7 @@ const Home: React.FC = () => {
                   <BookOpen size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">Explore Services</h3>
+                  <h3 className="font-semibold text-gray-900">Explore Programs</h3>
                   <p className="text-gray-600 text-sm">Discover our programs and services</p>
                 </div>
               </div>
