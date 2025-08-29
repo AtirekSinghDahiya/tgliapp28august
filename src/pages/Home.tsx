@@ -123,7 +123,7 @@ const Home: React.FC = () => {
           <h2 className="text-lg font-semibold text-gray-900">Get Started</h2>
           
           <div className="grid gap-4">
-            <Link to="/services" className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+            <Link to="/programs" className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex items-center gap-4">
                 <div className="bg-blue-100 p-3 rounded-lg">
                   <BookOpen size={24} className="text-blue-600" />
