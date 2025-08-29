@@ -117,6 +117,9 @@ const ProgramApplication: React.FC = () => {
       
       // Log confirmation for testing
       console.log('Program application submitted successfully for:', formData.email);
+      
+      // Show immediate feedback
+      alert(`Thank you ${formData.fullName}! Your application for ${programName} has been submitted. Check your email for confirmation details.`);
     } catch (error) {
       console.error('Error submitting application:', error);
       const message = error instanceof Error ? error.message : 'Failed to submit application. Please try again.';

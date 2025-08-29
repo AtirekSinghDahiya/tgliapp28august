@@ -364,7 +364,7 @@ const Header: React.FC = () => {
                     className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-indigo-50 hover:to-indigo-100 transition-all duration-300 text-gray-700 hover:text-indigo-600"
                   >
                     <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                    Your Activity
+                    Activity
                   </Link>
                 </motion.div>
                 

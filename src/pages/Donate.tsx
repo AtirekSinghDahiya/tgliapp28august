@@ -55,6 +55,20 @@ const Donate: React.FC = () => {
       
       // Log confirmation for testing
       console.log('Donation submitted successfully for:', formData.donorEmail);
+      
+      // Trigger real-time update across the app
+      window.dispatchEvent(new CustomEvent('donationUpdated', { 
+        detail: { 
+          donation: { 
+            id: Date.now().toString(),
+            amount: amount,
+            donor_name: formData.donorName,
+            donor_email: formData.donorEmail,
+            created_at: new Date().toISOString()
+          } 
+        } 
+      }));
+      
       setFormData({ amount: '', donorName: '', donorEmail: '', message: '' })
     } catch (err) {
       setError('Failed to process donation. Please try again.')

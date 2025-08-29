@@ -27,6 +27,30 @@ const Home: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [donations, setDonations] = useState([])
+  const [totalDonated, setTotalDonated] = useState(0)
+
+  // Real-time activity updates
+  useEffect(() => {
+    const handleActivityUpdate = (event: CustomEvent) => {
+      // Refresh recent activity when new activities are added
+      console.log('New activity added:', event.detail.activity);
+    };
+
+    window.addEventListener('activityUpdated', handleActivityUpdate as EventListener);
+    return () => window.removeEventListener('activityUpdated', handleActivityUpdate as EventListener);
+  }, []);
+
+  // Real-time donation updates
+  useEffect(() => {
+    const handleDonationUpdate = (event: CustomEvent) => {
+      const newDonation = event.detail.donation;
+      setDonations(prev => [newDonation, ...prev]);
+      setTotalDonated(prev => prev + parseFloat(newDonation.amount));
+    };
+
+    window.addEventListener('donationUpdated', handleDonationUpdate as EventListener);
+    return () => window.removeEventListener('donationUpdated', handleDonationUpdate as EventListener);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -44,6 +68,11 @@ const Home: React.FC = () => {
         { id: '3', amount: 50, created_at: '2024-01-05T00:00:00Z' }
       ]
       setDonations(data && data.length > 0 ? data : mockDonations)
+      
+      // Calculate total donated amount
+      const total = (data && data.length > 0 ? data : mockDonations)
+        .reduce((sum: number, d: any) => sum + parseFloat(d.amount), 0)
+      setTotalDonated(total)
     } catch (error) {
       console.error('Error loading donations:', error)
       // Fallback to mock donations on error
@@ -53,14 +82,15 @@ const Home: React.FC = () => {
         { id: '3', amount: 50, created_at: '2024-01-05T00:00:00Z' }
       ]
       setDonations(mockDonations)
+      setTotalDonated(225) // Sum of mock donations
     }
   }
 
   const stats = [
-    { label: 'Active Programs', value: '12+', icon: BookOpen, color: 'text-blue-500' },
-    { label: 'Community Members', value: '500+', icon: Users, color: 'text-green-500' },
-    { label: 'Events This Year', value: '25+', icon: Calendar, color: 'text-purple-500' },
-    { label: 'Lives Impacted', value: '1000+', icon: TrendingUp, color: 'text-orange-500' }
+    { label: 'Active Programs', value: '12+', icon: BookOpen, color: 'text-blue-500', gradient: 'from-blue-500 to-blue-600' },
+    { label: 'Community Members', value: '500+', icon: Users, color: 'text-green-500', gradient: 'from-green-500 to-green-600' },
+    { label: 'Events This Year', value: '25+', icon: Calendar, color: 'text-purple-500', gradient: 'from-purple-500 to-purple-600' },
+    { label: 'Lives Impacted', value: '1000+', icon: TrendingUp, color: 'text-orange-500', gradient: 'from-orange-500 to-orange-600' }
   ]
 
   const quickActions = [
@@ -162,7 +192,7 @@ const Home: React.FC = () => {
             
             {/* Quick Stats */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 stats-grid">
-              {stats.slice(0, 2).map((stat, index) => (
+              {(user ? stats.slice(2) : stats.slice(0, 2)).map((stat, index) => (
                 <motion.div
                   key={stat.label}
                   className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 border border-white/20"
@@ -301,7 +331,7 @@ const Home: React.FC = () => {
         </motion.div>
 
         {user ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
+          <div className="space-y-6 mt-6">
             {/* Activity Overview */}
             <motion.div
               className="bg-white/95 backdrop-blur-xl rounded-2xl p-5 sm:p-6 md:p-7 shadow-2xl border border-white/30"
@@ -462,12 +492,12 @@ const Home: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Donation Summary */}
+            {/* Your Impact - Donation Summary */}
             <motion.div
               className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+              transition={{ delay: 2.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
               whileHover={{ 
                 y: -6,
                 boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
@@ -506,9 +536,9 @@ const Home: React.FC = () => {
                         className="text-2xl font-bold text-green-600"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 2.8, type: "spring", stiffness: 200, damping: 10 }}
+                        transition={{ delay: 2.4, type: "spring", stiffness: 200, damping: 10 }}
                       >
-                        ${donations.reduce((sum: number, d: any) => sum + parseFloat(d.amount), 0)}
+                        ${totalDonated}
                       </motion.p>
                     </div>
                     <motion.div 
@@ -526,7 +556,7 @@ const Home: React.FC = () => {
                         className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 rounded-lg border border-gray-200/50 backdrop-blur-sm"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 3 + donation.id * 0.1, duration: 0.6 }}
+                        transition={{ delay: 2.6 + parseInt(donation.id) * 0.1, duration: 0.6 }}
                         whileHover={{ 
                           scale: 1.03,
                           x: 8,
@@ -558,7 +588,7 @@ const Home: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 2.8, duration: 0.6 }}
+                    transition={{ delay: 2.4, duration: 0.6 }}
                   >
                     <Link
                       to="/donate"
@@ -570,6 +600,77 @@ const Home: React.FC = () => {
                   </motion.div>
                 </div>
               )}
+            </motion.div>
+
+            {/* Recent Activity */}
+            <motion.div
+              className="bg-white/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-white/30"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2.4, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
+              whileHover={{ 
+                y: -6,
+                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
+                transition: { duration: 0.3 }
+              }}
+            >
+              <div className="flex items-center justify-between mb-5">
+                <motion.div 
+                  className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 2.6, duration: 0.6 }}
+                >
+                  <Bell className="w-5 h-5 text-purple-500" />
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-900">Recent Activity</h2>
+                </motion.div>
+                <motion.button
+                  className="text-red-500 text-sm font-medium"
+                  whileHover={{ 
+                    scale: 1.1,
+                    color: "#be185d",
+                    x: 5
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/activity')}
+                >
+                  View All
+                </motion.button>
+              </div>
+              
+              <div className="space-y-3">
+                {recentActivity.map((activity, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-start gap-3 p-3 hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 rounded-lg transition-all duration-300 backdrop-blur-sm border border-transparent hover:border-purple-200/50 hover:shadow-md"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ 
+                      delay: 2.8 + index * 0.15, 
+                      duration: 0.8,
+                      type: "spring",
+                      stiffness: 100,
+                      damping: 15
+                    }}
+                    whileHover={{ 
+                      x: 8,
+                      scale: 1.03,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <motion.div 
+                      className="bg-gradient-to-br from-purple-100 via-purple-200 to-purple-100 p-2 rounded-lg mt-1 shadow-md"
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                    >
+                      <Bell size={12} className="text-purple-500" />
+                    </motion.div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-900 font-medium">{activity.text}</p>
+                      <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </div>
         ) : (

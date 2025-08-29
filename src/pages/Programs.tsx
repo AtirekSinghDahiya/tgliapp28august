@@ -177,8 +177,22 @@ const Programs: React.FC = () => {
         type: 'program'
       });
       
-      // Show success message
-      alert(`Successfully enrolled in ${program.title}! Check your activity page to track your progress.`);
+      // Show success message with better UX
+      const confirmMessage = `🎉 Successfully enrolled in ${program.title}!\n\n✅ Program added to your activity\n📧 Confirmation email sent\n📱 Check "Your Activity" to track progress`;
+      alert(confirmMessage);
+      
+      // Trigger real-time activity update
+      window.dispatchEvent(new CustomEvent('activityUpdated', { 
+        detail: { 
+          activity: {
+            title: program.title,
+            description: program.description,
+            status: 'Active',
+            programId: program.id,
+            type: 'program'
+          }
+        } 
+      }));
     } else {
       // Redirect to sign in if not logged in
       navigate('/signin');

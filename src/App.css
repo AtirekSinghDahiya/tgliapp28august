@@ -651,6 +651,40 @@ p {
   perspective: 1000px;
 }
 
+/* Optimize images for performance */
+img {
+  loading: lazy;
+  decoding: async;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize for mobile performance */
+@media (max-width: 768px) {
+  .card {
+    will-change: auto;
+  }
+  
+  .btn {
+    will-change: auto;
+  }
+  
+  /* Reduce shadow complexity on mobile */
+  .shadow-2xl {
+    box-shadow: var(--shadow-lg);
+  }
+}</parameter>
+
 /* Focus Management */
 .focus-visible {
   outline: 2px solid var(--primary-500);

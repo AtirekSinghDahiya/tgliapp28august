@@ -183,6 +183,9 @@ const Contact: React.FC = () => {
       // Log confirmation for testing
       console.log('Contact form submitted successfully for:', formData.email);
       
+      // Show immediate feedback
+      alert(`Thank you ${formData.name}! We've received your message and sent a confirmation email to ${formData.email}. We'll respond within 24 hours.`);
+      
       setFormData({
         name: '',
         email: '',
