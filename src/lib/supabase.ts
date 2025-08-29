@@ -1,5 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
+import { sendConfirmationEmail } from './emailService';
+
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://demo-project.supabase.co';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-key';
 
@@ -14,33 +16,21 @@ export const submitContactForm = async (formData: {
   message: string;
   department: string;
 }) => {
+  // Send immediate confirmation email
+  const emailSent = await sendConfirmationEmail({
+    to: formData.email,
+    name: formData.name,
+    type: 'contact',
+    subject: formData.subject
+  });
+
   const { data, error } = await supabase
     .from('contact_submissions')
     .insert([formData])
     .select();
   
-  // Send confirmation email
-  if (!error && data) {
-    try {
-      // Trigger email confirmation via edge function
-      await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'contact',
-          email: formData.email,
-          name: formData.name,
-          subject: formData.subject
-        })
-      });
-      console.log('Contact form submitted successfully. Confirmation email sent to:', formData.email);
-    } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-      // Don't fail the form submission if email fails
-    }
+  if (!error && emailSent) {
+    console.log('✅ Contact form submitted and email sent to:', formData.email);
   }
   
   return { data, error };
@@ -58,6 +48,14 @@ export const submitProgramApplication = async (application: {
   experience?: string;
   availability: string;
 }) => {
+  // Send immediate confirmation email
+  const emailSent = await sendConfirmationEmail({
+    to: application.email,
+    name: application.full_name,
+    type: 'application',
+    program: application.program_id
+  });
+
   const { data, error } = await supabase
     .from('program_applications')
     .insert([{
@@ -66,26 +64,20 @@ export const submitProgramApplication = async (application: {
     }])
     .select();
   
-  // Send confirmation email
-  if (!error && data) {
-    try {
-      await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'application',
-          email: application.email,
-          name: application.full_name,
-          program: application.program_id
-        })
-      });
-      console.log('Program application submitted successfully. Confirmation email sent to:', application.email);
-    } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-    }
+  if (!error && emailSent) {
+    console.log('✅ Program application submitted and email sent to:', application.email);
+    
+    // Trigger real-time activity update
+    window.dispatchEvent(new CustomEvent('activityUpdated', { 
+      detail: { 
+        activity: {
+          id: Date.now().toString(),
+          title: application.program_id,
+          status: 'Applied',
+          type: 'application'
+        }
+      } 
+    }));
   }
   
   return { data, error };
@@ -99,6 +91,14 @@ export const submitDonation = async (donation: {
   donor_email: string;
   message?: string;
 }) => {
+  // Send immediate confirmation email
+  const emailSent = await sendConfirmationEmail({
+    to: donation.donor_email,
+    name: donation.donor_name,
+    type: 'donation',
+    amount: donation.amount
+  });
+
   const { data, error } = await supabase
     .from('donations')
     .insert([{
@@ -107,32 +107,18 @@ export const submitDonation = async (donation: {
     }])
     .select();
   
-  // Send confirmation email and update stats
-  if (!error && data) {
-    try {
-      await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'donation',
-          email: donation.donor_email,
-          name: donation.donor_name,
-          amount: donation.amount
-        })
-      });
-      
-      // Trigger real-time update
-      window.dispatchEvent(new CustomEvent('donationUpdated', { 
-        detail: { donation: data[0] } 
-      }));
-      
-      console.log('Donation submitted successfully. Confirmation email sent to:', donation.donor_email);
-    } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-    }
+  if (!error && emailSent) {
+    console.log('✅ Donation submitted and email sent to:', donation.donor_email);
+    
+    // Trigger real-time update across the app
+    window.dispatchEvent(new CustomEvent('donationUpdated', { 
+      detail: { donation: data?.[0] || donation } 
+    }));
+    
+    // Update global stats
+    window.dispatchEvent(new CustomEvent('statsUpdated', { 
+      detail: { type: 'donation', amount: donation.amount } 
+    }));
   }
   
   return { data, error };

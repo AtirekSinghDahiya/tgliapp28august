@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Clock, MapPin, ArrowRight, CheckCircle } from 'lucide-react';
+import { sendConfirmationEmail } from '../lib/emailService';
 import { useAuth } from '../contexts/AuthContext';
 import { useActivity } from '../contexts/ActivityContext';
 import './Programs.css';
@@ -177,14 +178,19 @@ const Programs: React.FC = () => {
         type: 'program'
       });
       
-      // Show success message with better UX
-      const confirmMessage = `🎉 Successfully enrolled in ${program.title}!\n\n✅ Program added to your activity\n📧 Confirmation email sent\n📱 Check "Your Activity" to track progress`;
-      alert(confirmMessage);
+      // Send confirmation email
+      sendConfirmationEmail({
+        to: user.email,
+        name: user.name,
+        type: 'application',
+        program: program.title
+      });
       
       // Trigger real-time activity update
       window.dispatchEvent(new CustomEvent('activityUpdated', { 
         detail: { 
           activity: {
+            id: Date.now().toString(),
             title: program.title,
             description: program.description,
             status: 'Active',
@@ -193,6 +199,10 @@ const Programs: React.FC = () => {
           }
         } 
       }));
+      
+      // Show success message
+      const confirmMessage = `🎉 Successfully enrolled in ${program.title}!\n\n✅ Program added to your activity\n📧 Confirmation email sent\n📱 Check "Your Activity" to track progress`;
+      alert(confirmMessage);
     } else {
       // Redirect to sign in if not logged in
       navigate('/signin');

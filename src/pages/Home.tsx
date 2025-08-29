@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   BookOpen, 
   Heart, 
@@ -28,21 +28,25 @@ const Home: React.FC = () => {
   const navigate = useNavigate()
   const [donations, setDonations] = useState([])
   const [totalDonated, setTotalDonated] = useState(0)
-  const [showUserSections, setShowUserSections] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [activityData, setActivityData] = useState([
+    { id: '1', title: 'Leadership Program', status: 'Active', icon: Target, color: 'from-blue-500 to-blue-600' },
+    { id: '2', title: 'Career Workshop', status: 'Completed', icon: Briefcase, color: 'from-green-500 to-green-600' }
+  ])
 
-  // Force show user sections for demo purposes and better UX
+  // Initialize app faster
   useEffect(() => {
-    // Always show user sections after a short delay for better UX
-    const timer = setTimeout(() => {
-      setShowUserSections(true)
-    }, 1000)
-    return () => clearTimeout(timer)
+    setIsLoaded(true)
+    if (user) {
+      loadDonations()
+    }
   }, [])
 
   // Real-time activity updates
   useEffect(() => {
     const handleActivityUpdate = (event: CustomEvent) => {
-      // Refresh recent activity when new activities are added
+      const newActivity = event.detail.activity
+      setActivityData(prev => [newActivity, ...prev.slice(0, 2)])
       console.log('New activity added:', event.detail.activity);
     };
 
@@ -62,16 +66,9 @@ const Home: React.FC = () => {
     return () => window.removeEventListener('donationUpdated', handleDonationUpdate as EventListener);
   }, []);
 
-  useEffect(() => {
-    if (user) {
-      loadDonations()
-    }
-  }, [user])
-
   const loadDonations = async () => {
     try {
       const { data } = await getUserDonations(user!.id)
-      // Mock donations for demo purposes since we don't have real Supabase connection
       const mockDonations = [
         { id: '1', amount: 100, created_at: '2024-01-15T00:00:00Z' },
         { id: '2', amount: 75, created_at: '2024-01-10T00:00:00Z' },
@@ -79,20 +76,18 @@ const Home: React.FC = () => {
       ]
       setDonations(data && data.length > 0 ? data : mockDonations)
       
-      // Calculate total donated amount
       const total = (data && data.length > 0 ? data : mockDonations)
         .reduce((sum: number, d: any) => sum + parseFloat(d.amount), 0)
       setTotalDonated(total)
     } catch (error) {
       console.error('Error loading donations:', error)
-      // Fallback to mock donations on error
       const mockDonations = [
         { id: '1', amount: 100, created_at: '2024-01-15T00:00:00Z' },
         { id: '2', amount: 75, created_at: '2024-01-10T00:00:00Z' },
         { id: '3', amount: 50, created_at: '2024-01-05T00:00:00Z' }
       ]
       setDonations(mockDonations)
-      setTotalDonated(225) // Sum of mock donations
+      setTotalDonated(225)
     }
   }
 
@@ -131,68 +126,49 @@ const Home: React.FC = () => {
   ]
 
   const recentActivity = [
-    { text: 'New leadership workshop announced', time: '2 hours ago' },
-    { text: 'Community event registration opened', time: '1 day ago' },
-    { text: 'Monthly newsletter published', time: '3 days ago' }
+    { id: '1', text: 'New leadership workshop announced', time: '2 hours ago', icon: Calendar },
+    { id: '2', text: 'Community event registration opened', time: '1 day ago', icon: Users },
+    { id: '3', text: 'Monthly newsletter published', time: '3 days ago', icon: Bell }
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 font-body">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white relative overflow-hidden">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white/10 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [-20, 20, -20],
-                opacity: [0.1, 0.3, 0.1],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
-        </div>
+      <motion.div 
+        className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         
-        <div className="hero-section p-3 sm:p-4 md:p-6 pt-4 sm:pt-6 md:pt-8">
+        <div className="hero-section p-4 pt-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.33, 1, 0.68, 1] }}
+            transition={{ duration: 0.6 }}
           >
             <motion.div 
-              className="flex items-center justify-center sm:justify-start gap-2 mb-3 sm:mb-2"
+              className="flex items-center justify-center gap-2 mb-3"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 200, damping: 15 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 300, damping: 20 }}
             >
               <Sparkles className="w-6 h-6 text-yellow-300" />
               <Zap className="w-5 h-5 text-yellow-300" />
             </motion.div>
             <motion.h1 
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-2 leading-tight text-center sm:text-left"
+              className="text-2xl font-bold mb-3 leading-tight text-center font-heading"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
             >
               {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to TGLI'}
             </motion.h1>
             <motion.p 
-              className="text-red-100 mb-5 sm:mb-6 text-sm sm:text-base md:text-lg leading-relaxed text-center sm:text-left px-3 sm:px-0"
+              className="text-red-100 mb-5 text-base leading-relaxed text-center font-body"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
             >
               {user 
                 ? 'Here\'s your personalized dashboard with recent activity and quick actions.'
@@ -201,46 +177,37 @@ const Home: React.FC = () => {
             </motion.p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 stats-grid">
-              {(user ? stats.slice(2) : stats.slice(0, 2)).map((stat, index) => (
+            <div className="grid grid-cols-2 gap-4">
+              {stats.slice(0, 2).map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 border border-white/20"
+                  className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 gpu-accelerated"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ 
-                    delay: 0.8 + index * 0.2, 
-                    duration: 0.8,
+                    delay: 0.5 + index * 0.1, 
+                    duration: 0.5,
                     type: "spring",
-                    stiffness: 120,
+                    stiffness: 200,
                     damping: 15
                   }}
-                  whileHover={{ 
-                    scale: 1.08, 
-                    y: -5,
-                    boxShadow: "0 10px 25px rgba(255, 255, 255, 0.2)",
-                    transition: { duration: 0.3 }
-                  }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+                  <div className="flex items-center gap-3">
                     <motion.div 
-                      className="bg-white/20 p-1.5 sm:p-2 md:p-2.5 rounded-lg sm:rounded-xl flex-shrink-0"
-                      whileHover={{ rotate: 10, scale: 1.1 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                      className="bg-white/20 p-2 rounded-lg flex-shrink-0"
                     >
-                      <stat.icon size={16} className="text-white sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                      <stat.icon size={20} className="text-white" />
                     </motion.div>
                     <div className="min-w-0">
                       <motion.p 
-                        className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight"
+                        className="text-2xl font-bold leading-tight font-heading"
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ delay: 1 + index * 0.2, type: "spring", stiffness: 200, damping: 10 }}
+                        transition={{ delay: 0.6 + index * 0.1, type: "spring", stiffness: 200, damping: 10 }}
                       >
                         {stat.value}
                       </motion.p>
-                      <p className="text-red-100 text-sm sm:text-base leading-tight truncate">{stat.label}</p>
+                      <p className="text-red-100 text-sm leading-tight font-body">{stat.label}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -248,22 +215,334 @@ const Home: React.FC = () => {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="p-3 sm:p-4 md:p-6">
+      <div className="p-4 space-y-6">
         {/* Quick Actions */}
-        <motion.div
-          className="bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-7 shadow-2xl border border-white/30"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
-          whileHover={{ 
-            y: -8,
-            boxShadow: "0 32px 64px -12px rgba(0, 0, 0, 0.25)",
-            transition: { duration: 0.3 }
-          }}
-        >
-          <div className="flex items-center justify-between mb-4 sm:mb-5">
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.div
+              className="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 gpu-accelerated"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <motion.div 
+                  className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1, duration: 0.4 }}
+                >
+                  <Star className="w-5 h-5 text-yellow-500" />
+                  <h2 className="text-xl font-bold text-gray-900 font-heading">Quick Actions</h2>
+                </motion.div>
+                <motion.button
+                  className="p-2 bg-red-100 rounded-lg"
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => navigate('/programs')}
+                >
+                  <Plus size={16} className="text-red-600" />
+                </motion.button>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {quickActions.map((action, index) => (
+                  <motion.div
+                    key={action.title}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 + index * 0.1, duration: 0.4 }}
+                  >
+                    <Link
+                      to={action.link}
+                      className="block p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group gpu-accelerated"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`bg-gradient-to-r ${action.color} p-2 rounded-lg shadow-md`}>
+                          <action.icon size={18} className="text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 text-sm font-heading truncate">
+                            {action.title}
+                          </p>
+                        </div>
+                        <ArrowRight size={16} className="text-gray-400 group-hover:text-red-500 transition-colors" />
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Your Activity Section */}
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.div
+              className="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 gpu-accelerated"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <motion.div 
+                  className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, duration: 0.4 }}
+                >
+                  <Activity className="w-5 h-5 text-blue-500" />
+                  <h2 className="text-xl font-bold text-gray-900 font-heading">Your Activity</h2>
+                </motion.div>
+                <motion.button
+                  className="text-red-500 text-sm font-medium font-body"
+                  whileHover={{ scale: 1.05, x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => navigate('/activity')}
+                >
+                  View All
+                </motion.button>
+              </div>
+              
+              <div className="space-y-3">
+                {activityData.slice(0, 2).map((activity, index) => (
+                  <motion.div 
+                    key={activity.id}
+                    className="flex items-center justify-between p-4 bg-gray-50 rounded-xl gpu-accelerated"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`bg-gradient-to-r ${activity.color} p-2 rounded-lg shadow-md`}>
+                        <activity.icon size={16} className="text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900 text-sm font-heading">{activity.title}</p>
+                        <p className="text-xs text-gray-600 font-body">{activity.status}</p>
+                      </div>
+                    </div>
+                    <span className="bg-green-100 text-green-600 px-2 py-1 rounded-full text-xs font-medium font-body">
+                      {activity.status}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Recent Activity Section */}
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.div
+              className="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 gpu-accelerated"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.4 }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Bell size={20} className="text-red-500" />
+                <h2 className="text-xl font-bold text-gray-900 font-heading">Recent Activity</h2>
+              </div>
+              
+              <div className="space-y-3">
+                {recentActivity.map((activity, index) => (
+                  <motion.div
+                    key={activity.id}
+                    className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-all duration-200 gpu-accelerated"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
+                  >
+                    <div className="bg-red-100 p-2 rounded-lg mt-1">
+                      <activity.icon size={12} className="text-red-500" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-900 font-medium font-body">{activity.text}</p>
+                      <p className="text-xs text-gray-500 mt-1 font-body">{activity.time}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Your Impact Section */}
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.div
+              className="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 gpu-accelerated"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Heart size={20} className="text-red-500" />
+                <h2 className="text-xl font-bold text-gray-900 font-heading">Your Impact</h2>
+              </div>
+              
+              {user && donations.length > 0 ? (
+                <div className="space-y-3">
+                  <motion.div 
+                    className="flex items-center justify-between p-4 bg-green-50 rounded-xl gpu-accelerated"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.4 }}
+                  >
+                    <div>
+                      <p className="text-sm text-green-600 font-medium font-body">Total Donated</p>
+                      <p className="text-2xl font-bold text-green-600 font-heading">${totalDonated}</p>
+                    </div>
+                    <div className="bg-green-500 p-3 rounded-lg shadow-md">
+                      <DollarSign size={20} className="text-white" />
+                    </div>
+                  </motion.div>
+                  
+                  <div className="space-y-2">
+                    {donations.slice(0, 2).map((donation: any, index) => (
+                      <motion.div 
+                        key={donation.id} 
+                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg gpu-accelerated"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 + index * 0.1, duration: 0.4 }}
+                      >
+                        <div>
+                          <p className="font-medium text-gray-900 font-heading">${donation.amount}</p>
+                          <p className="text-xs text-gray-500 font-body">{new Date(donation.created_at).toLocaleDateString()}</p>
+                        </div>
+                        <Award size={16} className="text-yellow-500" />
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-6">
+                  <div className="bg-gray-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <Heart size={24} className="text-gray-400" />
+                  </div>
+                  <p className="text-gray-500 mb-4 font-body">
+                    {user ? 'No donations yet' : 'Sign in to track your impact'}
+                  </p>
+                  <Link
+                    to={user ? "/donate" : "/signin"}
+                    className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-600 transition-colors font-body"
+                  >
+                    <Heart size={16} />
+                    {user ? 'Make Your First Donation' : 'Sign In to Donate'}
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Get Started Section - for non-authenticated users */}
+        {!user && (
+          <AnimatePresence>
+            {isLoaded && (
+              <motion.div
+                className="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 gpu-accelerated"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+              >
+                <motion.h2 
+                  className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2 font-heading"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7, duration: 0.4 }}
+                >
+                  <Sparkles className="w-5 h-5 text-yellow-500" />
+                  Get Started with TGLI
+                </motion.h2>
+                
+                <div className="space-y-3">
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8, duration: 0.4 }}
+                  >
+                    <Link 
+                      to="/programs" 
+                      className="flex items-center gap-4 p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors group gpu-accelerated"
+                    >
+                      <div className="bg-blue-500 p-3 rounded-lg shadow-md">
+                        <BookOpen size={20} className="text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-1 font-heading">Explore Programs</h3>
+                        <p className="text-sm text-gray-600 font-body">Discover leadership development programs</p>
+                      </div>
+                      <ArrowRight size={18} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+                    </Link>
+                  </motion.div>
+                  
+                  <motion.div
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.9, duration: 0.4 }}
+                  >
+                    <Link 
+                      to="/signup" 
+                      className="flex items-center gap-4 p-4 bg-red-50 rounded-xl hover:bg-red-100 transition-colors group gpu-accelerated"
+                    >
+                      <div className="bg-red-500 p-3 rounded-lg shadow-md">
+                        <Users size={20} className="text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 mb-1 font-heading">Join Our Community</h3>
+                        <p className="text-sm text-gray-600 font-body">Create account for exclusive access</p>
+                      </div>
+                      <ArrowRight size={18} className="text-gray-400 group-hover:text-red-500 transition-colors" />
+                    </Link>
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+
+        {/* Community Stats */}
+        <AnimatePresence>
+          {isLoaded && (
+            <motion.div
+              className="grid grid-cols-2 gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.4 }}
+            >
+              {stats.slice(2).map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  className="bg-white rounded-xl p-4 shadow-lg border border-gray-200 gpu-accelerated"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8 + index * 0.1, duration: 0.4 }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="bg-gray-100 p-2 rounded-lg">
+                      <stat.icon size={18} className={stat.color} />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-gray-900 font-heading">{stat.value}</p>
+                      <p className="text-sm text-gray-600 font-body">{stat.label}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
             <motion.div 
               className="flex items-center gap-2"
               initial={{ opacity: 0, x: -20 }}

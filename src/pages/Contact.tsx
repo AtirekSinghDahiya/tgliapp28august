@@ -16,6 +16,7 @@ import {
   CheckCircle,
   AlertCircle
 } from 'lucide-react';
+import { sendConfirmationEmail } from '../lib/emailService';
 import { submitContactForm } from '../lib/supabase';
 import './Contact.css';
 
@@ -165,6 +166,14 @@ const Contact: React.FC = () => {
     setSubmitError('');
 
     try {
+      // Send immediate confirmation email
+      await sendConfirmationEmail({
+        to: formData.email,
+        name: formData.name,
+        type: 'contact',
+        subject: formData.subject
+      });
+
       const { error } = await submitContactForm({
         name: formData.name,
         email: formData.email,
@@ -179,12 +188,6 @@ const Contact: React.FC = () => {
       }
       
       setIsSubmitted(true);
-      
-      // Log confirmation for testing
-      console.log('Contact form submitted successfully for:', formData.email);
-      
-      // Show immediate feedback
-      alert(`Thank you ${formData.name}! We've received your message and sent a confirmation email to ${formData.email}. We'll respond within 24 hours.`);
       
       setFormData({
         name: '',

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Heart, CreditCard, DollarSign, Users, Sparkles, Star, TrendingUp, Award } from 'lucide-react'
+import { sendConfirmationEmail } from '../lib/emailService'
 import { submitDonation } from '../services/supabase'
 import { useAuth } from '../hooks/useAuth'
 
@@ -43,6 +44,14 @@ const Donate: React.FC = () => {
     setError('')
 
     try {
+      // Send immediate confirmation email
+      await sendConfirmationEmail({
+        to: formData.donorEmail,
+        name: formData.donorName,
+        type: 'donation',
+        amount: amount
+      });
+
       await submitDonation({
         user_id: user?.id,
         amount: amount,
@@ -52,9 +61,6 @@ const Donate: React.FC = () => {
       })
       
       setSuccess(true)
-      
-      // Log confirmation for testing
-      console.log('Donation submitted successfully for:', formData.donorEmail);
       
       // Trigger real-time update across the app
       window.dispatchEvent(new CustomEvent('donationUpdated', { 
