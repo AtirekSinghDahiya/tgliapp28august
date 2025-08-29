@@ -22,7 +22,7 @@ const Careers: React.FC = () => {
             job_type: 'Full-time',
             description: 'Lead and coordinate community engagement programs, working directly with participants to ensure program success.',
             requirements: ['Bachelor\'s degree', '2+ years experience', 'Strong communication skills'],
-            created_at: '2024-01-15T00:00:00Z'
+            created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString() // 3 days ago
           },
           {
             id: '2',
@@ -32,7 +32,7 @@ const Careers: React.FC = () => {
             job_type: 'Full-time',
             description: 'Provide comprehensive employment services including job search assistance and career counseling.',
             requirements: ['HR or Career Development degree', '3+ years experience', 'Assessment skills'],
-            created_at: '2024-01-12T00:00:00Z'
+            created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 1 week ago
           }
         ]
         

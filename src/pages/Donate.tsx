@@ -25,13 +25,19 @@ const Donate: React.FC = () => {
       return
     }
 
+    const amount = parseFloat(formData.amount)
+    if (isNaN(amount) || amount <= 0) {
+      setError('Please enter a valid donation amount')
+      return
+    }
+
     setLoading(true)
     setError('')
 
     try {
       await submitDonation({
         user_id: user?.id,
-        amount: parseFloat(formData.amount),
+        amount: amount,
         donor_name: formData.donorName,
         donor_email: formData.donorEmail,
         message: formData.message

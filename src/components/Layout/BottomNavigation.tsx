@@ -5,7 +5,7 @@ import { Home, BookOpen, Heart, Newspaper, Info } from 'lucide-react'
 const BottomNavigation: React.FC = () => {
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
-    { path: '/programs', icon: BookOpen, label: 'Services' },
+    { path: '/programs', icon: BookOpen, label: 'Programs' },
     { path: '/donate', icon: Heart, label: 'Donate' },
     { path: '/news', icon: Newspaper, label: 'News' },
     { path: '/about', icon: Info, label: 'About Us' },

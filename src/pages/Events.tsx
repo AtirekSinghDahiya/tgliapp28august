@@ -19,7 +19,7 @@ const Events: React.FC = () => {
             id: '1',
             title: 'Community Leadership Workshop',
             description: 'Learn essential leadership skills for community impact.',
-            date: '2024-02-15',
+            date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 1 week from now
             time: '10:00 AM - 4:00 PM',
             location: 'TGLI Main Office',
             capacity: 50,
@@ -30,7 +30,7 @@ const Events: React.FC = () => {
             id: '2',
             title: 'Job Fair 2024',
             description: 'Connect with employers and explore career opportunities.',
-            date: '2024-02-20',
+            date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 2 weeks from now
             time: '9:00 AM - 5:00 PM',
             location: 'Convention Centre',
             capacity: 500,

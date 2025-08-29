@@ -15,6 +15,7 @@ import GetInvolved from './pages/GetInvolved'
 import Apply from './pages/Apply'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import Contact from './pages/Contact'
 import Profile from './pages/Profile'
 import './App.css'
 
@@ -56,6 +57,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/careers" element={<Careers />} />
                     <Route path="/events" element={<Events />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/get-involved" element={<GetInvolved />} />
                     <Route path="/apply/:serviceId" element={<Apply />} />
                     <Route path="/profile" element={<Profile />} />

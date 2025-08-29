@@ -22,7 +22,7 @@ const News: React.FC = () => {
             author: 'Sarah Johnson',
             category: 'Programs',
             image_url: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=400',
-            created_at: '2024-01-15T00:00:00Z'
+            created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days ago
           },
           {
             id: '2',
@@ -31,7 +31,7 @@ const News: React.FC = () => {
             author: 'Michael Chen',
             category: 'Employment',
             image_url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400',
-            created_at: '2024-01-12T00:00:00Z'
+            created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() // 5 days ago
           },
           {
             id: '3',
@@ -40,7 +40,7 @@ const News: React.FC = () => {
             author: 'Jessica Park',
             category: 'Youth',
             image_url: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400',
-            created_at: '2024-01-05T00:00:00Z'
+            created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 1 week ago
           }
         ]
         

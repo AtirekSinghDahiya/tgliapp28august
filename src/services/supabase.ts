@@ -183,13 +183,18 @@ export const submitDonation = async (donation: Omit<Donation, 'id' | 'created_at
 }
 
 export const getUserDonations = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('donations')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false })
-  
-  return { data, error }
+  try {
+    const { data, error } = await supabase
+      .from('donations')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+    
+    return { data, error }
+  } catch (error) {
+    console.error('Error fetching donations:', error)
+    return { data: null, error }
+  }
 }
 
 // News functions

@@ -161,7 +161,12 @@ const Programs: React.FC = () => {
   }, [searchTerm, selectedCategory, programs]);
 
   const handleApplyNow = (program: Program) => {
-    navigate(`/apply/${program.id}`);
+    if (user) {
+      navigate(`/apply/${program.id}`);
+    } else {
+      // Redirect to login if not authenticated
+      navigate('/signin');
+    }
   };
 
   return (
