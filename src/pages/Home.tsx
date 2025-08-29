@@ -25,6 +25,7 @@ import { getUserDonations } from '../services/supabase'
 
 const Home: React.FC = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [donations, setDonations] = useState([])
 
   useEffect(() => {
@@ -240,7 +241,9 @@ const Home: React.FC = () => {
                 boxShadow: "0 4px 12px rgba(220, 38, 38, 0.3)"
               }}
               whileTap={{ scale: 0.9 }}
+              onClick={() => navigate('/profile')}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              onClick={() => navigate('/programs')}
             >
               <Plus size={14} className="text-red-600 sm:w-4 sm:h-4 md:w-5 md:h-5" />
             </motion.button>
