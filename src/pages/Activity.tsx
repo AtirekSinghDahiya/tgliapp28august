@@ -2,42 +2,69 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star, ArrowRight } from 'lucide-react'
-import { useAuth } from '../contexts/AuthContext'
-import { useActivity } from '../contexts/ActivityContext'
+import { useAuth } from '../hooks/useAuth'
 
-const ActivityPage = () => {
+const ActivityPage: React.FC = () => {
   const navigate = useNavigate()
-  const { activities } = useActivity()
+  const { user } = useAuth()
 
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'program': return Target
-      case 'workshop': return Briefcase
-      case 'event': return Calendar
-      default: return Award
+  const activities = [
+    {
+      id: '1',
+      title: 'Leadership Program',
+      description: 'Community Leadership Development Course',
+      status: 'Active',
+      startDate: '2024-01-15',
+      icon: Target,
+      color: 'from-blue-500 to-blue-600',
+      statusColor: 'bg-green-100 text-green-600',
+      programId: 'community-engagement'
+    },
+    {
+      id: '2',
+      title: 'Career Workshop',
+      description: 'Professional Development Workshop Series',
+      status: 'Completed',
+      startDate: '2024-01-10',
+      icon: Briefcase,
+      color: 'from-purple-500 to-purple-600',
+      statusColor: 'bg-blue-100 text-blue-600',
+      programId: 'employment'
+    },
+    {
+      id: '3',
+      title: 'Community Event',
+      description: 'Monthly Community Networking Event',
+      status: 'Attended',
+      startDate: '2024-01-05',
+      icon: Calendar,
+      color: 'from-green-500 to-green-600',
+      statusColor: 'bg-purple-100 text-purple-600',
+      programId: 'community'
+    },
+    {
+      id: '4',
+      title: 'Volunteer Training',
+      description: 'Community Volunteer Orientation Program',
+      status: 'In Progress',
+      startDate: '2024-01-20',
+      icon: Award,
+      color: 'from-orange-500 to-orange-600',
+      statusColor: 'bg-yellow-100 text-yellow-600',
+      programId: 'volunteer'
+    },
+    {
+      id: '5',
+      title: 'Skills Assessment',
+      description: 'Professional Skills Evaluation and Planning',
+      status: 'Completed',
+      startDate: '2023-12-28',
+      icon: CheckCircle,
+      color: 'from-teal-500 to-teal-600',
+      statusColor: 'bg-blue-100 text-blue-600',
+      programId: 'skills'
     }
-  }
-
-  const getActivityColor = (index: number) => {
-    const colors = [
-      'from-blue-500 to-blue-600',
-      'from-purple-500 to-purple-600',
-      'from-green-500 to-green-600',
-      'from-orange-500 to-orange-600',
-      'from-teal-500 to-teal-600'
-    ]
-    return colors[index % colors.length]
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-green-100 text-green-600'
-      case 'Completed': return 'bg-blue-100 text-blue-600'
-      case 'In Progress': return 'bg-yellow-100 text-yellow-600'
-      case 'Attended': return 'bg-purple-100 text-purple-600'
-      default: return 'bg-gray-100 text-gray-600'
-    }
-  }
+  ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 pb-24 relative overflow-hidden">
@@ -123,7 +150,7 @@ const ActivityPage = () => {
               whileHover={{ scale: 1.05 }}
             >
               <p className="text-2xl font-bold text-green-600 mb-1">5</p>
-              <p className="text-sm text-green-700 font-medium">{activities.length}</p>
+              <p className="text-sm text-green-700 font-medium">Total Activities</p>
             </motion.div>
             <motion.div 
               className="text-center p-4 bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 rounded-xl border border-blue-200/50"
@@ -132,7 +159,7 @@ const ActivityPage = () => {
               transition={{ delay: 0.9, duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
             >
-              <p className="text-2xl font-bold text-blue-600 mb-1">{activities.filter(a => a.status === 'Completed').length}</p>
+              <p className="text-2xl font-bold text-blue-600 mb-1">3</p>
               <p className="text-sm text-blue-700 font-medium">Completed</p>
             </motion.div>
           </div>
