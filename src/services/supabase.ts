@@ -265,5 +265,60 @@ export const submitProgramApplication = async (application: {
     }])
     .select()
   
+  // Send confirmation email (mock implementation)
+  if (!error && data) {
+    console.log('Program application submitted successfully. Confirmation email would be sent to:', application.email);
+    // In a real app, you would trigger an email service here
+  }
+  
   return { data, error }
+}
+
+// Event registration
+export const submitEventRegistration = async (registration: {
+  user_id?: string
+  event_id: string
+  full_name: string
+  email: string
+  phone: string
+  dietary_restrictions?: string
+  emergency_contact?: string
+  additional_notes?: string
+}) => {
+  // In a real app, this would save to database
+  console.log('Event registration submitted:', registration)
+  
+  // Mock API delay
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // Send confirmation email (mock implementation)
+  console.log('Event registration confirmation email would be sent to:', registration.email)
+  
+  return { data: { id: Date.now().toString(), ...registration }, error: null }
+}
+
+// Job application
+export const submitJobApplication = async (application: {
+  user_id?: string
+  job_id: string
+  full_name: string
+  email: string
+  phone: string
+  cover_letter: string
+  experience?: string
+  availability?: string
+  references?: string
+  linkedin_profile?: string
+  portfolio_url?: string
+}) => {
+  // In a real app, this would save to database
+  console.log('Job application submitted:', application)
+  
+  // Mock API delay
+  await new Promise(resolve => setTimeout(resolve, 1500))
+  
+  // Send confirmation email (mock implementation)
+  console.log('Job application confirmation email would be sent to:', application.email)
+  
+  return { data: { id: Date.now().toString(), ...application }, error: null }
 }

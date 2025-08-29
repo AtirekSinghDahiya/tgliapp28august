@@ -51,24 +51,8 @@ const Events: React.FC = () => {
   }, [])
 
   const handleRegister = (event: any) => {
-    // Create registration email
-    const subject = `Event Registration: ${event.title}`
-    const body = `Dear TGLI Team,\n\nI would like to register for the following event:\n\nEvent: ${event.title}\nDate: ${event.date}\nTime: ${event.time}\nLocation: ${event.location}\n\nPlease confirm my registration.\n\nBest regards`
-    
-    // Create mailto link
-    const mailtoLink = `mailto:events@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    // Try to open email client, fallback to copying email to clipboard
-    try {
-      window.location.href = mailtoLink
-    } catch (error) {
-      // Fallback: copy email address to clipboard
-      navigator.clipboard.writeText('events@tgli.org').then(() => {
-        alert('Email address copied to clipboard: events@tgli.org')
-      }).catch(() => {
-        alert('Please send your registration to: events@tgli.org')
-      })
-    }
+    // Navigate to event registration form
+    navigate(`/register-event/${event.id}`)
   }
 
   if (loading) {

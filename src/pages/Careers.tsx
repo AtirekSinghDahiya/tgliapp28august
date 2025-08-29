@@ -53,34 +53,8 @@ const Careers: React.FC = () => {
   }, [])
 
   const handleApply = (job: any) => {
-    console.log('Career apply button clicked, user:', user);
-    
-    // Create application email
-    const subject = `Application for ${job.title}`;
-    const userName = user ? user.name : 'Applicant';
-    const userEmail = user ? user.email : '';
-    
-    const body = `Dear Hiring Manager,
-
-I am interested in applying for the ${job.title} position in the ${job.department} department.
-
-Position Details:
-- Title: ${job.title}
-- Department: ${job.department}
-- Location: ${job.location}
-- Type: ${job.job_type}
-
-I believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.
-
-Best regards,
-${userName}
-${userEmail}`;
-    
-    // Create mailto link
-    const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Use window.location.href instead of window.open to avoid redirect issues
-    window.location.href = mailtoLink;
+    // Navigate to job application form
+    navigate(`/apply-job/${job.id}`)
   }
 
   if (loading) {

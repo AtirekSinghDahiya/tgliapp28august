@@ -13,6 +13,9 @@ import Careers from './pages/Careers'
 import Events from './pages/Events'
 import GetInvolved from './pages/GetInvolved'
 import Apply from './pages/Apply'
+import EventRegistration from './pages/EventRegistration'
+import JobApplication from './pages/JobApplication'
+import NewsArticle from './pages/NewsArticle'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Contact from './pages/Contact'
@@ -60,6 +63,9 @@ function App() {
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/get-involved" element={<GetInvolved />} />
                     <Route path="/apply/:serviceId" element={<Apply />} />
+                    <Route path="/register-event/:eventId" element={<EventRegistration />} />
+                    <Route path="/apply-job/:jobId" element={<JobApplication />} />
+                    <Route path="/news/:articleId" element={<NewsArticle />} />
                     <Route path="/profile" element={<Profile />} />
                   </Routes>
                 </Layout>

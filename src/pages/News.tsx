@@ -81,6 +81,11 @@ const News: React.FC = () => {
     return colors[category as keyof typeof colors] || 'from-gray-500 to-gray-600'
   }
 
+  const handleReadMore = (article: any) => {
+    // Navigate to full article page
+    navigate(`/news/${article.id}`)
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-4 relative overflow-hidden">
@@ -277,6 +282,7 @@ const News: React.FC = () => {
                     className="text-purple-500 font-semibold hover:text-purple-600 transition-colors flex items-center gap-1"
                     whileHover={{ scale: 1.05, x: 5 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleReadMore(article)}
                   >
                     Read More
                     <Sparkles size={14} />

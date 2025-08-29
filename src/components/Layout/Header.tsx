@@ -279,6 +279,22 @@ const Header: React.FC = () => {
                   transition={{ delay: 0.4, duration: 0.5 }}
                 >
                   <Link 
+                    to="/events" 
+                    onClick={() => setShowMenu(false)}
+                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-yellow-50 hover:to-yellow-100 transition-all duration-300 text-gray-700 hover:text-yellow-600"
+                  >
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    Events
+                  </Link>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ x: 8, scale: 1.02 }} 
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                >
+                  <Link 
                     to="/news" 
                     onClick={() => setShowMenu(false)}
                     className="flex items-center gap-3 p-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50 hover:to-purple-100 transition-all duration-300 text-gray-700 hover:text-purple-600"
@@ -292,7 +308,7 @@ const Header: React.FC = () => {
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
                 >
                   <Link 
                     to="/careers" 
@@ -308,7 +324,7 @@ const Header: React.FC = () => {
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6, duration: 0.5 }}
+                  transition={{ delay: 0.7, duration: 0.5 }}
                 >
                   <Link 
                     to="/donate" 
@@ -324,7 +340,7 @@ const Header: React.FC = () => {
                   whileTap={{ scale: 0.98 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.7, duration: 0.5 }}
+                  transition={{ delay: 0.8, duration: 0.5 }}
                 >
                   <Link 
                     to="/contact" 

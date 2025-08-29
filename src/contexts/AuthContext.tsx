@@ -83,6 +83,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     if (error) throw error;
     
+    // Send login notification email (mock implementation)
+    console.log('Login notification email would be sent to:', email);
+    console.log('User signed in successfully:', email);
   };
 
   const register = async (email: string, password: string, name: string) => {
