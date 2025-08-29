@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
-import TopNavigation from './TopNavigation'
+import Header from './Header'
 import BottomNavigation from './BottomNavigation'
+import AIChat from '../AIChat/AIChat'
 
 interface LayoutProps {
   children: ReactNode
@@ -9,11 +10,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <TopNavigation />
+      <Header />
       <main className="pt-16 pb-20">
         {children}
       </main>
       <BottomNavigation />
+      <AIChat />
     </div>
   )
 }

@@ -1,0 +1,13 @@
+/* Search Modal Styles */
+.search-modal-overlay {
+  backdrop-filter: blur(4px);
+}
+
+.search-result-item {
+  transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

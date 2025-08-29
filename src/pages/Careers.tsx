@@ -49,8 +49,22 @@ const Careers: React.FC = () => {
 
   const handleApply = (job: any) => {
     const subject = `Application for ${job.title}`
-    const body = `Dear Hiring Manager,\n\nI am interested in applying for the ${job.title} position.\n\nBest regards`
-    window.open(`mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`)
+    const body = `Dear Hiring Manager,\n\nI am interested in applying for the ${job.title} position in the ${job.department} department.\n\nI believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.\n\nBest regards`
+    
+    // Create mailto link
+    const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    
+    // Try to open email client, fallback to copying email to clipboard
+    try {
+      window.location.href = mailtoLink
+    } catch (error) {
+      // Fallback: copy email address to clipboard
+      navigator.clipboard.writeText('careers@tgli.org').then(() => {
+        alert('Email address copied to clipboard: careers@tgli.org')
+      }).catch(() => {
+        alert('Please send your application to: careers@tgli.org')
+      })
+    }
   }
 
   if (loading) {
@@ -74,7 +88,14 @@ const Careers: React.FC = () => {
 
       <div className="space-y-4">
         {jobs.map((job: any) => (
-          <div key={job.id} className="bg-white rounded-xl p-6 shadow-sm">
+          <motion.div 
+            key={job.id} 
+            className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ y: -2 }}
+          >
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">{job.title}</h3>
@@ -109,14 +130,16 @@ const Careers: React.FC = () => {
               </ul>
             </div>
 
-            <button
+            <motion.button
               onClick={() => handleApply(job)}
-              className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600 flex items-center justify-center gap-2"
+              className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600 flex items-center justify-center gap-2 transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               <Mail size={16} />
               Apply Now
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         ))}
       </div>
 

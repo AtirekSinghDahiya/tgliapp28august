@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { Calendar, Clock, MapPin, Users } from 'lucide-react'
 import { getEvents } from '../services/supabase'
 
@@ -49,6 +50,27 @@ const Events: React.FC = () => {
     loadEvents()
   }, [])
 
+  const handleRegister = (event: any) => {
+    // Create registration email
+    const subject = `Event Registration: ${event.title}`
+    const body = `Dear TGLI Team,\n\nI would like to register for the following event:\n\nEvent: ${event.title}\nDate: ${event.date}\nTime: ${event.time}\nLocation: ${event.location}\n\nPlease confirm my registration.\n\nBest regards`
+    
+    // Create mailto link
+    const mailtoLink = `mailto:events@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    
+    // Try to open email client, fallback to copying email to clipboard
+    try {
+      window.location.href = mailtoLink
+    } catch (error) {
+      // Fallback: copy email address to clipboard
+      navigator.clipboard.writeText('events@tgli.org').then(() => {
+        alert('Email address copied to clipboard: events@tgli.org')
+      }).catch(() => {
+        alert('Please send your registration to: events@tgli.org')
+      })
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-4">
@@ -70,7 +92,14 @@ const Events: React.FC = () => {
 
       <div className="space-y-4">
         {events.map((event: any) => (
-          <div key={event.id} className="bg-white rounded-xl p-6 shadow-sm">
+          <motion.div 
+            key={event.id} 
+            className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ y: -2 }}
+          >
             <div className="flex items-start justify-between mb-3">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">{event.title}</h3>
@@ -105,10 +134,15 @@ const Events: React.FC = () => {
               </div>
             </div>
 
-            <button className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600">
+            <motion.button 
+              onClick={() => handleRegister(event)}
+              className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
               Register for Event
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         ))}
       </div>
 

@@ -26,10 +26,10 @@ const About: React.FC = () => {
   ]
 
   const socialLinks = [
-    { icon: Facebook, name: 'Facebook', url: '#' },
-    { icon: Twitter, name: 'Twitter', url: '#' },
-    { icon: Linkedin, name: 'LinkedIn', url: '#' },
-    { icon: Instagram, name: 'Instagram', url: '#' }
+    { icon: Facebook, name: 'Facebook', url: 'https://facebook.com/tgli' },
+    { icon: Twitter, name: 'Twitter', url: 'https://twitter.com/tgli' },
+    { icon: Linkedin, name: 'LinkedIn', url: 'https://linkedin.com/company/tgli' },
+    { icon: Instagram, name: 'Instagram', url: 'https://instagram.com/tgli' }
   ]
 
   return (
@@ -79,14 +79,18 @@ const About: React.FC = () => {
           {socialLinks.map((social, index) => {
             const Icon = social.icon
             return (
-              <a
+              <motion.a
                 key={index}
                 href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-gray-100 p-3 rounded-lg hover:bg-gray-200 transition-colors"
                 aria-label={social.name}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Icon size={20} className="text-gray-600" />
-              </a>
+              </motion.a>
             )
           })}
         </div>

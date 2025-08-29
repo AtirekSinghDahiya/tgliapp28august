@@ -1,0 +1,12 @@
+/* Notification Panel Styles */
+.notification-panel-overlay {
+  backdrop-filter: blur(4px);
+}
+
+.notification-item {
+  transition: all 0.2s ease;
+}
+
+.notification-item:hover {
+  transform: translateX(-2px);
+}

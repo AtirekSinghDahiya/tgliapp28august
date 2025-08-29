@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import { NotificationProvider } from './contexts/NotificationContext'
 import Layout from './components/Layout/Layout'
 import LoadingScreen from './components/LoadingScreen'
 import Home from './pages/Home'
@@ -34,32 +36,36 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          {/* Auth routes without layout */}
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          
-          {/* Main app routes with layout */}
-          <Route path="/*" element={
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/services" element={<Programs />} />
-                <Route path="/programs" element={<Programs />} />
-                <Route path="/donate" element={<Donate />} />
-                <Route path="/news" element={<News />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/events" element={<Events />} />
-                <Route path="/get-involved" element={<GetInvolved />} />
-                <Route path="/apply/:serviceId" element={<Apply />} />
-                <Route path="/profile" element={<Profile />} />
-              </Routes>
-            </Layout>
-          } />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <NotificationProvider>
+          <div className="App">
+            <Routes>
+              {/* Auth routes without layout */}
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              
+              {/* Main app routes with layout */}
+              <Route path="/*" element={
+                <Layout>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/services" element={<Programs />} />
+                    <Route path="/programs" element={<Programs />} />
+                    <Route path="/donate" element={<Donate />} />
+                    <Route path="/news" element={<News />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/careers" element={<Careers />} />
+                    <Route path="/events" element={<Events />} />
+                    <Route path="/get-involved" element={<GetInvolved />} />
+                    <Route path="/apply/:serviceId" element={<Apply />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Routes>
+                </Layout>
+              } />
+            </Routes>
+          </div>
+        </NotificationProvider>
+      </AuthProvider>
     </Router>
   )
 }
