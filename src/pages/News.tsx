@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Clock, User, Sparkles, Star, TrendingUp, Calendar, ArrowRight } from 'lucide-react'
 import { getNewsArticles } from '../services/supabase'
 
@@ -9,6 +9,7 @@ const News: React.FC = () => {
   const [articles, setArticles] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
+  const [selectedArticle, setSelectedArticle] = useState<any>(null)
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -83,10 +84,8 @@ const News: React.FC = () => {
     return colors[category as keyof typeof colors] || 'from-gray-500 to-gray-600'
   }
 
-  const handleReadMore = (article: any) => {
-    // For now, show article content in an expanded view within the same page
-    // In a real app, this would navigate to a full article page
-    alert(`Article: ${article.title}\n\n${article.excerpt}\n\nThis would normally open the full article. For demo purposes, the full article content would be displayed here.`)
+  const handleLearnMore = (article: any) => {
+    setSelectedArticle(article)
   }
 
   if (loading) {
@@ -282,13 +281,13 @@ const News: React.FC = () => {
                     </motion.div>
                   </div>
                   <motion.button
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 flex items-center gap-2 shadow-md hover:shadow-lg text-sm"
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-3 py-2 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-1 shadow-md hover:shadow-lg text-xs"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => navigate(`/news/${article.id}`)}
+                    onClick={() => handleLearnMore(article)}
                   >
-                    Read More
-                    <ArrowRight size={16} />
+                    Learn More
+                    <ArrowRight size={14} />
                   </motion.button>
                 </motion.div>
               </div>
@@ -312,6 +311,101 @@ const News: React.FC = () => {
           </motion.div>
         )}
       </div>
+
+      {/* Article Detail Modal */}
+      <AnimatePresence>
+        {selectedArticle && (
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+            <motion.div
+              className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              {/* Modal Header */}
+              <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-yellow-300" />
+                    <h2 className="text-lg font-bold">Article Details</h2>
+                  </div>
+                  <button
+                    onClick={() => setSelectedArticle(null)}
+                    className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 overflow-y-auto max-h-[70vh]">
+                {selectedArticle.image_url && (
+                  <img 
+                    src={selectedArticle.image_url} 
+                    alt={selectedArticle.title}
+                    className="w-full h-48 object-cover rounded-xl mb-4"
+                  />
+                )}
+                
+                <div className="mb-4">
+                  <span className={`bg-gradient-to-r ${getCategoryColor(selectedArticle.category)} text-white px-3 py-1 rounded-full text-xs font-semibold`}>
+                    {selectedArticle.category}
+                  </span>
+                </div>
+                
+                <h1 className="text-2xl font-bold text-gray-900 mb-4">{selectedArticle.title}</h1>
+                
+                <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
+                  <div className="flex items-center gap-2">
+                    <User size={14} />
+                    <span>{selectedArticle.author}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock size={14} />
+                    <span>{new Date(selectedArticle.created_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+                
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-base mb-4">
+                    {selectedArticle.excerpt}
+                  </p>
+                  <p className="text-gray-600 leading-relaxed">
+                    This article provides comprehensive insights into {selectedArticle.title.toLowerCase()}. 
+                    Our team has worked extensively to bring you the latest updates and developments 
+                    in this area. For more detailed information and to stay updated with similar content, 
+                    please explore our other articles and programs.
+                  </p>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="bg-gray-50 p-6 border-t border-gray-200">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setSelectedArticle(null)}
+                    className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-300 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedArticle(null)
+                      navigate('/programs')
+                    }}
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white py-3 rounded-xl font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <ArrowRight size={16} />
+                    Explore Programs
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
