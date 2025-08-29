@@ -10,3 +10,14 @@
 .notification-item:hover {
   transform: translateX(-2px);
 }
+
+/* Hide scrollbars in notification panel */
+.notification-panel-overlay * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.notification-panel-overlay *::-webkit-scrollbar {
+  display: none;
+}

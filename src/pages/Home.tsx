@@ -152,7 +152,7 @@ const Home: React.FC = () => {
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">Quick Actions</h2>
+            <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
             <motion.button
               className="p-2 bg-gray-100 rounded-lg"
               whileHover={{ scale: 1.05 }}
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
             </motion.button>
           </div>
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -172,17 +172,17 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={action.link}
-                  className="block p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
+                  className="block p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-start gap-3">
                     <div className={`${action.color} p-2 rounded-lg group-hover:scale-110 transition-transform`}>
                       <action.icon size={16} className="text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 text-sm">{action.title}</h3>
-                      <p className="text-gray-600 text-xs truncate">{action.description}</p>
+                      <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-tight">{action.title}</h3>
+                      <p className="text-gray-600 text-xs leading-relaxed">{action.description}</p>
                     </div>
-                    <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
+                    <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors mt-1" />
                   </div>
                 </Link>
               </motion.div>

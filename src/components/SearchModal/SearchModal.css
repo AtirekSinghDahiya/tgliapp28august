@@ -11,3 +11,14 @@
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+/* Hide scrollbars in search modal */
+.search-modal-overlay * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.search-modal-overlay *::-webkit-scrollbar {
+  display: none;
+}
