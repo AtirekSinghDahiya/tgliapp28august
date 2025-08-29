@@ -14,12 +14,12 @@ const BottomNavigation: React.FC = () => {
 
   return (
     <motion.nav 
-      className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-gray-200/30 z-40 shadow-2xl"
+      className="fixed bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl border border-gray-200/30 z-40 shadow-2xl rounded-2xl"
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1] }}
     >
-      <div className="flex justify-around py-3 px-2">
+      <div className="flex justify-around py-4 px-4">
         {navItems.map((item, index) => {
           const Icon = item.icon
           return (
