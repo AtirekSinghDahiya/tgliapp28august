@@ -22,7 +22,11 @@ const SignIn: React.FC = () => {
       await signIn(formData.email, formData.password)
       navigate('/')
     } catch (err: any) {
-      setError(err.message || 'Invalid email or password')
+      if (err.message === 'Invalid login credentials') {
+        setError('Invalid email or password. Please check your credentials or confirm your email address if you haven\'t already.')
+      } else {
+        setError(err.message || 'Invalid email or password')
+      }
     } finally {
       setLoading(false)
     }
