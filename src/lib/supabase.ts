@@ -67,6 +67,28 @@ export const submitProgramApplication = async (application: {
     .select();
   
   // Send confirmation email
+  if (!error && data) {
+    try {
+      await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'application',
+          email: application.email,
+          name: application.full_name,
+          program: application.program_id
+        })
+      });
+      console.log('Program application submitted successfully. Confirmation email sent to:', application.email);
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+    }
+  }
+  
+  return { data, error };
 };
 
 // Donation submission
@@ -88,23 +110,6 @@ export const submitDonation = async (donation: {
   // Send confirmation email and update stats
   if (!error && data) {
     try {
-      await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          type: 'application',
-          email: application.email,
-          name: application.full_name,
-          program: application.program_id
-        })
-      });
-      console.log('Program application submitted successfully. Confirmation email sent to:', application.email);
-    } catch (emailError) {
-      console.error('Failed to send confirmation email:', emailError);
-    }
       await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-confirmation-email`, {
         method: 'POST',
         headers: {
