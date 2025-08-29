@@ -1,284 +1,168 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Users, 
-  Calendar, 
-  BookOpen, 
-  Heart,
-  Globe,
-  Target,
-  TrendingUp,
-  Phone,
-  User
-} from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import './Home.css';
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { BookOpen, Heart, Users, TrendingUp } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
+import { getUserDonations } from '../services/supabase'
 
 const Home: React.FC = () => {
-  const { user } = useAuth();
-  const { requestPermission } = useNotifications();
-  const navigate = useNavigate();
+  const { user } = useAuth()
+  const [donations, setDonations] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Request notification permission on first visit
-    if (!user) {
-      setTimeout(() => {
-        requestPermission();
-      }, 3000);
+    const loadUserData = async () => {
+      if (user) {
+        try {
+          const { data } = await getUserDonations(user.id)
+          setDonations(data || [])
+        } catch (error) {
+          console.error('Error loading user data:', error)
+        }
+      }
+      setLoading(false)
     }
-  }, [user, requestPermission]);
 
-  const stats = [
-    { icon: Users, value: '10,000+', label: 'Community Members', color: '#dc2626' },
-    { icon: BookOpen, value: '8', label: 'Active Programs', color: '#ea580c' },
-    { icon: Globe, value: '50+', label: 'Countries Represented', color: '#d97706' },
-    { icon: Target, value: '95%', label: 'Success Rate', color: '#ca8a04' },
-  ];
+    loadUserData()
+  }, [user])
 
-  const featuredPrograms = [
-    {
-      title: 'Community Engagement',
-      description: 'Build stronger communities through active participation and leadership.',
-      image: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=600',
-      link: '/programs',
-      category: 'Leadership'
-    },
-    {
-      title: 'Employment Services',
-      description: 'Find meaningful employment opportunities and career advancement.',
-      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600',
-      link: '/programs',
-      category: 'Career'
-    },
-    {
-      title: 'Youth Programs',
-      description: 'Empowering young leaders with skills and mentorship opportunities.',
-      image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=600',
-      link: '/programs',
-      category: 'Youth'
-    },
-  ];
-
-  const quickActions = [
-    { icon: Calendar, title: 'Upcoming Events', description: 'Join community events', link: '/programs', color: '#dc2626' },
-    { icon: TrendingUp, title: 'Programs', description: 'Explore our offerings', link: '/programs', color: '#ea580c' },
-    { icon: Phone, title: 'Get Support', description: 'Contact our team', link: '/contact', color: '#d97706' },
-  ];
-
-  // Removed unused handleNotificationTest
-
-  const handleGetInvolved = () => {
-    navigate('/programs');
-  };
+  if (loading) {
+    return (
+      <div className="p-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-32 bg-gray-200 rounded"></div>
+          <div className="h-24 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="home-page">
-      {/* Hero Section */}
-      <motion.section 
-        className="hero-section"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="hero-background">
-          <div className="hero-overlay"></div>
-          <img 
-            src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200&h=800&fit=crop" 
-            alt="Community" 
-            className="hero-image"
-          />
+    <div className="p-4 space-y-6">
+      {/* Welcome Section */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          {user ? `Welcome back, ${user.name}!` : 'Welcome to TGLI'}
+        </h1>
+        <p className="text-gray-600">
+          {user 
+            ? 'Here\'s your dashboard with recent activity and quick actions.'
+            : 'Empowering communities and building leaders across the GTA.'
+          }
+        </p>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="bg-blue-100 p-2 rounded-lg">
+              <BookOpen size={20} className="text-blue-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">8</p>
+              <p className="text-sm text-gray-600">Services</p>
+            </div>
+          </div>
         </div>
         
-        <div className="hero-content">
-          <div className="container">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              <h1 className="hero-title">
-                Empowering Communities,
-                <span className="text-gradient"> Building Leaders</span>
-              </h1>
-              <p className="hero-description">
-                Join the Toronto Global Leadership Institute and be part of a transformative 
-                journey that connects, empowers, and elevates communities across the GTA.
-              </p>
-              
-              <div className="hero-actions">
-                <Link to="/programs" className="btn btn-primary">
-                  <BookOpen size={20} />
-                  Explore Programs
-                </Link>
-                <button onClick={handleGetInvolved} className="btn btn-secondary">
-                  <Heart size={20} />
-                  Get Involved
-                </button>
+        <div className="bg-white rounded-xl p-4 shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="bg-green-100 p-2 rounded-lg">
+              <Users size={20} className="text-green-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-gray-900">10K+</p>
+              <p className="text-sm text-gray-600">Members</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* User Dashboard or Quick Actions */}
+      {user ? (
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900">Your Activity</h2>
+          
+          {/* Services Enrolled */}
+          <div className="bg-white rounded-xl p-4 shadow-sm">
+            <h3 className="font-semibold text-gray-900 mb-3">Services Enrolled</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="text-gray-700">Community Leadership</span>
+                <span className="text-sm text-green-600 font-medium">Active</span>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Stats Section (collapsible on mobile) */}
-      <section className="stats-section" aria-label="Impact stats">
-        <div className="container">
-          <div className="stats-grid">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <motion.div
-                  key={index}
-                  className="stat-card"
-                  style={{ '--stat-color': stat.color } as React.CSSProperties}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.6 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <div className="stat-icon">
-                    <Icon size={24} />
-                  </div>
-                  <div className="stat-content">
-                    <motion.h3 
-                      className="stat-value"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
-                    >
-                      {stat.value}
-                    </motion.h3>
-                    <p className="stat-label">{stat.label}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Programs (card-first, concise) */}
-      <section className="featured-section" aria-label="Featured programs">
-        <div className="container">
-          <motion.div 
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="section-title">Featured Programs</h2>
-            <p className="section-description">
-              Discover our comprehensive programs designed to empower individuals and strengthen communities.
-            </p>
-          </motion.div>
-          
-          <div className="programs-grid">
-            {featuredPrograms.map((program, index) => (
-              <motion.div
-                key={index}
-                className="program-card"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.2, duration: 0.6 }}
-                whileHover={{ y: -8 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="program-image">
-                  <img src={program.image} alt={program.title} />
-                  <div className="program-category">{program.category}</div>
-                  <motion.div 
-                    className="program-overlay"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Link to={program.link} className="program-link">
-                      Learn More
-                      <ArrowRight size={16} />
-                    </Link>
-                  </motion.div>
-                </div>
-                <div className="program-content">
-                  <h3 className="program-title">{program.title}</h3>
-                  <p className="program-description">{program.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Actions */}
-      <section className="quick-actions-section" aria-label="Quick actions">
-        <div className="container">
-          <motion.h2 
-            className="section-title text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            Get Started Today
-          </motion.h2>
-          
-          <div className="actions-grid">
-            {quickActions.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link 
-                    to={action.link} 
-                    className="action-card"
-                    style={{ '--action-color': action.color } as React.CSSProperties}
-                  >
-                    <div className="action-icon">
-                      <Icon size={28} />
-                    </div>
-                    <h3>{action.title}</h3>
-                    <p>{action.description}</p>
-                    <ArrowRight size={20} className="action-arrow" />
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Welcome Message for Logged In Users */}
-      {user && (
-        <motion.section 
-          className="welcome-section"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="container">
-            <div className="welcome-card">
-              <div className="welcome-content">
-                <h3>Welcome back, {user.name}!</h3>
-                <p>Continue your journey with TGLI. Check out your profile for personalized recommendations.</p>
-                <Link to="/profile" className="btn btn-primary">
-                  <User size={16} />
-                  View Profile
-                </Link>
+              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span className="text-gray-700">Employment Services</span>
+                <span className="text-sm text-blue-600 font-medium">Completed</span>
               </div>
             </div>
           </div>
-        </motion.section>
+
+          {/* Donation History */}
+          <div className="bg-white rounded-xl p-4 shadow-sm">
+            <h3 className="font-semibold text-gray-900 mb-3">Recent Donations</h3>
+            {donations.length > 0 ? (
+              <div className="space-y-2">
+                {donations.slice(0, 3).map((donation: any) => (
+                  <div key={donation.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <span className="text-gray-700">${donation.amount}</span>
+                    <span className="text-sm text-gray-500">
+                      {new Date(donation.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-center py-4">No donations yet</p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold text-gray-900">Get Started</h2>
+          
+          <div className="grid gap-4">
+            <Link to="/services" className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-100 p-3 rounded-lg">
+                  <BookOpen size={24} className="text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Explore Services</h3>
+                  <p className="text-gray-600 text-sm">Discover our programs and services</p>
+                </div>
+              </div>
+            </Link>
+            
+            <Link to="/donate" className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="bg-red-100 p-3 rounded-lg">
+                  <Heart size={24} className="text-red-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Make a Donation</h3>
+                  <p className="text-gray-600 text-sm">Support our community programs</p>
+                </div>
+              </div>
+            </Link>
+            
+            <Link to="/signup" className="bg-red-500 text-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-4">
+                <div className="bg-white/20 p-3 rounded-lg">
+                  <Users size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Join Our Community</h3>
+                  <p className="text-red-100 text-sm">Create your account today</p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

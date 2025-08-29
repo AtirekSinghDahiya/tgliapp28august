@@ -1,62 +1,39 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Home, BookOpen, Newspaper, Briefcase, Heart } from 'lucide-react';
-import './BottomNavigation.css';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { Home, Briefcase, Heart, Newspaper, Info } from 'lucide-react'
 
 const BottomNavigation: React.FC = () => {
-  const location = useLocation();
-  
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
-    { path: '/programs', icon: BookOpen, label: 'Programs' },
-    { path: '/news', icon: Newspaper, label: 'News' },
-    { path: '/careers', icon: Briefcase, label: 'Careers' },
+    { path: '/services', icon: Briefcase, label: 'Services' },
     { path: '/donate', icon: Heart, label: 'Donate' },
-  ];
+    { path: '/news', icon: Newspaper, label: 'News' },
+    { path: '/about', icon: Info, label: 'About Us' },
+  ]
 
   return (
-    <motion.nav 
-      className="bottom-navigation safe-area-bottom"
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="nav-container">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+      <div className="flex justify-around py-2">
         {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = location.pathname === item.path;
-          
+          const Icon = item.icon
           return (
             <NavLink
               key={item.path}
               to={item.path}
-              className={`nav-item ${isActive ? 'active' : ''}`}
+              className={({ isActive }) =>
+                `flex flex-col items-center p-2 min-w-0 flex-1 ${
+                  isActive ? 'text-red-500' : 'text-gray-500'
+                }`
+              }
             >
-              <motion.div
-                className="nav-item-content"
-                whileTap={{ scale: 0.9 }}
-                transition={{ duration: 0.1 }}
-              >
-                <div className="nav-icon-container">
-                  <Icon size={20} className="nav-icon" />
-                  {isActive && (
-                    <motion.div
-                      className="active-indicator"
-                      layoutId="activeIndicator"
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
-                </div>
-                <span className="nav-label">{item.label}</span>
-              </motion.div>
+              <Icon size={20} />
+              <span className="text-xs mt-1 truncate">{item.label}</span>
             </NavLink>
-          );
+          )
         })}
       </div>
-    </motion.nav>
-  );
-};
+    </nav>
+  )
+}
 
-export default BottomNavigation;
+export default BottomNavigation

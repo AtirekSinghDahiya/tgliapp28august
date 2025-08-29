@@ -1,40 +1,21 @@
-import React, { ReactNode } from 'react';
-import { motion } from 'framer-motion';
-import Header from './Header';
-import BottomNavigation from './BottomNavigation';
-import PWAInstallPrompt from '../PWAInstallPrompt/PWAInstallPrompt';
-import PullToRefresh from '../PullToRefresh/PullToRefresh';
-import AIChat from '../AIChat/AIChat';
+import React, { ReactNode } from 'react'
+import TopNavigation from './TopNavigation'
+import BottomNavigation from './BottomNavigation'
 
 interface LayoutProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const handleRefresh = async () => {
-    // Simulate refresh action
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    window.location.reload();
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      <PullToRefresh onRefresh={handleRefresh}>
-        <motion.main 
-          className="pb-24 pt-16 safe-area-top safe-area-bottom"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          {children}
-        </motion.main>
-      </PullToRefresh>
+      <TopNavigation />
+      <main className="pt-16 pb-20">
+        {children}
+      </main>
       <BottomNavigation />
-      <PWAInstallPrompt />
-      <AIChat />
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

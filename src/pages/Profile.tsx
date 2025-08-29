@@ -1,592 +1,224 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  User, 
-  MapPin, 
-  Calendar, 
-  Bell, 
-  Settings, 
-  Heart,
-  BookOpen,
-  Award,
-  TrendingUp,
-  Edit3,
-  Save,
-  X,
-  Camera,
-  Shield,
-  Download
-} from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNotifications } from '../contexts/NotificationContext';
-import './Profile.css';
-
-interface UserProfile {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  city: string;
-  postalCode: string;
-  dateOfBirth: string;
-  joinDate: string;
-  avatar: string;
-  bio: string;
-  interests: string[];
-  preferences: {
-    emailNotifications: boolean;
-    smsNotifications: boolean;
-    programUpdates: boolean;
-    eventReminders: boolean;
-    newsletter: boolean;
-  };
-}
+import React, { useState, useEffect } from 'react'
+import { User, Mail, Phone, Edit3, Save, X } from 'lucide-react'
+import { useAuth } from '../hooks/useAuth'
+import { getProfile, updateProfile } from '../services/supabase'
 
 const Profile: React.FC = () => {
-  const { user, logout } = useAuth();
-  const { notifications, clearNotifications } = useNotifications();
-  const [activeTab, setActiveTab] = useState('profile');
-  const [isEditing, setIsEditing] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-
-  const [profile, setProfile] = useState<UserProfile>({
-    firstName: 'John',
-    lastName: 'Doe',
-    email: user?.email || 'john.doe@example.com',
-    phone: '+1 (416) 555-0123',
-    address: '123 Main Street',
-    city: 'Toronto',
-    postalCode: 'M5V 3A8',
-    dateOfBirth: '1990-05-15',
-    joinDate: '2023-01-15',
-    avatar: '',
-    bio: 'Community leader passionate about making a positive impact in the Greater Toronto Area.',
-    interests: ['Community Leadership', 'Entrepreneurship', 'Youth Mentoring', 'Social Innovation'],
-    preferences: {
-      emailNotifications: true,
-      smsNotifications: false,
-      programUpdates: true,
-      eventReminders: true,
-      newsletter: true
-    }
-  });
-
-  const [editedProfile, setEditedProfile] = useState<UserProfile>(profile);
-
-  const stats = [
-    { icon: BookOpen, label: 'Programs Enrolled', value: '3', color: '#3b82f6' },
-    { icon: Calendar, label: 'Events Attended', value: '12', color: '#10b981' },
-    { icon: Heart, label: 'Total Donations', value: '$850', color: '#ef4444' },
-    { icon: Award, label: 'Certificates Earned', value: '2', color: '#f59e0b' }
-  ];
-
-  const recentActivity = [
-    {
-      type: 'program',
-      title: 'Completed Community Leadership Workshop',
-      date: '2024-01-10',
-      icon: Award,
-      color: '#10b981'
-    },
-    {
-      type: 'donation',
-      title: 'Donated $100 to Youth Programs',
-      date: '2024-01-08',
-      icon: Heart,
-      color: '#ef4444'
-    },
-    {
-      type: 'event',
-      title: 'Attended Job Fair 2024',
-      date: '2024-01-05',
-      icon: Calendar,
-      color: '#3b82f6'
-    },
-    {
-      type: 'program',
-      title: 'Enrolled in Entrepreneurship Program',
-      date: '2024-01-03',
-      icon: BookOpen,
-      color: '#f59e0b'
-    }
-  ];
-
-  const availableInterests = [
-    'Community Leadership', 'Entrepreneurship', 'Youth Mentoring', 'Social Innovation',
-    'Employment Services', 'Housing Support', 'Settlement Services', 'Seniors Support',
-    'Volunteer Work', 'Fundraising', 'Event Planning', 'Public Speaking'
-  ];
+  const { user } = useAuth()
+  const [profile, setProfile] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    bio: ''
+  })
+  const [isEditing, setIsEditing] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    const loadProfile = async () => {
+      if (!user) return
 
-  const handleInputChange = (
-    field: string,
-    value: string | boolean
-  ) => {
-    if (field.includes('.')) {
-      const [parent, child] = field.split('.');
-      setEditedProfile(prev => ({
-        ...prev,
-        [parent]: {
-          ...prev[parent as keyof UserProfile],
-          [child]: value as never
+      try {
+        const { data, error } = await getProfile(user.id)
+        if (error) throw error
+        
+        if (data) {
+          setProfile({
+            full_name: data.full_name || user.name,
+            email: data.email || user.email,
+            phone: data.phone || '',
+            bio: data.bio || ''
+          })
+        } else {
+          setProfile({
+            full_name: user.name,
+            email: user.email,
+            phone: '',
+            bio: ''
+          })
         }
-      }));
-    } else {
-      setEditedProfile(prev => ({ ...prev, [field]: value as never }));
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  };
 
-  const handleInterestToggle = (interest: string) => {
-    setEditedProfile(prev => ({
-      ...prev,
-      interests: prev.interests.includes(interest)
-        ? prev.interests.filter(i => i !== interest)
-        : [...prev.interests, interest]
-    }));
-  };
+    loadProfile()
+  }, [user])
 
-  const handleSave = () => {
-    setProfile(editedProfile);
-    setIsEditing(false);
-    // In a real app, this would save to the backend
-  };
+  const handleSave = async () => {
+    if (!user) return
 
-  const handleCancel = () => {
-    setEditedProfile(profile);
-    setIsEditing(false);
-  };
+    setSaving(true)
+    setError('')
 
-  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const result = typeof e.target?.result === 'string' ? e.target.result : '';
-        setEditedProfile(prev => ({ ...prev, avatar: result }));
-      };
-      reader.readAsDataURL(file);
+    try {
+      await updateProfile(user.id, profile)
+      setIsEditing(false)
+    } catch (err) {
+      setError('Failed to update profile')
+      console.error('Profile update error:', err)
+    } finally {
+      setSaving(false)
     }
-  };
+  }
 
-  const downloadData = () => {
-    const data = {
-      profile,
-      stats,
-      recentActivity,
-      notifications: notifications.slice(0, 10)
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'tgli-profile-data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  if (loading) {
+    return (
+      <div className="p-4">
+        <div className="animate-pulse space-y-4">
+          <div className="h-24 bg-gray-200 rounded-xl"></div>
+          <div className="h-32 bg-gray-200 rounded-xl"></div>
+        </div>
+      </div>
+    )
+  }
 
-  const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'activity', label: 'Activity', icon: TrendingUp },
-    { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'settings', label: 'Settings', icon: Settings }
-  ];
+  if (!user) {
+    return (
+      <div className="p-4 text-center">
+        <p className="text-gray-500">Please sign in to view your profile.</p>
+      </div>
+    )
+  }
 
   return (
-    <div className="profile-page">
-      <div className="profile-header">
-        <div className="container">
-          <div className={`profile-hero ${isVisible ? 'fade-in' : ''}`}>
-            <div className="profile-avatar-section">
-              <div className="avatar-container">
-                {profile.avatar ? (
-                  <img src={profile.avatar} alt="Profile" className="profile-avatar" />
-                ) : (
-                  <div className="avatar-placeholder">
-                    <User size={48} />
-                  </div>
-                )}
-                {isEditing && (
-                  <label className="avatar-upload">
-                    <Camera size={20} />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleAvatarUpload}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                )}
-              </div>
-              <div className="profile-info">
-                <h1>{profile.firstName} {profile.lastName}</h1>
-                <p className="profile-bio">{profile.bio}</p>
-                <div className="profile-meta">
-                  <div className="meta-item">
-                    <Calendar size={16} />
-                    <span>Joined {new Date(profile.joinDate).toLocaleDateString()}</span>
-                  </div>
-                  <div className="meta-item">
-                    <MapPin size={16} />
-                    <span>{profile.city}</span>
-                  </div>
-                </div>
-              </div>
+    <div className="p-4 space-y-6">
+      {/* Profile Header */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
+              {user.name.charAt(0).toUpperCase()}
             </div>
-            
-            <div className="profile-actions">
-              {!isEditing ? (
-                <button className="btn btn-primary" onClick={() => setIsEditing(true)}>
-                  <Edit3 size={16} />
-                  Edit Profile
-                </button>
-              ) : (
-                <div className="edit-actions">
-                  <button className="btn btn-outline" onClick={handleCancel}>
-                    <X size={16} />
-                    Cancel
-                  </button>
-                  <button className="btn btn-primary" onClick={handleSave}>
-                    <Save size={16} />
-                    Save Changes
-                  </button>
-                </div>
-              )}
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">{user.name}</h1>
+              <p className="text-gray-600">{user.email}</p>
             </div>
           </div>
-
-          {/* Stats */}
-          <div className="profile-stats">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className={`stat-card ${isVisible ? 'scale-in' : ''}`}
-                  style={{ 
-                    animationDelay: `${index * 0.1}s`,
-                    '--stat-color': stat.color
-                  } as React.CSSProperties}
-                >
-                  <div className="stat-icon">
-                    <Icon size={24} />
-                  </div>
-                  <div className="stat-content">
-                    <h3 className="stat-value">{stat.value}</h3>
-                    <p className="stat-label">{stat.label}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className="p-2 hover:bg-gray-100 rounded-lg"
+          >
+            {isEditing ? <X size={20} /> : <Edit3 size={20} />}
+          </button>
         </div>
       </div>
 
-      <div className="profile-content">
-        <div className="container">
-          {/* Tab Navigation */}
-          <div className="tab-navigation">
-            {tabs.map(tab => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-                  onClick={() => setActiveTab(tab.id)}
-                >
-                  <Icon size={20} />
-                  {tab.label}
-                </button>
-              );
-            })}
+      {/* Profile Form */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h2>
+        
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg mb-4">
+            {error}
+          </div>
+        )}
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Full Name
+            </label>
+            <div className="relative">
+              <User size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={profile.full_name}
+                onChange={(e) => setProfile(prev => ({ ...prev, full_name: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none disabled:bg-gray-50"
+              />
+            </div>
           </div>
 
-          {/* Tab Content */}
-          <div className="tab-content">
-            {/* Profile Tab */}
-            {activeTab === 'profile' && (
-              <div className="profile-tab">
-                <div className="profile-form">
-                  <h2>Personal Information</h2>
-                  
-                  <div className="form-section">
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label>First Name</label>
-                        <input
-                          type="text"
-                          value={isEditing ? editedProfile.firstName : profile.firstName}
-                          onChange={(e) => handleInputChange('firstName', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Last Name</label>
-                        <input
-                          type="text"
-                          value={isEditing ? editedProfile.lastName : profile.lastName}
-                          onChange={(e) => handleInputChange('lastName', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                    </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="email"
+                value={profile.email}
+                disabled
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-50"
+              />
+            </div>
+          </div>
 
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label>Email Address</label>
-                        <input
-                          type="email"
-                          value={isEditing ? editedProfile.email : profile.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Phone Number</label>
-                        <input
-                          type="tel"
-                          value={isEditing ? editedProfile.phone : profile.phone}
-                          onChange={(e) => handleInputChange('phone', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                    </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Phone Number
+            </label>
+            <div className="relative">
+              <Phone size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="tel"
+                value={profile.phone}
+                onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
+                disabled={!isEditing}
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none disabled:bg-gray-50"
+                placeholder="(416) 555-0123"
+              />
+            </div>
+          </div>
 
-                    <div className="form-group">
-                      <label>Address</label>
-                      <input
-                        type="text"
-                        value={isEditing ? editedProfile.address : profile.address}
-                        onChange={(e) => handleInputChange('address', e.target.value)}
-                        disabled={!isEditing}
-                      />
-                    </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Bio
+            </label>
+            <textarea
+              value={profile.bio}
+              onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
+              disabled={!isEditing}
+              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-red-500 focus:outline-none disabled:bg-gray-50 resize-none"
+              rows={3}
+              placeholder="Tell us about yourself..."
+            />
+          </div>
 
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label>City</label>
-                        <input
-                          type="text"
-                          value={isEditing ? editedProfile.city : profile.city}
-                          onChange={(e) => handleInputChange('city', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Postal Code</label>
-                        <input
-                          type="text"
-                          value={isEditing ? editedProfile.postalCode : profile.postalCode}
-                          onChange={(e) => handleInputChange('postalCode', e.target.value)}
-                          disabled={!isEditing}
-                        />
-                      </div>
-                    </div>
+          {isEditing && (
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="w-full bg-red-500 text-white p-3 rounded-lg font-semibold hover:bg-red-600 disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {saving ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save size={16} />
+                  Save Changes
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      </div>
 
-                    <div className="form-group">
-                      <label>Date of Birth</label>
-                      <input
-                        type="date"
-                        value={isEditing ? editedProfile.dateOfBirth : profile.dateOfBirth}
-                        onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
-                        disabled={!isEditing}
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Bio</label>
-                      <textarea
-                        value={isEditing ? editedProfile.bio : profile.bio}
-                        onChange={(e) => handleInputChange('bio', e.target.value)}
-                        disabled={!isEditing}
-                        rows={4}
-                        placeholder="Tell us about yourself..."
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label>Interests</label>
-                      <div className="interests-grid">
-                        {availableInterests.map(interest => (
-                          <button
-                            key={interest}
-                            type="button"
-                            className={`interest-tag ${
-                              (isEditing ? editedProfile.interests : profile.interests).includes(interest) 
-                                ? 'active' 
-                                : ''
-                            }`}
-                            onClick={() => isEditing && handleInterestToggle(interest)}
-                            disabled={!isEditing}
-                          >
-                            {interest}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Activity Tab */}
-            {activeTab === 'activity' && (
-              <div className="activity-tab">
-                <h2>Recent Activity</h2>
-                <div className="activity-list">
-                  {recentActivity.map((activity, index) => {
-                    const Icon = activity.icon;
-                    return (
-                      <div
-                        key={index}
-                        className={`activity-item ${isVisible ? 'slide-up' : ''}`}
-                        style={{ animationDelay: `${index * 0.1}s` }}
-                      >
-                        <div 
-                          className="activity-icon"
-                          style={{ '--activity-color': activity.color } as React.CSSProperties}
-                        >
-                          <Icon size={20} />
-                        </div>
-                        <div className="activity-content">
-                          <h4>{activity.title}</h4>
-                          <p>{new Date(activity.date).toLocaleDateString()}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Notifications Tab */}
-            {activeTab === 'notifications' && (
-              <div className="notifications-tab">
-                <div className="notifications-header">
-                  <h2>Notifications</h2>
-                  <button className="btn btn-outline" onClick={clearNotifications}>
-                    Clear All
-                  </button>
-                </div>
-                <div className="notifications-list">
-                  {notifications.length === 0 ? (
-                    <div className="no-notifications">
-                      <Bell size={48} />
-                      <h3>No notifications</h3>
-                      <p>You're all caught up!</p>
-                    </div>
-                  ) : (
-                    notifications.map(notification => (
-                      <div
-                        key={notification.id}
-                        className={`notification-item ${!notification.read ? 'unread' : ''}`}
-                      >
-                        <div className="notification-content">
-                          <h4>{notification.title}</h4>
-                          <p>{notification.message}</p>
-                          <span className="notification-time">
-                            {notification.timestamp.toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Settings Tab */}
-            {activeTab === 'settings' && (
-              <div className="settings-tab">
-                <h2>Account Settings</h2>
-                
-                <div className="settings-section">
-                  <h3>Notification Preferences</h3>
-                  <div className="settings-list">
-                    {Object.entries(profile.preferences).map(([key, value]) => (
-                      <div key={key} className="setting-item">
-                        <div className="setting-info">
-                          <h4>
-                            {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                          </h4>
-                          <p>
-                            {key === 'emailNotifications' && 'Receive notifications via email'}
-                            {key === 'smsNotifications' && 'Receive notifications via SMS'}
-                            {key === 'programUpdates' && 'Get updates about program changes'}
-                            {key === 'eventReminders' && 'Receive reminders about upcoming events'}
-                            {key === 'newsletter' && 'Subscribe to our monthly newsletter'}
-                          </p>
-                        </div>
-                        <label className="toggle-switch">
-                          <input
-                            type="checkbox"
-                            checked={value}
-                            onChange={(e) => handleInputChange(`preferences.${key}`, e.target.checked)}
-                          />
-                          <span className="toggle-slider"></span>
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="settings-section">
-                  <h3>Security</h3>
-                  <div className="settings-list">
-                    <div className="setting-item">
-                      <div className="setting-info">
-                        <h4>Change Password</h4>
-                        <p>Update your account password</p>
-                      </div>
-                      <button className="btn btn-outline">
-                        <Shield size={16} />
-                        Change Password
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="settings-section">
-                  <h3>Data & Privacy</h3>
-                  <div className="settings-list">
-                    <div className="setting-item">
-                      <div className="setting-info">
-                        <h4>Download Your Data</h4>
-                        <p>Download a copy of your profile and activity data</p>
-                      </div>
-                      <button className="btn btn-outline" onClick={downloadData}>
-                        <Download size={16} />
-                        Download Data
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="settings-section danger-zone">
-                  <h3>Danger Zone</h3>
-                  <div className="settings-list">
-                    <div className="setting-item">
-                      <div className="setting-info">
-                        <h4>Sign Out</h4>
-                        <p>Sign out of your account</p>
-                      </div>
-                      <button className="btn btn-outline danger" onClick={logout}>
-                        Sign Out
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+      {/* Activity Summary */}
+      <div className="bg-white rounded-xl p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Activity Summary</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">3</p>
+            <p className="text-sm text-gray-600">Services Enrolled</p>
+          </div>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">$250</p>
+            <p className="text-sm text-gray-600">Total Donated</p>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile
