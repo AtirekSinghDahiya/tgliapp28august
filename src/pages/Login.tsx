@@ -104,7 +104,7 @@ const Login: React.FC = () => {
             <div className="branding-content">
               <div className="logo-section">
                 <img 
-                  src="https://www.tgli.org/TGLI_Logo.png" 
+                  src="https://tgli.org/TGLI_Logo.png" 
                   alt="TGLI Logo" 
                   className="auth-logo"
                 />

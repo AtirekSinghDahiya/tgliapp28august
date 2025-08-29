@@ -20,7 +20,7 @@ const LoadingScreen: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-red-500 flex flex-col items-center justify-center text-white z-50">
       <img 
-        src="https://www.tgli.org/TGLI_Logo.png" 
+        src="https://tgli.org/TGLI_Logo.png" 
         alt="TGLI" 
         className="w-24 h-24 mb-8 filter brightness-0 invert"
       />

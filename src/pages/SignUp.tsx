@@ -49,7 +49,7 @@ const SignUp: React.FC = () => {
           <button onClick={() => navigate('/')} className="p-2 hover:bg-gray-100 rounded-lg">
             <ArrowLeft size={20} />
           </button>
-          <img src="https://www.tgli.org/TGLI_Logo.png" alt="TGLI" className="h-8" />
+          <img src="https://tgli.org/TGLI_Logo.png" alt="TGLI" className="h-8" />
         </div>
       </div>
 

@@ -34,7 +34,7 @@ const SplashScreen: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <img 
-            src="https://www.tgli.org/TGLI_Logo.png" 
+            src="https://tgli.org/TGLI_Logo.png" 
             alt="TGLI Logo" 
             className="splash-logo"
           />

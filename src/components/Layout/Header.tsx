@@ -58,7 +58,7 @@ const Header: React.FC = () => {
             
             <Link to="/" className="logo-link">
               <motion.img 
-                src="https://www.tgli.org/TGLI_Logo.png" 
+                src="https://tgli.org/TGLI_Logo.png" 
                 alt="TGLI" 
                 className="header-logo"
                 whileHover={{ scale: 1.05 }}
@@ -136,7 +136,7 @@ const Header: React.FC = () => {
             >
               <div className="menu-header">
                 <img 
-                  src="https://www.tgli.org/TGLI_Logo.png" 
+                  src="https://tgli.org/TGLI_Logo.png" 
                   alt="TGLI" 
                   className="menu-logo"
                 />

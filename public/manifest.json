@@ -9,13 +9,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://www.tgli.org/TGLI_Logo.png",
+      "src": "https://tgli.org/TGLI_Logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://www.tgli.org/TGLI_Logo.png",
+      "src": "https://tgli.org/TGLI_Logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
