@@ -10,12 +10,6 @@ const Apply: React.FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate('/signin')
-    }
-  }, [user, navigate])
 
   const [formData, setFormData] = useState({
     fullName: user?.name || '',

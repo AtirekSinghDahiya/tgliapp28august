@@ -163,13 +163,8 @@ const Programs: React.FC = () => {
   }, [searchTerm, selectedCategory, programs]);
 
   const handleApplyNow = (program: Program) => {
-    if (user) {
-      navigate(`/apply/${program.id}`);
-    } else {
-      // Store the intended destination and redirect to login
-      sessionStorage.setItem('redirectAfterLogin', `/apply/${program.id}`);
-      navigate('/signin');
-    }
+    console.log('Apply button clicked, user:', user);
+    navigate(`/apply/${program.id}`);
   };
 
   return (

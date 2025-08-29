@@ -53,29 +53,38 @@ const Careers: React.FC = () => {
   }, [])
 
   const handleApply = (job: any) => {
-    if (user) {
-      // User is logged in, proceed with application
-      const subject = `Application for ${job.title}`
-      const body = `Dear Hiring Manager,\n\nI am interested in applying for the ${job.title} position in the ${job.department} department.\n\nI believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.\n\nBest regards,\n${user.name}\n${user.email}`
-      
-      // Create mailto link
-      const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      
-      // Try to open email client, fallback to copying email to clipboard
-      try {
-        window.location.href = mailtoLink
-      } catch (error) {
-        // Fallback: copy email address to clipboard
-        navigator.clipboard.writeText('careers@tgli.org').then(() => {
-          alert('Email address copied to clipboard: careers@tgli.org')
-        }).catch(() => {
-          alert('Please send your application to: careers@tgli.org')
-        })
-      }
-    } else {
-      // User not logged in, redirect to sign in
-      sessionStorage.setItem('redirectAfterLogin', `/careers`)
-      navigate('/signin')
+    console.log('Career apply button clicked, user:', user);
+    
+    // Create application email
+    const subject = `Application for ${job.title}`;
+    const userName = user ? user.name : 'Applicant';
+    const userEmail = user ? user.email : '';
+    
+    const body = `Dear Hiring Manager,
+
+I am interested in applying for the ${job.title} position in the ${job.department} department.
+
+Position Details:
+- Title: ${job.title}
+- Department: ${job.department}
+- Location: ${job.location}
+- Type: ${job.job_type}
+
+I believe my skills and experience would be a great fit for this role. Please find my resume attached, and I look forward to hearing from you.
+
+Best regards,
+${userName}
+${userEmail}`;
+    
+    // Create mailto link
+    const mailtoLink = `mailto:careers@tgli.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Try to open email client
+    try {
+      window.open(mailtoLink, '_blank');
+    } catch (error) {
+      // Fallback: show alert with email
+      alert(`Please send your application to: careers@tgli.org\n\nSubject: ${subject}`);
     }
   }
 
