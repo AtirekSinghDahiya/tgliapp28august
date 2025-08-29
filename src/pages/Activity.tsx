@@ -1,7 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star } from 'lucide-react'
+import { ArrowLeft, Activity, Target, Briefcase, Calendar, Award, CheckCircle, Clock, Sparkles, Star, ArrowRight } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 
 const ActivityPage: React.FC = () => {
@@ -14,55 +14,55 @@ const ActivityPage: React.FC = () => {
       title: 'Leadership Program',
       description: 'Community Leadership Development Course',
       status: 'Active',
-      progress: 75,
       startDate: '2024-01-15',
       icon: Target,
       color: 'from-blue-500 to-blue-600',
-      statusColor: 'bg-green-100 text-green-600'
+      statusColor: 'bg-green-100 text-green-600',
+      programId: 'community-engagement'
     },
     {
       id: '2',
       title: 'Career Workshop',
       description: 'Professional Development Workshop Series',
       status: 'Completed',
-      progress: 100,
       startDate: '2024-01-10',
       icon: Briefcase,
       color: 'from-purple-500 to-purple-600',
-      statusColor: 'bg-blue-100 text-blue-600'
+      statusColor: 'bg-blue-100 text-blue-600',
+      programId: 'employment'
     },
     {
       id: '3',
       title: 'Community Event',
       description: 'Monthly Community Networking Event',
       status: 'Attended',
-      progress: 100,
       startDate: '2024-01-05',
       icon: Calendar,
       color: 'from-green-500 to-green-600',
-      statusColor: 'bg-purple-100 text-purple-600'
+      statusColor: 'bg-purple-100 text-purple-600',
+      programId: 'community'
     },
     {
       id: '4',
       title: 'Volunteer Training',
       description: 'Community Volunteer Orientation Program',
       status: 'In Progress',
-      progress: 45,
       startDate: '2024-01-20',
       icon: Award,
       color: 'from-orange-500 to-orange-600',
-      statusColor: 'bg-yellow-100 text-yellow-600'
+      statusColor: 'bg-yellow-100 text-yellow-600',
+      programId: 'volunteer'
     },
     {
       id: '5',
       title: 'Skills Assessment',
       description: 'Professional Skills Evaluation and Planning',
       status: 'Completed',
-      progress: 100,
       startDate: '2023-12-28',
       icon: CheckCircle,
       color: 'from-teal-500 to-teal-600',
-      statusColor: 'bg-blue-100 text-blue-600'
+      statusColor: 'bg-blue-100 text-blue-600',
+      programId: 'skills'
     }
   ]
 
