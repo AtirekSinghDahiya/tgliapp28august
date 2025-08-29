@@ -537,12 +537,15 @@ p {
     width: 100%;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    font-size: 16px !important;
+    -webkit-text-size-adjust: 100% !important;
   }
   
   #root {
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
   }
   
   h1 { font-size: 1.875rem; }
@@ -554,6 +557,7 @@ p {
     font-size: 0.875rem;
     min-height: 44px;
     touch-action: manipulation;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif !important;
   }
   
   .card {
@@ -562,27 +566,28 @@ p {
     max-width: calc(100vw - 1rem);
   }
   
-  /* Mobile performance optimizations */
-  * {
-    animation-duration: 0.15s !important;
-    transition-duration: 0.15s !important;
-  }
-  
   /* Prevent zoom on input focus */
   input, textarea, select {
     font-size: 16px !important;
     max-width: 100%;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif !important;
   }
   
   /* Fix mobile layout issues */
   .fixed {
-    position: -webkit-sticky;
-    position: sticky;
+    position: fixed !important;
   }
   
   /* Optimize mobile scrolling */
   .overflow-y-auto {
     -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Force font rendering */
+  * {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
 }
 

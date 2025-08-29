@@ -281,22 +281,13 @@ const News: React.FC = () => {
                     </motion.div>
                   </div>
                   <motion.button
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-3 py-2 rounded-lg font-medium hover:from-purple-600 hover:to-purple-700 transition-all duration-300 flex items-center gap-1 shadow-md hover:shadow-lg text-xs"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleLearnMore(article)}
-                  >
-                    Learn More
-                    <ArrowRight size={14} />
-                  </motion.button>
-                  <motion.button
-                    className="bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full font-medium hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 flex items-center gap-1.5 text-xs shadow-sm hover:shadow-md"
-                    whileHover={{ scale: 1.02, y: -1 }}
+                    className="bg-white border border-gray-200 text-gray-600 px-2.5 py-1 rounded-full font-medium hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50 transition-all duration-200 flex items-center gap-1 text-xs shadow-sm hover:shadow-md"
+                    whileHover={{ scale: 1.05, y: -1, x: 2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleLearnMore(article)}
                   >
-                    Read
-                    <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+                    <span className="font-semibold">Read</span>
+                    <ArrowRight size={10} className="transition-transform" />
                   </motion.button>
                 </motion.div>
               </div>

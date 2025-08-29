@@ -28,10 +28,10 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Faster app initialization
+    // Much faster app initialization for mobile
     const timer = setTimeout(() => {
       setLoading(false)
-    }, 1500)
+    }, 800)
 
     return () => clearTimeout(timer)
   }, [])
