@@ -471,10 +471,13 @@ p {
 }
 
 /* Mobile-specific optimizations */
-@media (max-width: 480px) {
+@media (max-width: 430px) {
   :root {
     --text-4xl: 1.75rem;
     --text-3xl: 1.5rem;
+    --text-2xl: 1.25rem;
+    --text-xl: 1.125rem;
+    --text-lg: 1rem;
   }
   
   .container {
@@ -484,6 +487,86 @@ p {
   .btn {
     min-height: 44px;
     padding: var(--space-3) var(--space-5);
+    font-size: 0.875rem;
+  }
+  
+  /* Ensure text doesn't overflow on small screens */
+  h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Better spacing for mobile */
+  .p-4 { padding: var(--space-3); }
+  .p-6 { padding: var(--space-4); }
+}
+
+/* iPhone 16 Pro Max (430px width) */
+@media (max-width: 430px) and (min-height: 932px) {
+  .quick-actions-grid {
+    gap: 0.75rem;
+  }
+  
+  .quick-action-item {
+    padding: 1rem;
+  }
+}
+
+/* iPhone 16 (393px width) */
+@media (max-width: 393px) {
+  :root {
+    --text-2xl: 1.125rem;
+    --text-xl: 1rem;
+  }
+  
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  .quick-actions-grid {
+    gap: 0.5rem;
+  }
+}
+
+/* Pixel 9 (412px width) */
+@media (max-width: 412px) and (min-height: 915px) {
+  .hero-section {
+    padding: 1.5rem 1rem;
+  }
+  
+  .stats-grid {
+    gap: 0.75rem;
+  }
+}
+
+/* Small phones (360px and below) */
+@media (max-width: 360px) {
+  :root {
+    --text-2xl: 1rem;
+    --text-xl: 0.875rem;
+    --text-lg: 0.875rem;
+  }
+  
+  .btn {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.8rem;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero-section {
+    padding: 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
   }
 }
 

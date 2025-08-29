@@ -43,29 +43,25 @@ const Home: React.FC = () => {
 
   const quickActions = [
     {
-      title: 'Apply to Programs',
-      description: 'Browse and apply to our programs',
+      title: 'Programs',
       icon: BookOpen,
       color: 'bg-blue-500',
       link: '/programs'
     },
     {
-      title: 'Make a Donation',
-      description: 'Support our community initiatives',
+      title: 'Donation',
       icon: Heart,
       color: 'bg-red-500',
       link: '/donate'
     },
     {
       title: 'View Events',
-      description: 'Join upcoming community events',
       icon: Calendar,
       color: 'bg-green-500',
       link: '/events'
     },
     {
       title: 'Career Opportunities',
-      description: 'Explore job openings',
       icon: Briefcase,
       color: 'bg-purple-500',
       link: '/careers'
@@ -100,17 +96,17 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white">
-        <div className="p-6 pt-8">
+      <div className="bg-gradient-to-br from-red-600 via-red-500 to-red-400 text-white hero-section">
+        <div className="p-4 sm:p-6 pt-6 sm:pt-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-2xl font-bold mb-2">
+            <h1 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">
               {user ? `Welcome back, ${user.name.split(' ')[0]}!` : 'Welcome to TGLI'}
             </h1>
-            <p className="text-red-100 mb-6">
+            <p className="text-red-100 mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
               {user 
                 ? 'Here\'s your personalized dashboard with recent activity and quick actions.'
                 : 'Empowering communities and building leaders across the Greater Toronto Area.'
@@ -118,22 +114,22 @@ const Home: React.FC = () => {
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 stats-grid">
               {stats.slice(0, 2).map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-4"
+                  className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="bg-white/20 p-2 rounded-lg">
-                      <stat.icon size={20} className="text-white" />
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="bg-white/20 p-1.5 sm:p-2 rounded-lg flex-shrink-0">
+                      <stat.icon size={16} className="text-white sm:w-5 sm:h-5" />
                     </div>
-                    <div>
-                      <p className="text-2xl font-bold">{stat.value}</p>
-                      <p className="text-red-100 text-sm">{stat.label}</p>
+                    <div className="min-w-0">
+                      <p className="text-lg sm:text-2xl font-bold leading-tight">{stat.value}</p>
+                      <p className="text-red-100 text-xs sm:text-sm leading-tight">{stat.label}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -143,26 +139,26 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-4 space-y-6 -mt-4">
+      <div className="p-3 sm:p-4 space-y-4 sm:space-y-6 -mt-3 sm:-mt-4">
         {/* Quick Actions */}
         <motion.div
-          className="bg-white rounded-2xl p-6 shadow-lg"
+          className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Quick Actions</h2>
             <motion.button
               className="p-2 bg-gray-100 rounded-lg"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Plus size={16} className="text-gray-600" />
+              <Plus size={14} className="text-gray-600 sm:w-4 sm:h-4" />
             </motion.button>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 quick-actions-grid">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.title}
@@ -172,17 +168,16 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={action.link}
-                  className="block p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group"
+                  className="block p-3 sm:p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all duration-200 group quick-action-item"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className={`${action.color} p-2 rounded-lg group-hover:scale-110 transition-transform`}>
-                      <action.icon size={16} className="text-white" />
+                  <div className="flex items-center gap-3 transition-all duration-200 group">
+                    <div className={`${action.color} p-2.5 sm:p-3 rounded-xl group-hover:scale-110 transition-transform flex-shrink-0`}>
+                      <action.icon size={16} className="text-white sm:w-5 sm:h-5" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 text-sm mb-1 leading-tight">{action.title}</h3>
-                      <p className="text-gray-600 text-xs leading-relaxed">{action.description}</p>
+                    <div className="flex-1 min-w-0 flex items-center">
+                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base leading-tight truncate">{action.title}</h3>
                     </div>
-                    <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors mt-1" />
+                    <ArrowRight size={14} className="text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0 sm:w-4 sm:h-4" />
                   </div>
                 </Link>
               </motion.div>
